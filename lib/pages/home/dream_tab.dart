@@ -22,13 +22,16 @@ class _DreamTabState extends State<DreamTab> {
         children: [
           SizedBox(height: 16),
           _promptWidget(),
+          ElevatedButton(
+            onPressed: _attemptToGenerate,
+            child: Text("Generate"),
+          ),
         ],
       ),
     );
   }
 
   Widget _promptWidget() {
-
     String promptToShow = _prompt.trim();
     if (promptToShow.isEmpty) {
       promptToShow = "Tap here to describe what we're painting today.";
@@ -46,7 +49,6 @@ class _DreamTabState extends State<DreamTab> {
           _prompt = newPrompt;
         });
       },
-
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: FractionallySizedBox(
@@ -72,5 +74,9 @@ class _DreamTabState extends State<DreamTab> {
         ),
       ),
     );
+  }
+
+  Future _attemptToGenerate() async {
+
   }
 }
