@@ -1,10 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
-import 'package:zoomscroller/blocs/user_bloc.dart';
 import 'package:zoomscroller/blocs/world_sync_bloc.dart';
 import 'package:zoomscroller/model/world.dart';
-import 'package:zoomscroller/pages/world_editor_page.dart';
 
 class DiscoverTab extends StatefulWidget {
   @override
@@ -76,53 +74,18 @@ class _DiscoverTile extends StatefulWidget {
 }
 
 class _DiscoverTileState extends State<_DiscoverTile> {
-  bool _copyInProgress = false;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        if (widget.world.userId == userBloc.getMyUserId()) {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (_) => WorldEditorPage(worldId: widget.world.id),
-            ),
-          );
-        } else {
-          setState(() {
-            _copyInProgress = true;
-          });
-
-          try {
-            final worldId = await worldSyncBloc.photocopyWorld(widget.world.id);
-
-            await Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (_) => WorldEditorPage(worldId: worldId),
-              ),
-            );
-
-            // Destroy the world if we haven't made any edits.
-            final layers = await worldSyncBloc.getLayersForWorld(worldId).first;
-            if (layers.last.userId != userBloc.getMyUserId()) {
-              await worldSyncBloc.deleteWorld(worldId);
-            }
-          } finally {
-            setState(() {
-              _copyInProgress = false;
-            });
-          }
-        }
+        // TODO
       },
       child: Stack(
         children: [
           CachedNetworkImage(
             imageUrl: widget.world.imageUrl!,
           ),
-          if (_copyInProgress)
-            Center(
-              child: const CircularProgressIndicator(),
-            ),
         ],
       ),
     );
