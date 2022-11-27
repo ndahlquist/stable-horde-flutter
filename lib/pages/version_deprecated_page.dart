@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:zoomscroller/colors.dart';
-import 'package:zoomscroller/widgets/background_image_grid.dart';
 
 class VersionDeprecatedPage extends StatefulWidget {
   @override
@@ -14,7 +13,6 @@ class _DeprecatedPageState extends State<VersionDeprecatedPage> {
       backgroundColor: zoomscrollerPurple,
       body: Stack(
         children: [
-          BackgroundImageGrid(),
           Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
