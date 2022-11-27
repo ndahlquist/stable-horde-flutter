@@ -13,7 +13,6 @@ class DiscoverTab extends StatefulWidget {
 
 class _DiscoverTabState extends State<DiscoverTab>
     with AutomaticKeepAliveClientMixin {
-
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -41,7 +40,11 @@ class _DiscoverTabState extends State<DiscoverTab>
             if (task == null) return SizedBox.shrink();
 
             return ListTile(
-              title: Text(task!.taskId),
+              title: Text(task!.taskId,
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: Colors.white,
+                  )),
             );
           },
         );
@@ -63,7 +66,6 @@ class _DiscoverTile extends StatefulWidget {
 }
 
 class _DiscoverTileState extends State<_DiscoverTile> {
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
