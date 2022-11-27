@@ -89,7 +89,10 @@ class _StableHordeBloc {
       body: jsonEncode(json),
     );
 
-    print(response.statusCode);
+    if (response.statusCode != 202) {
+      throw Exception('Failed to request diffusion: '
+          '${response.statusCode} ${response.body}');
+    }
     print(response.body);
   }
 }
