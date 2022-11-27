@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:isar/isar.dart';
 import 'package:zoomscroller/main.dart';
 import 'package:zoomscroller/model/stable_horde_task.dart';
 
@@ -103,6 +104,18 @@ class _StableHordeBloc {
     await isar.writeTxn(() async {
       isar.stableHordeTasks.put(StableHordeTask(taskId));
     });
+  }
+
+  Future<List<StableHordeTask>> getTasks() async {
+    return  await isar.stableHordeTasks.where().findAll();
+  }
+
+
+  Stream<List<StableHordeTask>> getTasksStream() async* {
+    final snapshots = isar.stableHordeTasks.watchLazy(fireImmediately: true);
+    await for (final _ in snapshots) {
+      yield await getTasks();
+    }
   }
 }
 
