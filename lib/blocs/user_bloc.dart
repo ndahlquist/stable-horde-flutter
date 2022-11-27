@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 
 class _UserBloc {
@@ -61,36 +60,6 @@ class _UserBloc {
     return userDoc.snapshots().map((doc) => doc.data()?['username']);
   }
 
-  Future<bool> setupPushNotifications() async {
-    await FirebaseMessaging.instance.requestPermission(
-      badge: false,
-      sound: false,
-    );
-
-    return refreshFcmToken();
-  }
-
-  Future<bool> refreshFcmToken() async {
-    final settings = await FirebaseMessaging.instance.getNotificationSettings();
-    final authStatus = settings.authorizationStatus;
-    if (authStatus == AuthorizationStatus.notDetermined ||
-        authStatus == AuthorizationStatus.denied) {
-      return false;
-    }
-
-    final userId = getMyUserId();
-    if (userId == null) return false;
-
-    final fcmToken = await FirebaseMessaging.instance.getToken();
-    if (fcmToken == null) return false;
-
-    final userDoc = FirebaseFirestore.instance.collection('users').doc(userId);
-    userDoc.set({
-      'fcm_token': fcmToken,
-    }, SetOptions(merge: true));
-
-    return true;
-  }
 }
 
 final userBloc = _UserBloc();

@@ -26,8 +26,6 @@ dependencies:
 
   google_fonts: ^3.0.1
 
-  google_sign_in: ^5.4.2
-
   intl: ^0.17.0
 
   vector_math: ^2.1.2
@@ -44,8 +42,6 @@ dependencies:
 
   shared_preferences: ^2.0.5
 
-  sign_in_with_apple: ^4.2.0
-  firebase_messaging: ^13.1.0
 
 
 dev_dependencies:
