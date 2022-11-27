@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class _StableHordeBloc {
+  List<String> _requestIds = [];
+
   Future requestDiffusion(
     String prompt,
     double mutationRate,
@@ -93,7 +95,10 @@ class _StableHordeBloc {
       throw Exception('Failed to request diffusion: '
           '${response.statusCode} ${response.body}');
     }
-    print(response.body);
+    final jsonResponse = jsonDecode(response.body);
+
+    final requestId = jsonResponse['request_id'];
+    _requestIds.add(requestId);
   }
 }
 
