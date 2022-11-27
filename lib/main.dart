@@ -36,13 +36,12 @@ Future _mainGuarded() async {
   final remoteConfig = FirebaseRemoteConfig.instance;
   await remoteConfig.setDefaults(const {
     "allow_this_version": true,
-    "num_tasks_to_queue": 2,
-    "waitlist_enabled": false,
   });
 
   if (kDebugMode) {
     runApp(MyApp());
   } else {
+    // todo / Stopship
     await SentryFlutter.init(
       (options) {
         options.dsn =
