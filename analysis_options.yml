@@ -1,0 +1,8 @@
+include: package:lint/analysis_options.yaml
+
+linter:
+  rules:
+    avoid_print: false
+    no_leading_underscores_for_local_identifiers: false
+    use_decorated_box: false
+    use_colored_box: false

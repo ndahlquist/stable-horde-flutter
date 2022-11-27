@@ -1,0 +1,68 @@
+name: zoomscroller
+description: Infinite AI Art.
+
+# The following line prevents the package from being accidentally published to
+# pub.dev using `pub publish`. This is preferred for private packages.
+publish_to: 'none'
+
+version: 1.0.4+11
+
+environment:
+  sdk: '>=2.17.3 <3.0.0'
+  flutter: '>=3.3.7'
+
+dependencies:
+  cached_network_image: ^3.0.0
+  cloud_firestore: ^3.1.10
+
+  feedback_sentry: ^2.3.0
+
+  flutter:
+    sdk: flutter
+
+  firebase_analytics: ^9.1.2
+  firebase_auth: ^3.3.11
+  firebase_core: ^1.13.1
+  firebase_remote_config: ^2.0.20
+  firebase_storage: ^10.3.8
+
+  google_fonts: ^3.0.1
+
+  google_sign_in: ^5.4.2
+
+  intl: ^0.17.0
+
+  vector_math: ^2.1.2
+
+  uuid: ^3.0.3
+
+  url_launcher: ^6.1.6
+
+  image: ^3.2.0
+
+  rxdart: ^0.27.7
+
+  sentry_flutter: ^6.16.1
+
+  shake: ^2.1.0
+
+  shared_preferences: ^2.0.5
+
+  sign_in_with_apple: ^4.2.0
+  firebase_messaging: ^13.1.0
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
+# The following section is specific to Flutter.
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - assets/images/pinch_tooltip.png

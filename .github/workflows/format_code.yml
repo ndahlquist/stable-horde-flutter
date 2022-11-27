@@ -1,0 +1,48 @@
+name: Format Code
+
+on:
+  push:
+    paths:
+      - '**.dart'
+
+jobs:
+  formatCode:
+
+    # Don't run this Action if this commit was itself a lint fix.
+    if: "github.event.head_commit.author.username != 'format-bot'"
+
+    name: Format Code
+
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - uses: actions/checkout@master
+        with:
+          token: ${{ secrets.FORMAT_BOT_GITHUB_PAT }}
+
+      - name: Cache Flutter dependencies
+        uses: actions/cache@v2
+        with:
+          path: /opt/hostedtoolcache/flutter
+          key: ${{ runner.OS }}-flutter-cache-${{ hashFiles('pubspec.**') }}
+
+      - uses: subosito/flutter-action@v2.4.0
+        with:
+          flutter-version: '3.3.8'
+
+      - run: flutter pub get
+
+      - name: Dart fix
+        run: dart fix --apply
+
+      - name: Dart format
+        run: dart format . --fix
+
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Apply formatting fixes
+          commit_user_name: Format Bot
+          commit_user_email: nicolas.dahlquist@gmail.com
+          commit_author: Format Bot <nicolas.dahlquist@gmail.com>
+

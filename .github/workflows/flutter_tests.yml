@@ -1,0 +1,40 @@
+name: Flutter Tests
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '**.dart'
+      - '**.yaml'
+      - '**.yml'
+      - 'pubspec.lock'
+  pull_request:
+    branches: [ '**' ]
+    paths:
+      - '**.dart'
+      - '**.yaml'
+      - '**.yml'
+      - 'pubspec.lock'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Cache Flutter dependencies
+        uses: actions/cache@v2
+        with:
+          path: /opt/hostedtoolcache/flutter
+          key: ${{ runner.OS }}-flutter-cache-${{ hashFiles('pubspec.**') }}
+
+      - uses: subosito/flutter-action@v2.4.0
+        with:
+          flutter-version: '3.3.8'
+
+      - run: flutter pub get
+      - run: dart analyze . --fatal-infos
+      - run: flutter test
