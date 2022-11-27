@@ -1,20 +1,14 @@
 import 'dart:async';
 
-import 'package:feedback_sentry/feedback_sentry.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
-import 'package:shake/shake.dart';
-import 'package:zoomscroller/blocs/user_bloc.dart';
-import 'package:zoomscroller/colors.dart';
 import 'package:zoomscroller/firebase_options.dart';
-import 'package:zoomscroller/pages/auth_page.dart';
+import 'package:zoomscroller/pages/home_page.dart';
 import 'package:zoomscroller/pages/version_deprecated_page.dart';
-import 'package:zoomscroller/pages/world_chooser_page.dart';
 
 Future main() async {
   Future errorHandler(Object error, StackTrace stackTrace) async {
@@ -46,10 +40,8 @@ Future _mainGuarded() async {
     "waitlist_enabled": false,
   });
 
-  final app = BetterFeedback(child: MyApp());
-
   if (kDebugMode) {
-    runApp(app);
+    runApp(MyApp());
   } else {
     await SentryFlutter.init(
       (options) {
@@ -59,7 +51,7 @@ Future _mainGuarded() async {
         // We recommend adjusting this value in production.
         options.tracesSampleRate = 1.0;
       },
-      appRunner: () => runApp(app),
+      appRunner: () => MyApp(),
     );
   }
 }
@@ -70,55 +62,9 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  @override
-  void initState() {
-    super.initState();
-    userBloc.refreshFcmToken();
-    ShakeDetector.autoStart(
-      minimumShakeCount: 2,
-      onPhoneShake: () async {
-        final username = await userBloc.getMyUsername();
-
-        BetterFeedback.of(context).showAndUploadToSentry(
-          name: username,
-          email: FirebaseAuth.instance.currentUser?.email,
-        );
-      },
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
-    final Widget initialPage;
-
-    final currentUser = FirebaseAuth.instance.currentUser;
-    final loggedIn = currentUser != null && !currentUser.isAnonymous;
-    if (loggedIn) {
-      initialPage = FutureBuilder<bool>(
-        future: userBloc.isApprovedForBeta(),
-        builder: (c, snapshot) {
-          if (!snapshot.hasData) {
-            return Scaffold(
-              backgroundColor: zoomscrollerPurple,
-              body: Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
-          }
-
-          final approved = snapshot.data!;
-
-          if (approved) {
-            return HomePage();
-          } else {
-            return AuthPage();
-          }
-        },
-      );
-    } else {
-      initialPage = AuthPage();
-    }
-
     return MaterialApp(
       title: 'ZoomScroller',
       debugShowCheckedModeBanner: false,
@@ -135,7 +81,7 @@ class _MyAppState extends State<MyApp> {
             return VersionDeprecatedPage();
           }
 
-          return initialPage;
+          return HomePage();
         },
       ),
     );
