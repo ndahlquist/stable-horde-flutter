@@ -169,7 +169,7 @@ class _AuthPageState extends State<AuthPage> {
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(
-        builder: (c) => WorldChooserPage(),
+        builder: (c) => HomePage(),
       ),
       (r) => false,
     );

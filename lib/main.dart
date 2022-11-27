@@ -109,7 +109,7 @@ class _MyAppState extends State<MyApp> {
           final approved = snapshot.data!;
 
           if (approved) {
-            return WorldChooserPage();
+            return HomePage();
           } else {
             return AuthPage();
           }

@@ -7,14 +7,12 @@ import 'package:zoomscroller/pages/home/moderate_tab.dart';
 import 'package:zoomscroller/pages/home/my_worlds_tab.dart';
 import 'package:zoomscroller/pages/settings_page.dart';
 
-/// Page that shows a gridview of the available worlds,
-/// and allows the user to select one or create a new one.
-class WorldChooserPage extends StatefulWidget {
+class HomePage extends StatefulWidget {
   @override
-  State<WorldChooserPage> createState() => _WorldChooserPageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _WorldChooserPageState extends State<WorldChooserPage> {
+class _HomePageState extends State<HomePage> {
   final _pageController = PageController();
   int _selectedPage = 0;
 
