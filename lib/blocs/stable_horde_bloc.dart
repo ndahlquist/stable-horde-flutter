@@ -1,9 +1,10 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:zoomscroller/main.dart';
+import 'package:zoomscroller/model/stable_horde_task.dart';
 
 class _StableHordeBloc {
-  List<String> _requestIds = [];
 
   Future requestDiffusion(
     String prompt,
@@ -97,8 +98,11 @@ class _StableHordeBloc {
     }
     final jsonResponse = jsonDecode(response.body);
 
-    final requestId = jsonResponse['request_id'];
-    _requestIds.add(requestId);
+    final taskId = jsonResponse['id'];
+
+    await isar.writeTxn(() async {
+      isar.stableHordeTasks.put(StableHordeTask(taskId));
+    });
   }
 }
 
