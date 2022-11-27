@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:zoomscroller/blocs/user_bloc.dart';
 import 'package:zoomscroller/colors.dart';
 import 'package:zoomscroller/pages/home/discover_tab.dart';
-import 'package:zoomscroller/pages/home/moderate_tab.dart';
 import 'package:zoomscroller/pages/home/my_worlds_tab.dart';
 import 'package:zoomscroller/pages/settings_page.dart';
 
@@ -57,11 +55,6 @@ class _HomePageState extends State<HomePage> {
               icon: Icon(Icons.explore),
               label: 'Discover',
             ),
-            if (userBloc.isAdmin())
-              BottomNavigationBarItem(
-                icon: Icon(Icons.chair),
-                label: 'Moderate',
-              ),
           ],
           currentIndex: _selectedPage,
           selectedItemColor: Colors.white,
@@ -84,7 +77,6 @@ class _HomePageState extends State<HomePage> {
       children: [
         MyWorldsTab(),
         DiscoverTab(),
-        if (userBloc.isAdmin()) ModerateTab(),
       ],
       onPageChanged: (page) {
         setState(() {
