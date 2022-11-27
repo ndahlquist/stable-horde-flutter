@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:zoomscroller/colors.dart';
 import 'package:zoomscroller/pages/home/discover_tab.dart';
 import 'package:zoomscroller/pages/home/dream_tab.dart';
-import 'package:zoomscroller/pages/home/my_worlds_tab.dart';
 import 'package:zoomscroller/pages/settings_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -76,7 +75,7 @@ class _HomePageState extends State<HomePage> {
     return PageView(
       controller: _pageController,
       children: [
-        MyWorldsTab(),
+        DiscoverTab(),
         DreamTab(),
       ],
       onPageChanged: (page) {
