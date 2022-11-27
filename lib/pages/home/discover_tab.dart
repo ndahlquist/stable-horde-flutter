@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:zoomscroller/blocs/stable_horde_bloc.dart';
 import 'package:zoomscroller/blocs/world_sync_bloc.dart';
 import 'package:zoomscroller/main.dart';
 import 'package:zoomscroller/model/stable_horde_task.dart';
@@ -16,12 +17,12 @@ class _DiscoverTabState extends State<DiscoverTab>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return StreamBuilder(
-      stream: isar.stableHordeTasks.watchLazy(),
+    return StreamBuilder<List<StableHordeTask>>(
+      stream: stableHordeBloc.getTasksStream(),
       builder: (context, snapshot) {
-        /*if (snapshot.connectionState == ConnectionState.waiting) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
-        }*/
+        }
 
         if (snapshot.hasError) {
           print(snapshot.error);
@@ -32,19 +33,21 @@ class _DiscoverTabState extends State<DiscoverTab>
             stackTrace: snapshot.stackTrace,
           );
         }
-        final length = isar.stableHordeTasks.getSizeSync();
+        final tasks = snapshot.data ?? [];
+
         return ListView.builder(
-          itemCount: length,
+          itemCount: tasks.length,
           itemBuilder: (context, index) {
-            final task = isar.stableHordeTasks.getSync(index);
-            if (task == null) return SizedBox.shrink();
+            final task = tasks[index];
 
             return ListTile(
-              title: Text(task!.taskId,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: Colors.white,
-                  )),
+              title: Text(
+                task.taskId,
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: Colors.white,
+                ),
+              ),
             );
           },
         );
