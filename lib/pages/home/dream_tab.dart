@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zoomscroller/blocs/stable_horde_bloc.dart';
 import 'package:zoomscroller/pages/prompt_edit_page.dart';
 
 class DreamTab extends StatefulWidget {
@@ -71,6 +72,15 @@ class _DreamTabState extends State<DreamTab> {
   }
 
   Future _attemptToGenerate() async {
+    if (_prompt.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Please enter a prompt first."),
+        ),
+      );
+      return;
+    }
 
+    stableHordeBloc.requestDiffusion(_prompt, .8);
   }
 }
