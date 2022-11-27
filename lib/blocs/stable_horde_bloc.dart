@@ -6,7 +6,6 @@ import 'package:zoomscroller/main.dart';
 import 'package:zoomscroller/model/stable_horde_task.dart';
 
 class _StableHordeBloc {
-
   Future requestDiffusion(
     String prompt,
     double mutationRate,
@@ -106,15 +105,14 @@ class _StableHordeBloc {
     });
   }
 
-  Future<List<StableHordeTask>> getTasks() async {
-    return  await isar.stableHordeTasks.where().findAll();
+  Future<List<StableHordeTask>> _getTasks() async {
+    return await isar.stableHordeTasks.where().findAll();
   }
-
 
   Stream<List<StableHordeTask>> getTasksStream() async* {
     final snapshots = isar.stableHordeTasks.watchLazy(fireImmediately: true);
     await for (final _ in snapshots) {
-      yield await getTasks();
+      yield await _getTasks();
     }
   }
 }
