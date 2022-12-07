@@ -1,24 +1,22 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
-import 'package:zoomscroller/blocs/world_sync_bloc.dart';
+import 'package:zoomscroller/blocs/stable_horde_bloc.dart';
+import 'package:zoomscroller/model/stable_horde_task.dart';
 import 'package:zoomscroller/model/world.dart';
 
-class DiscoverTab extends StatefulWidget {
+class MyArtTab extends StatefulWidget {
   @override
-  State<DiscoverTab> createState() => _DiscoverTabState();
+  State<MyArtTab> createState() => _MyArtTabState();
 }
 
-class _DiscoverTabState extends State<DiscoverTab>
+class _MyArtTabState extends State<MyArtTab>
     with AutomaticKeepAliveClientMixin {
-  final _worldsStream =
-      worldSyncBloc.getWorldsForDiscover().asBroadcastStream();
-
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return StreamBuilder<List<World>>(
-      stream: _worldsStream,
+    return StreamBuilder<List<StableHordeTask>>(
+      stream: stableHordeBloc.getTasksStream(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
@@ -33,27 +31,22 @@ class _DiscoverTabState extends State<DiscoverTab>
             stackTrace: snapshot.stackTrace,
           );
         }
+        final tasks = snapshot.data ?? [];
 
-        var data = snapshot.data;
-        if (data == null) {
-          return const Center(
-            child: Text(
-              "Error loading; please try again later.",
-              style: TextStyle(color: Colors.white),
-            ),
-          );
-        }
-
-        data = data.where((element) => element.imageUrl != null).toList();
-
-        return GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            childAspectRatio: 1.0,
-          ),
-          itemCount: data.length,
+        return ListView.builder(
+          itemCount: tasks.length,
           itemBuilder: (context, index) {
-            return _DiscoverTile(world: data![index]);
+            final task = tasks[index];
+
+            return ListTile(
+              title: Text(
+                task.taskId,
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: Colors.white,
+                ),
+              ),
+            );
           },
         );
       },

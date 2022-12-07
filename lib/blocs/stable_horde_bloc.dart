@@ -1,10 +1,11 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:isar/isar.dart';
+import 'package:zoomscroller/main.dart';
+import 'package:zoomscroller/model/stable_horde_task.dart';
 
 class _StableHordeBloc {
-  List<String> _requestIds = [];
-
   Future requestDiffusion(
     String prompt,
     double mutationRate,
@@ -75,7 +76,7 @@ class _StableHordeBloc {
       'nsfw': false,
       'censor_nsfw': false,
       'trusted_workers': false,
-      'source_processing': 'img2img',
+      //'source_processing': 'img2img',
       //'source_image': base64.encode(sourceImage.buffer.asUint8List()),
       'models': [
         'stable_diffusion',
@@ -95,8 +96,22 @@ class _StableHordeBloc {
     }
     final jsonResponse = jsonDecode(response.body);
 
-    final requestId = jsonResponse['request_id'];
-    _requestIds.add(requestId);
+    final taskId = jsonResponse['id'];
+
+    await isar.writeTxn(() async {
+      isar.stableHordeTasks.put(StableHordeTask(taskId));
+    });
+  }
+
+  Future<List<StableHordeTask>> _getTasks() async {
+    return await isar.stableHordeTasks.where().findAll();
+  }
+
+  Stream<List<StableHordeTask>> getTasksStream() async* {
+    final snapshots = isar.stableHordeTasks.watchLazy(fireImmediately: true);
+    await for (final _ in snapshots) {
+      yield await _getTasks();
+    }
   }
 }
 

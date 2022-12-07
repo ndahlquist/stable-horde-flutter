@@ -5,8 +5,10 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:isar/isar.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:zoomscroller/firebase_options.dart';
+import 'package:zoomscroller/model/stable_horde_task.dart';
 import 'package:zoomscroller/pages/home_page.dart';
 import 'package:zoomscroller/pages/version_deprecated_page.dart';
 
@@ -26,6 +28,8 @@ Future main() async {
   );
 }
 
+late Isar isar;
+
 Future _mainGuarded() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -37,6 +41,8 @@ Future _mainGuarded() async {
   await remoteConfig.setDefaults(const {
     "allow_this_version": true,
   });
+
+  isar = await Isar.open([StableHordeTaskSchema]);
 
   if (kDebugMode) {
     runApp(MyApp());
