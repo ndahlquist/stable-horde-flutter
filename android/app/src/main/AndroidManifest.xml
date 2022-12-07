@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.stable_horde_flutter">
+    package="com.nicd.stable_horde_flutter">
    <application
         android:label="stable_horde_flutter"
         android:name="${applicationName}"
