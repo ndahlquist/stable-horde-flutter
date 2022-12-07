@@ -1,9 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:zoomscroller/blocs/stable_horde_bloc.dart';
 import 'package:zoomscroller/model/stable_horde_task.dart';
-import 'package:zoomscroller/model/world.dart';
 
 class MyArtTab extends StatefulWidget {
   @override
@@ -55,31 +53,4 @@ class _MyArtTabState extends State<MyArtTab>
 
   @override
   bool get wantKeepAlive => true;
-}
-
-class _DiscoverTile extends StatefulWidget {
-  final World world;
-
-  const _DiscoverTile({required this.world});
-
-  @override
-  State<_DiscoverTile> createState() => _DiscoverTileState();
-}
-
-class _DiscoverTileState extends State<_DiscoverTile> {
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () async {
-        // TODO
-      },
-      child: Stack(
-        children: [
-          CachedNetworkImage(
-            imageUrl: widget.world.imageUrl!,
-          ),
-        ],
-      ),
-    );
-  }
 }
