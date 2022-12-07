@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:stable_horde_flutter/colors.dart';
 
 class VersionDeprecatedPage extends StatefulWidget {
+  const VersionDeprecatedPage({super.key});
+
   @override
   State<VersionDeprecatedPage> createState() => _DeprecatedPageState();
 }
@@ -28,7 +30,7 @@ class _DeprecatedPageState extends State<VersionDeprecatedPage> {
           Padding(
             padding: const EdgeInsets.all(24),
             child: Column(
-              children: [
+              children: const [
                 Spacer(),
                 Text(
                   'This version of ZoomScroller is no longer supported.\n\nPlease update to the latest version.',

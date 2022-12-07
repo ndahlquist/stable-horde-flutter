@@ -3,6 +3,8 @@ import 'package:stable_horde_flutter/colors.dart';
 import 'package:stable_horde_flutter/utils/legal_links.dart';
 
 class SettingsPage extends StatelessWidget {
+  const SettingsPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -10,10 +12,10 @@ class SettingsPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: Text('Settings'),
+        title: const Text('Settings'),
       ),
       body: Column(
-        children: [
+        children: const [
           ListTile(
             title: Text(
               'Privacy Policy',

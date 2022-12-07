@@ -4,6 +4,8 @@ import 'package:stable_horde_flutter/blocs/stable_horde_bloc.dart';
 import 'package:stable_horde_flutter/model/stable_horde_task.dart';
 
 class MyArtTab extends StatefulWidget {
+  const MyArtTab({super.key});
+
   @override
   State<MyArtTab> createState() => _MyArtTabState();
 }

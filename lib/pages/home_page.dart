@@ -6,6 +6,8 @@ import 'package:stable_horde_flutter/pages/home/my_art_tab.dart';
 import 'package:stable_horde_flutter/pages/settings_page.dart';
 
 class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -35,7 +37,7 @@ class _HomePageState extends State<HomePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (c) => SettingsPage(),
+                    builder: (c) => const SettingsPage(),
                   ),
                 );
               },
@@ -46,7 +48,7 @@ class _HomePageState extends State<HomePage> {
         body: _body(),
         bottomNavigationBar: BottomNavigationBar(
           backgroundColor: zoomscrollerGrey,
-          items: <BottomNavigationBarItem>[
+          items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(Icons.account_circle),
               label: 'My Art',
@@ -74,7 +76,7 @@ class _HomePageState extends State<HomePage> {
   Widget _body() {
     return PageView(
       controller: _pageController,
-      children: [
+      children: const [
         MyArtTab(),
         DreamTab(),
       ],

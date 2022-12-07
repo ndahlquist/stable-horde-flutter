@@ -1,6 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-final _promptKey = 'PROMPT_KEY';
+const _promptKey = 'PROMPT_KEY';
 
 Future<String> getLastPrompt() async {
   final _prefs = await SharedPreferences.getInstance();
