@@ -35,17 +35,17 @@ class _PromptEditPageState extends State<PromptEditPage> {
         return true;
       },
       child: Scaffold(
-        backgroundColor: Color(0xFF230D49),
+        backgroundColor: const Color(0xFF230D49),
         appBar: AppBar(backgroundColor: Colors.transparent, elevation: 0),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: TextField(
             maxLines: 10,
             controller: _textController,
-            style: TextStyle(color: Colors.white),
+            style: const TextStyle(color: Colors.white),
             autofocus: true,
             textCapitalization: TextCapitalization.sentences,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               hintText: 'What would you like to paint today?',
               hintStyle: TextStyle(color: Colors.white70),
               border: InputBorder.none,

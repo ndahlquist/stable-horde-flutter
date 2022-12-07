@@ -7,7 +7,7 @@ class TimedProgressIndicator extends StatefulWidget {
   final DateTime startTime;
   final DateTime completionTime;
 
-  TimedProgressIndicator({
+  const TimedProgressIndicator({
     super.key,
     required this.startTime,
     required this.completionTime,
