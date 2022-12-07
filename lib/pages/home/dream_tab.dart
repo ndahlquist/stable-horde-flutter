@@ -11,7 +11,6 @@ class DreamTab extends StatefulWidget {
 class _DreamTabState extends State<DreamTab> {
   String _prompt = "";
 
-
   @override
   void initState() {
     super.initState();
