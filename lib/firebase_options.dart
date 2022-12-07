@@ -70,7 +70,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '37481550434',
     projectId: 'stable-horde-flutter',
     storageBucket: 'stable-horde-flutter.appspot.com',
-    iosClientId: '37481550434-ts8j0jihl9atjjnp0see606t394l3u1n.apps.googleusercontent.com',
+    iosClientId:
+        '37481550434-ts8j0jihl9atjjnp0see606t394l3u1n.apps.googleusercontent.com',
     iosBundleId: 'com.example.stableHordeFlutter',
   );
 }
