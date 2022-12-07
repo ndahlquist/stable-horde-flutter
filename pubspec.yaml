@@ -1,5 +1,5 @@
-name: zoomscroller
-description: Infinite AI Art.
+name: stable_horde_flutter
+description: An unofficial Flutter client for the Stable Horde.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
