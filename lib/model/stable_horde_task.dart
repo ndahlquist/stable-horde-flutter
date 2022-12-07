@@ -1,6 +1,5 @@
 import 'package:isar/isar.dart';
 
-
 part 'stable_horde_task.g.dart';
 
 @collection
