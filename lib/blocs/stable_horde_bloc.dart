@@ -78,7 +78,7 @@ class _StableHordeBloc {
       'nsfw': false,
       'censor_nsfw': false,
       'trusted_workers': false,
-      'source_processing': 'img2img',
+      //'source_processing': 'img2img',
       //'source_image': base64.encode(sourceImage.buffer.asUint8List()),
       'models': [
         'stable_diffusion',
