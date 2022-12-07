@@ -84,10 +84,10 @@ class _MyAppState extends State<MyApp> {
           final config = FirebaseRemoteConfig.instance;
           final versionDeprecated = !config.getBool("allow_this_version");
           if (versionDeprecated) {
-            return VersionDeprecatedPage();
+            return const VersionDeprecatedPage();
           }
 
-          return HomePage();
+          return const HomePage();
         },
       ),
     );
