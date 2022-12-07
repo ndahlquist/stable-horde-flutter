@@ -1,13 +1,13 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-final _hasSeenTutorialKey = 'has_seen_tutorial';
+final _promptKey = 'PROMPT_KEY';
 
-Future<bool> getHasSeenTutorial() async {
+Future<String> getLastPrompt() async {
   final _prefs = await SharedPreferences.getInstance();
-  return _prefs.getBool(_hasSeenTutorialKey) ?? false;
+  return _prefs.getString(_promptKey) ?? "";
 }
 
-Future<void> setHasSeenTutorial() async {
+Future<void> setPrompt(String prompt) async {
   final _prefs = await SharedPreferences.getInstance();
-  await _prefs.setBool(_hasSeenTutorialKey, true);
+  await _prefs.setString(_promptKey, prompt);
 }
