@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:zoomscroller/colors.dart';
+import 'package:stable_horde_flutter/colors.dart';
 
 class VersionDeprecatedPage extends StatefulWidget {
   @override

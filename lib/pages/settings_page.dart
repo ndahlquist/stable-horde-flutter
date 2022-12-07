@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:zoomscroller/colors.dart';
-import 'package:zoomscroller/utils/legal_links.dart';
+import 'package:stable_horde_flutter/colors.dart';
+import 'package:stable_horde_flutter/utils/legal_links.dart';
 
 class SettingsPage extends StatelessWidget {
   @override

@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:isar/isar.dart';
-import 'package:zoomscroller/main.dart';
-import 'package:zoomscroller/model/stable_horde_task.dart';
+import 'package:stable_horde_flutter/main.dart';
+import 'package:stable_horde_flutter/model/stable_horde_task.dart';
 
 class _StableHordeBloc {
   Future requestDiffusion(
