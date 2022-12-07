@@ -48,12 +48,31 @@ android {
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+
+        ndk {
+            // Disable support for x86-32 (Flutter doesn't support this).
+            abiFilters "armeabi-v7a", "arm64-v8a", "x86_64"
+        }
+    }
+
+    signingConfigs {
+        debug {
+            keyAlias "key0"
+            keyPassword "password"
+            storeFile file("debug_keystore.jks")
+            storePassword "password"
+        }
     }
 
     buildTypes {
+        debug {
+            // Note: We use the same keystore for all debug builds.
+            // This is so that we can authenticate with Firebase.
+            signingConfig signingConfigs.debug
+        }
+
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
+            // Note: release builds are signed by Google Play.
             signingConfig signingConfigs.debug
         }
     }
