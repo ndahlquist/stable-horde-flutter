@@ -7,12 +7,12 @@ import 'package:zoomscroller/main.dart';
 import 'package:zoomscroller/model/stable_horde_task.dart';
 import 'package:zoomscroller/model/world.dart';
 
-class DiscoverTab extends StatefulWidget {
+class MyArtTab extends StatefulWidget {
   @override
-  State<DiscoverTab> createState() => _DiscoverTabState();
+  State<MyArtTab> createState() => _MyArtTabState();
 }
 
-class _DiscoverTabState extends State<DiscoverTab>
+class _MyArtTabState extends State<MyArtTab>
     with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
