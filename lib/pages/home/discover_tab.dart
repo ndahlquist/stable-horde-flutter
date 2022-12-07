@@ -74,7 +74,6 @@ class _DiscoverTile extends StatefulWidget {
 }
 
 class _DiscoverTileState extends State<_DiscoverTile> {
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(

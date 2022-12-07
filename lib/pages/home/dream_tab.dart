@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:zoomscroller/blocs/stable_horde_bloc.dart';
 import 'package:zoomscroller/pages/prompt_edit_page.dart';
+import 'package:zoomscroller/utils/shared_prefs_helper.dart';
 
 class DreamTab extends StatefulWidget {
   @override
@@ -9,6 +10,16 @@ class DreamTab extends StatefulWidget {
 
 class _DreamTabState extends State<DreamTab> {
   String _prompt = "";
+
+  @override
+  void initState() {
+    super.initState();
+    getLastPrompt().then((value) {
+      setState(() {
+        _prompt = value;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +51,7 @@ class _DreamTabState extends State<DreamTab> {
           ),
         );
         if (newPrompt == null) return;
+        setPrompt(newPrompt);
         setState(() {
           _prompt = newPrompt;
         });

@@ -59,7 +59,6 @@ class _UserBloc {
 
     return userDoc.snapshots().map((doc) => doc.data()?['username']);
   }
-
 }
 
 final userBloc = _UserBloc();
