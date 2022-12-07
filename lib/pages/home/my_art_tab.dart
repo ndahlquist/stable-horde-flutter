@@ -4,6 +4,8 @@ import 'package:zoomscroller/blocs/stable_horde_bloc.dart';
 import 'package:zoomscroller/model/stable_horde_task.dart';
 
 class MyArtTab extends StatefulWidget {
+  const MyArtTab({super.key});
+
   @override
   State<MyArtTab> createState() => _MyArtTabState();
 }

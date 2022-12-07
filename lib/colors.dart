@@ -1,4 +1,4 @@
 import 'dart:ui';
 
-final zoomscrollerPurple = Color(0xFF230D49);
-final zoomscrollerGrey = Color(0xFF1F1F21);
+const zoomscrollerPurple = Color(0xFF230D49);
+const zoomscrollerGrey = Color(0xFF1F1F21);

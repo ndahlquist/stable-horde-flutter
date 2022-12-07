@@ -4,6 +4,8 @@ import 'package:zoomscroller/pages/prompt_edit_page.dart';
 import 'package:zoomscroller/utils/shared_prefs_helper.dart';
 
 class DreamTab extends StatefulWidget {
+  const DreamTab({super.key});
+
   @override
   State<DreamTab> createState() => _DreamTabState();
 }
@@ -26,11 +28,11 @@ class _DreamTabState extends State<DreamTab> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           _promptWidget(),
           ElevatedButton(
             onPressed: _attemptToGenerate,
-            child: Text("Generate"),
+            child: const Text("Generate"),
           ),
         ],
       ),
@@ -86,7 +88,7 @@ class _DreamTabState extends State<DreamTab> {
   Future _attemptToGenerate() async {
     if (_prompt.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text("Please enter a prompt first."),
         ),
       );

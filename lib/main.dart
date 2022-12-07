@@ -45,7 +45,7 @@ Future _mainGuarded() async {
   isar = await Isar.open([StableHordeTaskSchema]);
 
   if (kDebugMode) {
-    runApp(MyApp());
+    runApp(const MyApp());
   } else {
     // todo / Stopship
     await SentryFlutter.init(
@@ -56,12 +56,14 @@ Future _mainGuarded() async {
         // We recommend adjusting this value in production.
         options.tracesSampleRate = 1.0;
       },
-      appRunner: () => MyApp(),
+      appRunner: () => const MyApp(),
     );
   }
 }
 
 class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
   @override
   State<MyApp> createState() => _MyAppState();
 }
