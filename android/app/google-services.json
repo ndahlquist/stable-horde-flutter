@@ -1,49 +1,34 @@
 {
   "project_info": {
-    "project_number": "28925556847",
-    "project_id": "zoomscroller",
-    "storage_bucket": "zoomscroller.appspot.com"
+    "project_number": "37481550434",
+    "project_id": "stable-horde-flutter",
+    "storage_bucket": "stable-horde-flutter.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:28925556847:android:139e0e0c8a39474c39f59a",
+        "mobilesdk_app_id": "1:37481550434:android:b81fcfb872dc4a72dc373b",
         "android_client_info": {
-          "package_name": "com.nicd.zoomscroller"
+          "package_name": "com.nicd.stable_horde_flutter"
         }
       },
       "oauth_client": [
         {
-          "client_id": "28925556847-nvh0a05oeqatfnti1eq6p2tj62uvnc7h.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.nicd.zoomscroller",
-            "certificate_hash": "0819891a81f83603b4fca071213f3bbaad1a6db1"
-          }
-        },
-        {
-          "client_id": "28925556847-e4eok81idt1sqfrm0icclsu6sciva4jn.apps.googleusercontent.com",
+          "client_id": "37481550434-k19bag9vjf9gjo8l28ltacsl890l4143.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBazPRXuSwpMbFu1QeDSmfcOWsnBrLq9pg"
+          "current_key": "AIzaSyD3ZnDU9ZJ3PPaJdVhOLiFJw3hEdKG9H7c"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "28925556847-e4eok81idt1sqfrm0icclsu6sciva4jn.apps.googleusercontent.com",
+              "client_id": "37481550434-k19bag9vjf9gjo8l28ltacsl890l4143.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "28925556847-avvmijs3q68d4ffspgkjgp5r1vg14o34.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.samarth.drawingApp"
-              }
             }
           ]
         }
