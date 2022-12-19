@@ -17,10 +17,7 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -49,24 +46,32 @@ class DefaultFirebaseOptions {
     }
   }
 
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyCtWU_tnt60ZXR8wghyPASWGbknCLs1rXs',
+    appId: '1:37481550434:web:454d4631e16b548adc373b',
+    messagingSenderId: '37481550434',
+    projectId: 'stable-horde-flutter',
+    authDomain: 'stable-horde-flutter.firebaseapp.com',
+    storageBucket: 'stable-horde-flutter.appspot.com',
+    measurementId: 'G-4VFRG9980C',
+  );
+
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBazPRXuSwpMbFu1QeDSmfcOWsnBrLq9pg',
-    appId: '1:28925556847:android:139e0e0c8a39474c39f59a',
-    messagingSenderId: '28925556847',
-    projectId: 'zoomscroller',
-    storageBucket: 'zoomscroller.appspot.com',
+    apiKey: 'AIzaSyD3ZnDU9ZJ3PPaJdVhOLiFJw3hEdKG9H7c',
+    appId: '1:37481550434:android:b81fcfb872dc4a72dc373b',
+    messagingSenderId: '37481550434',
+    projectId: 'stable-horde-flutter',
+    storageBucket: 'stable-horde-flutter.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCfC2jhJbaGwtLvLyWNQjaSTukGGmLpWdU',
-    appId: '1:28925556847:ios:fd4ad2cfde19b93139f59a',
-    messagingSenderId: '28925556847',
-    projectId: 'zoomscroller',
-    storageBucket: 'zoomscroller.appspot.com',
-    androidClientId:
-        '28925556847-nvh0a05oeqatfnti1eq6p2tj62uvnc7h.apps.googleusercontent.com',
+    apiKey: 'AIzaSyAnNTPD7l2hXxRv3PILxxd4kQ0flIrOQZg',
+    appId: '1:37481550434:ios:94431eb35ec84beedc373b',
+    messagingSenderId: '37481550434',
+    projectId: 'stable-horde-flutter',
+    storageBucket: 'stable-horde-flutter.appspot.com',
     iosClientId:
-        '28925556847-ecd2o8rtol21bst0cj1ddbqhbkpd9ere.apps.googleusercontent.com',
-    iosBundleId: 'com.nicd.zoomscroller',
+        '37481550434-ts8j0jihl9atjjnp0see606t394l3u1n.apps.googleusercontent.com',
+    iosBundleId: 'com.example.stableHordeFlutter',
   );
 }

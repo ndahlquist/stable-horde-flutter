@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>28925556847-ecd2o8rtol21bst0cj1ddbqhbkpd9ere.apps.googleusercontent.com</string>
+	<string>37481550434-ts8j0jihl9atjjnp0see606t394l3u1n.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.28925556847-ecd2o8rtol21bst0cj1ddbqhbkpd9ere</string>
+	<string>com.googleusercontent.apps.37481550434-ts8j0jihl9atjjnp0see606t394l3u1n</string>
 	<key>API_KEY</key>
-	<string>AIzaSyCfC2jhJbaGwtLvLyWNQjaSTukGGmLpWdU</string>
+	<string>AIzaSyAnNTPD7l2hXxRv3PILxxd4kQ0flIrOQZg</string>
 	<key>GCM_SENDER_ID</key>
-	<string>28925556847</string>
+	<string>37481550434</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.nicd.zoomscroller</string>
+	<string>com.example.stableHordeFlutter</string>
 	<key>PROJECT_ID</key>
-	<string>zoomscroller</string>
+	<string>stable-horde-flutter</string>
 	<key>STORAGE_BUCKET</key>
-	<string>zoomscroller.appspot.com</string>
+	<string>stable-horde-flutter.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:28925556847:ios:fd4ad2cfde19b93139f59a</string>
+	<string>1:37481550434:ios:94431eb35ec84beedc373b</string>
 </dict>
 </plist>

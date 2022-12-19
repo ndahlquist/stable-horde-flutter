@@ -7,10 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:isar/isar.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
-import 'package:zoomscroller/firebase_options.dart';
-import 'package:zoomscroller/model/stable_horde_task.dart';
-import 'package:zoomscroller/pages/home_page.dart';
-import 'package:zoomscroller/pages/version_deprecated_page.dart';
+import 'package:stable_horde_flutter/firebase_options.dart';
+import 'package:stable_horde_flutter/model/stable_horde_task.dart';
+import 'package:stable_horde_flutter/pages/home_page.dart';
+import 'package:stable_horde_flutter/pages/version_deprecated_page.dart';
 
 Future main() async {
   Future errorHandler(Object error, StackTrace stackTrace) async {

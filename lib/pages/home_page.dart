@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:zoomscroller/colors.dart';
-import 'package:zoomscroller/pages/home/dream_tab.dart';
-import 'package:zoomscroller/pages/home/my_art_tab.dart';
-import 'package:zoomscroller/pages/settings_page.dart';
+import 'package:stable_horde_flutter/colors.dart';
+import 'package:stable_horde_flutter/pages/home/dream_tab.dart';
+import 'package:stable_horde_flutter/pages/home/my_art_tab.dart';
+import 'package:stable_horde_flutter/pages/settings_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

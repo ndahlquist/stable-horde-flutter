@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:zoomscroller/blocs/stable_horde_bloc.dart';
-import 'package:zoomscroller/pages/prompt_edit_page.dart';
-import 'package:zoomscroller/utils/shared_prefs_helper.dart';
+import 'package:stable_horde_flutter/blocs/stable_horde_bloc.dart';
+import 'package:stable_horde_flutter/pages/prompt_edit_page.dart';
+import 'package:stable_horde_flutter/utils/shared_prefs_helper.dart';
 
 class DreamTab extends StatefulWidget {
   const DreamTab({super.key});

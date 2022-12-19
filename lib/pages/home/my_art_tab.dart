@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
-import 'package:zoomscroller/blocs/stable_horde_bloc.dart';
-import 'package:zoomscroller/model/stable_horde_task.dart';
+import 'package:stable_horde_flutter/blocs/stable_horde_bloc.dart';
+import 'package:stable_horde_flutter/model/stable_horde_task.dart';
 
 class MyArtTab extends StatefulWidget {
   const MyArtTab({super.key});
