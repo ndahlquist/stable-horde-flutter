@@ -71,7 +71,7 @@ class _StableHordeBloc {
     });
 
     for (int i = 0; i < 1000; i++) {
-      await Future.delayed(const Duration(seconds: 1));
+      await Future.delayed(const Duration(seconds: 2));
       print('update $i');
       _updateTasks();
 
@@ -125,8 +125,9 @@ class _StableHordeBloc {
       print(jsonResponse);
 
       final waitSeconds = jsonResponse['wait_time'];
-      final estimatedCompletionTime =
-          DateTime.now().add(Duration(seconds: waitSeconds),);
+      final estimatedCompletionTime = DateTime.now().add(
+        Duration(seconds: waitSeconds),
+      );
       print('Estimated completion time: $estimatedCompletionTime');
 
       task.firstShowProgressIndicatorTime ??= DateTime.now();
@@ -171,7 +172,10 @@ class _StableHordeBloc {
   Future<File> _writeFile(Uint8List bytes) async {
     final directory = await getApplicationDocumentsDirectory();
 
-    final path = directory.path + '/' + DateTime.now().millisecondsSinceEpoch.toString() + '.webp';
+    final path = directory.path +
+        '/' +
+        DateTime.now().millisecondsSinceEpoch.toString() +
+        '.webp';
     final file = await File(path).create();
     print(file.path);
 
