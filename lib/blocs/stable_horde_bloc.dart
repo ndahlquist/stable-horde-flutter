@@ -1,7 +1,10 @@
 import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:http/http.dart' as http;
 import 'package:isar/isar.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stable_horde_flutter/main.dart';
 import 'package:stable_horde_flutter/model/stable_horde_task.dart';
@@ -123,7 +126,7 @@ class _StableHordeBloc {
 
       final waitSeconds = jsonResponse['wait_time'];
       final estimatedCompletionTime =
-          DateTime.now().add(Duration(seconds: waitSeconds));
+          DateTime.now().add(Duration(seconds: waitSeconds),);
       print('Estimated completion time: $estimatedCompletionTime');
 
       task.firstShowProgressIndicatorTime ??= DateTime.now();
@@ -143,11 +146,41 @@ class _StableHordeBloc {
       final generation = generations.first;
       final imageUrl = generation['img'];
 
+      // Download imageUrl to file
+      final response2 = await http.get(Uri.parse(imageUrl));
+      if (response2.statusCode != 200) {
+        final exception = Exception(
+          'Failed to download image: '
+          '${response2.statusCode} ${response2.body}',
+        );
+        print(exception);
+        Sentry.captureException(exception, stackTrace: StackTrace.current);
+        continue;
+      }
+
+      final image = response2.bodyBytes;
+
+      // Write image to file
+      await _writeImage(image);
+
       task.imageUrl = imageUrl;
       isar.writeTxn(() async {
         isar.stableHordeTasks.put(task);
       });
     }
+  }
+
+  Future<File> _writeImage(Uint8List bytes) async {
+    final directory = await getApplicationDocumentsDirectory();
+
+    final path = directory.path + '/' + DateTime.now().millisecondsSinceEpoch.toString();
+    final file = await File(path).create();
+    print(file.path);
+
+    // Write image to file
+    await file.writeAsBytes(bytes);
+
+    return file;
   }
 
   Future<List<StableHordeTask>> _getTasks() async {
