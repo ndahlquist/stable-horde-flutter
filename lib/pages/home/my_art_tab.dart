@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stable_horde_flutter/blocs/stable_horde_bloc.dart';
+import 'package:stable_horde_flutter/colors.dart';
 import 'package:stable_horde_flutter/model/stable_horde_task.dart';
 import 'package:stable_horde_flutter/pages/fullscreen_view_page.dart';
 import 'package:stable_horde_flutter/widgets/timed_progress_indicator.dart';
@@ -54,14 +55,21 @@ class _MyArtTabState extends State<MyArtTab>
                   MaterialPageRoute(builder: (_) => const FullScreenViewPage()),
                 );
               },
-              child: Stack(children: [
-                if (task.imagePath != null)
-                  Image.file(
-                    File(task.imagePath!),
-                    fit: BoxFit.cover,
+              child: Stack(
+                children: [
+                  const FractionallySizedBox(
+                    widthFactor: 1,
+                    heightFactor: 1,
+                    child: ColoredBox(color: stableHordeGrey),
                   ),
-                _progressIndicator(task),
-              ]),
+                  if (task.imagePath != null)
+                    Image.file(
+                      File(task.imagePath!),
+                      fit: BoxFit.cover,
+                    ),
+                  _progressIndicator(task),
+                ],
+              ),
             );
           },
         );
