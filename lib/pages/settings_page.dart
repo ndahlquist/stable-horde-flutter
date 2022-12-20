@@ -15,15 +15,31 @@ class SettingsPage extends StatelessWidget {
         title: const Text('Settings'),
       ),
       body: Column(
-        children: const [
-          ListTile(
+        children:  [
+          _apiKeyField(),
+          const Padding(
+            padding: EdgeInsets.only(top: 64.0, left: 16.0, bottom: 16, ),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Legal',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+                textAlign: TextAlign.left,
+              ),
+            ),
+          ),
+          const ListTile(
             title: Text(
               'Privacy Policy',
               style: TextStyle(color: Colors.white),
             ),
             onTap: launchPrivacyPolicy,
           ),
-          ListTile(
+          const ListTile(
             title: Text(
               'Terms of Service',
               style: TextStyle(color: Colors.white),
@@ -31,6 +47,28 @@ class SettingsPage extends StatelessWidget {
             onTap: launchTermsOfService,
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _apiKeyField() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      child: TextField(
+        decoration: const InputDecoration(
+          labelText: 'API Key',
+          labelStyle: TextStyle(color: Colors.white),
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.white),
+          ),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.white),
+          ),
+        ),
+        style: const TextStyle(color: Colors.white),
+        onChanged: (value) {
+          //stableHordeBloc.setApiKey(value);
+        },
       ),
     );
   }
