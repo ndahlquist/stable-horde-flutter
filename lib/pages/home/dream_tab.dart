@@ -1,3 +1,4 @@
+import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/blocs/stable_horde_bloc.dart';
@@ -31,6 +32,13 @@ class _DreamTabState extends State<DreamTab> {
         children: [
           const SizedBox(height: 16),
           _promptWidget(),
+      ExpandablePanel(
+        header: Text("Advanced Options"),
+        collapsed: SizedBox.shrink(),
+        expanded: Text("expanded", softWrap: true, ),
+        //tapHeaderToExpand: true,
+        //hasIcon: true,
+      ),
           ElevatedButton(
             onPressed: _attemptToGenerate,
             child: const Text("Generate"),
