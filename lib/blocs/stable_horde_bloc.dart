@@ -107,7 +107,7 @@ class _StableHordeBloc {
       );
       if (response.statusCode == 429) {
         print('Rate limit exceeded');
-        print(response);
+        await Future.delayed(const Duration(seconds: 10));
         return;
       }
 
