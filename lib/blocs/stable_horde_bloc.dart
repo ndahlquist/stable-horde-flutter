@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/main.dart';
 import 'package:stable_horde_flutter/model/stable_horde_task.dart';
 
@@ -13,12 +14,15 @@ class _StableHordeBloc {
     String prompt,
     double mutationRate,
   ) async {
+    var apiKey = await sharedPrefsBloc.getApiKey();
+    apiKey ??= "0000000000"; // Anonymous API key.
+
     final headers = {
       'Accept': '* / *',
       'Accept-Language': 'en-US,en;q=0.9',
       'Connection': 'keep-alive',
-      'apikey': 'oad7PZBRUgwrpucqgEBgEw', // TODO
       "Content-Type": "application/json",
+      "apikey": apiKey,
     };
 
     final json = {

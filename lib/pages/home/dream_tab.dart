@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/blocs/stable_horde_bloc.dart';
 import 'package:stable_horde_flutter/pages/prompt_edit_page.dart';
-import 'package:stable_horde_flutter/utils/shared_prefs_helper.dart';
 
 class DreamTab extends StatefulWidget {
   const DreamTab({super.key});
@@ -16,7 +16,7 @@ class _DreamTabState extends State<DreamTab> {
   @override
   void initState() {
     super.initState();
-    getLastPrompt().then((value) {
+    sharedPrefsBloc.getLastPrompt().then((value) {
       setState(() {
         _prompt = value;
       });
@@ -53,7 +53,7 @@ class _DreamTabState extends State<DreamTab> {
           ),
         );
         if (newPrompt == null) return;
-        setPrompt(newPrompt);
+        sharedPrefsBloc.setPrompt(newPrompt);
         setState(() {
           _prompt = newPrompt;
         });
