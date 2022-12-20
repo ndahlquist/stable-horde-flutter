@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/colors.dart';
 import 'package:stable_horde_flutter/utils/legal_links.dart';
 
@@ -67,7 +68,7 @@ class SettingsPage extends StatelessWidget {
         ),
         style: const TextStyle(color: Colors.white),
         onChanged: (value) {
-          //stableHordeBloc.setApiKey(value);
+          sharedPrefsBloc.setApiKey(value);
         },
       ),
     );
