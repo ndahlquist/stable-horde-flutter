@@ -22,6 +22,9 @@ class _SharedPrefsBloc {
 
   Future<void> setApiKey(String? apiKey) async {
     final prefs = await SharedPreferences.getInstance();
+    if (apiKey != null && apiKey.trim().isEmpty) {
+      apiKey = null;
+    }
     if (apiKey != null) {
       await prefs.setString(_apiKeyKey, apiKey);
     } else {
