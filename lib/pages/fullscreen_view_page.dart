@@ -1,8 +1,6 @@
-
 import 'package:flutter/material.dart';
 
 class FullScreenViewPage extends StatelessWidget {
-
   const FullScreenViewPage({super.key});
 
   @override
@@ -10,11 +8,9 @@ class FullScreenViewPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFF230D49),
       appBar: AppBar(backgroundColor: Colors.transparent, elevation: 0),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-
+      body: const Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16),
       ),
     );
   }
-
 }
