@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stable_horde_flutter/blocs/stable_horde_bloc.dart';
+import 'package:stable_horde_flutter/colors.dart';
 import 'package:stable_horde_flutter/model/stable_horde_task.dart';
 
 class FullScreenViewPage extends StatelessWidget {
@@ -46,14 +47,30 @@ class FullScreenViewPage extends StatelessWidget {
   }
 
   Widget _page(BuildContext context, StableHordeTask task) {
-    if (task.imagePath != null) {
-      return AspectRatio(
-        aspectRatio: 1,
-        child: Image.file(
-          File(task.imagePath!),
+    final imagePath = task.imagePath;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        AspectRatio(
+          aspectRatio: 1,
+          child: imagePath == null
+              ?  ColoredBox(color: stableHordeGrey)
+              : Image.file(
+                  File(imagePath),
+                ),
         ),
-      );
-    }
+
+        const Padding(
+          padding: EdgeInsets.all(12),
+          child: Text(
+            'lorem ipsum',
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+      ],
+    );
+
     return const Placeholder();
   }
 }
