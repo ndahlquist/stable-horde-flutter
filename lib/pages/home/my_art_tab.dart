@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stable_horde_flutter/blocs/stable_horde_bloc.dart';
 import 'package:stable_horde_flutter/model/stable_horde_task.dart';
+import 'package:stable_horde_flutter/pages/fullscreen_view_page.dart';
 import 'package:stable_horde_flutter/widgets/timed_progress_indicator.dart';
 
 class MyArtTab extends StatefulWidget {
@@ -47,14 +48,21 @@ class _MyArtTabState extends State<MyArtTab>
           itemBuilder: (context, index) {
             final task = tasks[index];
 
-            return Stack(children: [
-              if (task.imagePath != null)
-                Image.file(
-                  File(task.imagePath!),
-                  fit: BoxFit.cover,
-                ),
-              _progressIndicator(task),
-            ]);
+            return GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const FullScreenViewPage()),
+                );
+              },
+              child: Stack(children: [
+                if (task.imagePath != null)
+                  Image.file(
+                    File(task.imagePath!),
+                    fit: BoxFit.cover,
+                  ),
+                _progressIndicator(task),
+              ]),
+            );
           },
         );
       },
