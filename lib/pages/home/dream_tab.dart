@@ -89,7 +89,6 @@ class _DreamTabState extends State<DreamTab> {
                 promptToShow,
                 maxLines: 3,
                 style: TextStyle(
-                  color: Colors.white,
                   fontSize: _prompt.isEmpty ? 16 : 10,
                 ),
                 textAlign: TextAlign.center,
