@@ -63,7 +63,7 @@ class _StableHordeBloc {
     print(taskId);
 
     await isar.writeTxn(() async {
-      isar.stableHordeTasks.put(StableHordeTask(taskId));
+      isar.stableHordeTasks.put(StableHordeTask(taskId, DateTime.now()));
     });
 
     for (int i = 0; i < 30; i++) {
@@ -105,9 +105,18 @@ class _StableHordeBloc {
 
       final jsonResponse = jsonDecode(response.body);
       print(jsonResponse);
+
+      final waitSeconds = jsonResponse['wait_time'];
+      final estimatedCompletionTime = DateTime.now().add(Duration(seconds: waitSeconds));
+      print('Estimated completion time: $estimatedCompletionTime');
+      task.estimatedCompletionTime = estimatedCompletionTime;
+
       final generations = jsonResponse['generations'] as List;
 
       if (generations.isEmpty) {
+        isar.writeTxn(() async {
+          isar.stableHordeTasks.put(task);
+        });
         continue;
       }
 

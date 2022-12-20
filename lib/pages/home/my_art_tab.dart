@@ -3,6 +3,7 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stable_horde_flutter/blocs/stable_horde_bloc.dart';
 import 'package:stable_horde_flutter/model/stable_horde_task.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:stable_horde_flutter/widgets/timed_progress_indicator.dart';
 
 class MyArtTab extends StatefulWidget {
   const MyArtTab({super.key});
@@ -51,17 +52,30 @@ class _MyArtTabState extends State<MyArtTab>
                   imageUrl: task.imageUrl!,
                   fit: BoxFit.cover,
                 ),
-              Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: Text(task.taskId),
-              ),
+              _progressIndicator(task),
             ]);
           },
         );
       },
     );
+  }
+
+  Widget _progressIndicator(StableHordeTask task) {
+    // Once the task is complete, hide the progress indicator.
+    if (task.imageUrl != null) {
+      return const SizedBox.shrink();
+    }
+
+    if (task.estimatedCompletionTime == null) {
+      return const Center(child: CircularProgressIndicator());
+    } else {
+      return Center(
+        child: TimedProgressIndicator(
+          startTime: task.startTime,
+          completionTime: task.estimatedCompletionTime!,
+        ),
+      );
+    }
   }
 
   @override
