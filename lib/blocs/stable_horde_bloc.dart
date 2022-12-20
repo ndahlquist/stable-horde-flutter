@@ -80,7 +80,8 @@ class _StableHordeBloc {
       }
 
       final response = await http.get(
-        Uri.parse('https://stablehorde.net/api/v2/generate/status/${task.taskId}'),
+        Uri.parse(
+            'https://stablehorde.net/api/v2/generate/status/${task.taskId}'),
       );
       if (response.statusCode != 200) {
         // TODO: handle error
@@ -108,17 +109,11 @@ class _StableHordeBloc {
       final generation = generations.first;
       final imageUrl = generation['img'];
 
-      print(imageUrl);
-
       task.imageUrl = imageUrl;
       isar.writeTxn(() async {
         isar.stableHordeTasks.put(task);
       });
-
     }
-    /*return isar.writeTxn(() async {
-
-    });*/
   }
 
   Future<List<StableHordeTask>> _getTasks() async {
