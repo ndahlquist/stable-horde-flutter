@@ -113,7 +113,8 @@ class _StableHordeBloc {
       print(jsonResponse);
 
       final waitSeconds = jsonResponse['wait_time'];
-      final estimatedCompletionTime = DateTime.now().add(Duration(seconds: waitSeconds));
+      final estimatedCompletionTime =
+          DateTime.now().add(Duration(seconds: waitSeconds));
       print('Estimated completion time: $estimatedCompletionTime');
 
       task.firstShowProgressIndicatorTime ??= DateTime.now();
