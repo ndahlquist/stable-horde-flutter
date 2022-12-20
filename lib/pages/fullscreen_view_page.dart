@@ -60,9 +60,7 @@ class FullScreenViewPage extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.all(12),
-          child: Text(
-            task.prompt
-          ),
+          child: Text(task.prompt),
         ),
       ],
     );

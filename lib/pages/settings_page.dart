@@ -37,15 +37,11 @@ class SettingsPage extends StatelessWidget {
             ),
           ),
           const ListTile(
-            title: Text(
-              'Privacy Policy'
-            ),
+            title: Text('Privacy Policy'),
             onTap: launchPrivacyPolicy,
           ),
           const ListTile(
-            title: Text(
-              'Terms of Service'
-            ),
+            title: Text('Terms of Service'),
             onTap: launchTermsOfService,
           ),
         ],
