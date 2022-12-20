@@ -62,38 +62,16 @@ class _StableHordeBloc {
     }
     final jsonResponse = jsonDecode(response.body);
 
-    final taskId = jsonResponse['id'];
-    print(taskId);
-
-    await isar.writeTxn(() async {
-      isar.stableHordeTasks.put(StableHordeTask(taskId));
+    final dbId = await isar.writeTxn(() async {
+      return isar.stableHordeTasks.put(StableHordeTask(jsonResponse['id']));
     });
+
+    final task = await isar.stableHordeTasks.get(dbId);
 
     for (int i = 0; i < 1000; i++) {
       await Future.delayed(const Duration(seconds: 2));
       print('update $i');
-      _updateTasks();
-
-      var tasks = await isar.stableHordeTasks.where().findAll();
-      final unfinishedTasks = tasks.where((task) => !task.isComplete());
-      if (unfinishedTasks.isEmpty) {
-        break;
-      }
-
-      if (i == 999) {
-        throw Exception('Failed to complete tasks');
-      }
-    }
-  }
-
-  Future _updateTasks() async {
-    final tasks = await isar.stableHordeTasks.where().findAll();
-    for (final task in tasks) {
-      if (task.isComplete()) {
-        continue;
-      }
-
-      if (task.estimatedCompletionTime != null) {
+      if (task!.estimatedCompletionTime != null) {
         if (DateTime.now().isBefore(task.estimatedCompletionTime!)) {
           continue;
         }
@@ -113,7 +91,7 @@ class _StableHordeBloc {
       if (response.statusCode != 200) {
         final exception = Exception(
           'Failed to get task status: '
-          '${response.statusCode} ${response.body}',
+              '${response.statusCode} ${response.body}',
         );
         print(exception);
         Sentry.captureException(exception, stackTrace: StackTrace.current);
@@ -151,7 +129,7 @@ class _StableHordeBloc {
       if (response2.statusCode != 200) {
         final exception = Exception(
           'Failed to download image: '
-          '${response2.statusCode} ${response2.body}',
+              '${response2.statusCode} ${response2.body}',
         );
         print(exception);
         Sentry.captureException(exception, stackTrace: StackTrace.current);
@@ -164,6 +142,12 @@ class _StableHordeBloc {
       await isar.writeTxn(() async {
         isar.stableHordeTasks.put(task);
       });
+
+      break;
+
+      if (i == 999) {
+        throw Exception('Failed to complete tasks');
+      }
     }
   }
 
