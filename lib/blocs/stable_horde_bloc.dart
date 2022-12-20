@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:http/http.dart' as http;
 import 'package:isar/isar.dart';
@@ -108,7 +107,7 @@ class _StableHordeBloc {
       print('Estimated completion time: $estimatedCompletionTime');
 
       task.firstShowProgressIndicatorTime ??= DateTime.now();
-      task.estimatedCompletionTime = estimatedCompletionTime;  
+      task.estimatedCompletionTime = estimatedCompletionTime;
 
       final generations = jsonResponse['generations'] as List;
 
