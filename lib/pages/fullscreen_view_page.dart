@@ -46,13 +46,14 @@ class FullScreenViewPage extends StatelessWidget {
   }
 
   Widget _page(BuildContext context, StableHordeTask task) {
-    if (task.imagePath != null)
+    if (task.imagePath != null) {
       return AspectRatio(
         aspectRatio: 1,
         child: Image.file(
           File(task.imagePath!),
         ),
       );
-    return Placeholder();
+    }
+    return const Placeholder();
   }
 }
