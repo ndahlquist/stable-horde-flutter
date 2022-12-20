@@ -49,7 +49,8 @@ class _MyArtTabState extends State<MyArtTab>
 
             return Stack(children: [
               if (task.imagePath != null)
-                Image.file(File(task.imagePath!),
+                Image.file(
+                  File(task.imagePath!),
                   fit: BoxFit.cover,
                 ),
               _progressIndicator(task),
