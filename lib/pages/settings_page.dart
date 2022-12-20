@@ -8,7 +8,7 @@ class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: zoomscrollerGrey,
+      backgroundColor: stableHordeGrey,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
