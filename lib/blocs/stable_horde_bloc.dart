@@ -76,7 +76,7 @@ class _StableHordeBloc {
       _updateTasks();
 
       var tasks = await isar.stableHordeTasks.where().findAll();
-      final unfinishedTasks = tasks.where((task) => task.imageUrl == null);
+      final unfinishedTasks = tasks.where((task) => task.imagePath == null);
       if (unfinishedTasks.isEmpty) {
         break;
       }
@@ -90,7 +90,7 @@ class _StableHordeBloc {
   Future _updateTasks() async {
     final tasks = await isar.stableHordeTasks.where().findAll();
     for (final task in tasks) {
-      if (task.imageUrl != null) {
+      if (task.imagePath != null) {
         continue;
       }
 
@@ -161,7 +161,6 @@ class _StableHordeBloc {
 
       final file = await _writeFile(response2.bodyBytes);
 
-      task.imageUrl = imageUrl;
       task.imagePath = file.path;
       isar.writeTxn(() async {
         isar.stableHordeTasks.put(task);
