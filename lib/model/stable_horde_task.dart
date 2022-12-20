@@ -8,5 +8,7 @@ class StableHordeTask {
 
   final String taskId;
 
+  String? imageUrl;
+
   StableHordeTask(this.taskId);
 }

@@ -67,7 +67,7 @@ class _StableHordeBloc {
     });
 
     for (int i = 0; i < 30; i++) {
-      await Future.delayed(Duration(seconds: 1));
+      await Future.delayed(Duration(seconds: 2));
       _updateTasks();
     }
   }
@@ -75,16 +75,23 @@ class _StableHordeBloc {
   Future _updateTasks() async {
     final tasks = await isar.stableHordeTasks.where().findAll();
     for (final task in tasks) {
+      if (task.imageUrl != null) {
+        continue;
+      }
+
       final response = await http.get(
         Uri.parse('https://stablehorde.net/api/v2/generate/status/${task.taskId}'),
       );
       if (response.statusCode != 200) {
         // TODO: handle error
 
+        print('Failed to get task status: '
+            '${response.statusCode} ${response.body}');
+
         // Delete task
-        isar.writeTxn(() async {
+        /*isar.writeTxn(() async {
           isar.stableHordeTasks.delete(task.id);
-        });
+        });*/
         continue;
       }
 
@@ -99,9 +106,14 @@ class _StableHordeBloc {
       assert(generations.length == 1);
 
       final generation = generations.first;
-      final image = generation['img'];
+      final imageUrl = generation['img'];
 
-      print(image);
+      print(imageUrl);
+
+      task.imageUrl = imageUrl;
+      isar.writeTxn(() async {
+        isar.stableHordeTasks.put(task);
+      });
 
     }
     /*return isar.writeTxn(() async {
