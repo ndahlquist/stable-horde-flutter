@@ -9,6 +9,7 @@ class StableHordeTask {
   final String taskId;
 
   String? imageUrl;
+  String? imagePath;
 
   DateTime? firstShowProgressIndicatorTime;
   DateTime? estimatedCompletionTime;

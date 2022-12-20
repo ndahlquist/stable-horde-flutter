@@ -158,9 +158,10 @@ class _StableHordeBloc {
         continue;
       }
 
-      await _writeFile(response2.bodyBytes);
+      final file = await _writeFile(response2.bodyBytes);
 
       task.imageUrl = imageUrl;
+      task.imagePath = file.path;
       isar.writeTxn(() async {
         isar.stableHordeTasks.put(task);
       });
