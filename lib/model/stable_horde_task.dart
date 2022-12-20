@@ -6,14 +6,12 @@ part 'stable_horde_task.g.dart';
 class StableHordeTask {
   Id id = Isar.autoIncrement;
 
-  final String taskId;
-
   String? imagePath;
 
   DateTime? firstShowProgressIndicatorTime;
   DateTime? estimatedCompletionTime;
 
-  StableHordeTask(this.taskId);
+  StableHordeTask();
 
   bool isComplete() {
     return imagePath != null;
