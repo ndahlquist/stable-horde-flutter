@@ -27,30 +27,32 @@ class _DreamTabState extends State<DreamTab> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          const SizedBox(height: 16),
-          _promptWidget(),
-          ExpandablePanel(
-            header: Text("Advanced Options"),
-            collapsed: SizedBox.shrink(),
-            expanded: Text(
-              "expanded",
-              softWrap: true,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            const SizedBox(height: 16),
+            _promptWidget(),
+            const SizedBox(height: 16),
+            ExpandablePanel(
+              header: Text("Advanced Options"),
+              collapsed: SizedBox.shrink(),
+              expanded: Text(
+                "expanded",
+                softWrap: true,
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: FractionallySizedBox(
+            const SizedBox(height: 16),
+            FractionallySizedBox(
               widthFactor: 1,
               child: ElevatedButton(
                 onPressed: _attemptToGenerate,
                 child: const Text("Generate"),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -74,25 +76,22 @@ class _DreamTabState extends State<DreamTab> {
           _prompt = newPrompt;
         });
       },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: FractionallySizedBox(
-          widthFactor: 1,
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(.1),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Text(
-                promptToShow,
-                maxLines: 3,
-                style: TextStyle(
-                  fontSize: _prompt.isEmpty ? 16 : 10,
-                ),
-                textAlign: TextAlign.center,
+      child: FractionallySizedBox(
+        widthFactor: 1,
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(.1),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Text(
+              promptToShow,
+              maxLines: 3,
+              style: TextStyle(
+                fontSize: _prompt.isEmpty ? 16 : 10,
               ),
+              textAlign: TextAlign.center,
             ),
           ),
         ),
