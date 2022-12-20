@@ -33,21 +33,26 @@ class FullScreenViewPage extends StatelessWidget {
 
           tasks = tasks.reversed.toList();
           return PageView.builder(
+            scrollDirection: Axis.vertical,
             itemCount: tasks.length,
             itemBuilder: (context, index) {
               final task = tasks[index];
-              if (task.imagePath != null)
-                return AspectRatio(
-                  aspectRatio: 1,
-                  child: Image.file(
-                    File(task.imagePath!),
-                  ),
-                );
-              return Placeholder();
+              return _page(context, task);
             },
           );
         },
       ),
     );
+  }
+
+  Widget _page(BuildContext context, StableHordeTask task) {
+    if (task.imagePath != null)
+      return AspectRatio(
+        aspectRatio: 1,
+        child: Image.file(
+          File(task.imagePath!),
+        ),
+      );
+    return Placeholder();
   }
 }
