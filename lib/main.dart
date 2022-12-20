@@ -47,11 +47,10 @@ Future _mainGuarded() async {
   if (kDebugMode) {
     runApp(const MyApp());
   } else {
-    // todo / Stopship
     await SentryFlutter.init(
       (options) {
         options.dsn =
-            'https://3c3a6add932f4b028a0f2f797e4508b0@o4504142397177856.ingest.sentry.io/4504142399012864';
+            'https://6c44c0429f4840c98b244da69daedee6@o4504142397177856.ingest.sentry.io/4504362837082112';
         // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
         // We recommend adjusting this value in production.
         options.tracesSampleRate = 1.0;

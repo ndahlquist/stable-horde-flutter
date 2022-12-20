@@ -29,7 +29,7 @@ dependencies:
 
   image: ^3.2.0
 
-  sentry_flutter: ^6.16.1
+  sentry_flutter: ^6.18.1
 
   shared_preferences: ^2.0.5
   isar: ^3.0.5
