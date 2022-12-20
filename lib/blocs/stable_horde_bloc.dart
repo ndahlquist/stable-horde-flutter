@@ -10,13 +10,10 @@ import 'package:stable_horde_flutter/main.dart';
 import 'package:stable_horde_flutter/model/stable_horde_task.dart';
 
 class _StableHordeBloc {
-  Future requestDiffusion(
-    String prompt,
-    double mutationRate,
-  ) async {
+  Future requestDiffusion(String prompt) async {
     // Add new task to db.
     final dbId = await isar.writeTxn(() async {
-      return isar.stableHordeTasks.put(StableHordeTask());
+      return isar.stableHordeTasks.put(StableHordeTask(prompt));
     });
     final task = await isar.stableHordeTasks.get(dbId);
 
@@ -43,7 +40,7 @@ class _StableHordeBloc {
         'seed_variation': 1000,
         'seed': '',
         'karras': true,
-        'denoising_strength': mutationRate,
+        //'denoising_strength': mutationRate,
         'post_processing': [],
       },
       'nsfw': false,
