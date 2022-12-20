@@ -48,7 +48,6 @@ class _StableHordeBloc {
       'r2': true,
     };
 
-    // Make a POST request with the json data
     final response = await http.post(
       Uri.parse('https://stablehorde.net/api/v2/generate/async'),
       headers: headers,
@@ -136,7 +135,7 @@ class _StableHordeBloc {
       final generations = jsonResponse['generations'] as List;
 
       if (generations.isEmpty) {
-        isar.writeTxn(() async {
+        await isar.writeTxn(() async {
           isar.stableHordeTasks.put(task);
         });
         continue;
@@ -162,7 +161,7 @@ class _StableHordeBloc {
       final file = await _writeFile(response2.bodyBytes);
 
       task.imagePath = file.path;
-      isar.writeTxn(() async {
+      await isar.writeTxn(() async {
         isar.stableHordeTasks.put(task);
       });
     }
