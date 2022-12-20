@@ -28,8 +28,8 @@ class _HomePageState extends State<HomePage> {
       value: SystemUiOverlayStyle.light,
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: zoomscrollerGrey,
-          title: const Text('ZoomScroller'),
+          backgroundColor: stableHordeGrey,
+          title: const Text('Stable Horde'),
           actions: [
             IconButton(
               icon: const Icon(Icons.settings),
@@ -44,10 +44,10 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ),
-        backgroundColor: zoomscrollerPurple,
+        backgroundColor: stableHordePurple,
         body: _body(),
         bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: zoomscrollerGrey,
+          backgroundColor: stableHordeGrey,
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(Icons.account_circle),
