@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/blocs/stable_horde_bloc.dart';
+import 'package:stable_horde_flutter/pages/home_page.dart';
 import 'package:stable_horde_flutter/pages/prompt_edit_page.dart';
 
 class DreamTab extends StatefulWidget {
@@ -96,5 +97,6 @@ class _DreamTabState extends State<DreamTab> {
     }
 
     stableHordeBloc.requestDiffusion(_prompt, .8);
+    homeController.animateToPage(1);
   }
 }
