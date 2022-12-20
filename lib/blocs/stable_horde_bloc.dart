@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:isar/isar.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stable_horde_flutter/main.dart';
 import 'package:stable_horde_flutter/model/stable_horde_task.dart';
 
@@ -97,15 +98,12 @@ class _StableHordeBloc {
       }
 
       if (response.statusCode != 200) {
-        // TODO: handle error
-
-        print('Failed to get task status: '
-            '${response.statusCode} ${response.body}');
-
-        // Delete task
-        /*isar.writeTxn(() async {
-          isar.stableHordeTasks.delete(task.id);
-        });*/
+        final exception = Exception(
+          'Failed to get task status: '
+          '${response.statusCode} ${response.body}',
+        );
+        print(exception);
+        Sentry.captureException(exception, stackTrace: StackTrace.current);
         continue;
       }
 
@@ -113,7 +111,8 @@ class _StableHordeBloc {
       print(jsonResponse);
 
       final waitSeconds = jsonResponse['wait_time'];
-      final estimatedCompletionTime = DateTime.now().add(Duration(seconds: waitSeconds));
+      final estimatedCompletionTime =
+          DateTime.now().add(Duration(seconds: waitSeconds));
       print('Estimated completion time: $estimatedCompletionTime');
 
       task.firstShowProgressIndicatorTime ??= DateTime.now();
