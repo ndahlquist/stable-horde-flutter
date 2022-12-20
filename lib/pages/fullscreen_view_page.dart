@@ -7,7 +7,9 @@ import 'package:stable_horde_flutter/colors.dart';
 import 'package:stable_horde_flutter/model/stable_horde_task.dart';
 
 class FullScreenViewPage extends StatelessWidget {
-  const FullScreenViewPage({super.key});
+  final int initialIndex;
+
+  const FullScreenViewPage({super.key, required this.initialIndex});
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +36,7 @@ class FullScreenViewPage extends StatelessWidget {
 
           tasks = tasks.reversed.toList();
           return PageView.builder(
+            controller: PageController(initialPage: initialIndex),
             scrollDirection: Axis.vertical,
             itemCount: tasks.length,
             itemBuilder: (context, index) {

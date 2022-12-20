@@ -52,7 +52,9 @@ class _MyArtTabState extends State<MyArtTab>
             return GestureDetector(
               onTap: () {
                 Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => const FullScreenViewPage()),
+                  MaterialPageRoute(
+                    builder: (_) => FullScreenViewPage(initialIndex: index),
+                  ),
                 );
               },
               child: Stack(
