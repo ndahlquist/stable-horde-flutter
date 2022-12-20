@@ -42,7 +42,6 @@ class _PromptEditPageState extends State<PromptEditPage> {
           child: TextField(
             maxLines: 10,
             controller: _textController,
-            style: const TextStyle(color: Colors.white),
             autofocus: true,
             textCapitalization: TextCapitalization.sentences,
             decoration: const InputDecoration(
