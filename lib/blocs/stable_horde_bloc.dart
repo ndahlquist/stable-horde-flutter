@@ -81,8 +81,15 @@ class _StableHordeBloc {
 
       final response = await http.get(
         Uri.parse(
-            'https://stablehorde.net/api/v2/generate/status/${task.taskId}'),
+          'https://stablehorde.net/api/v2/generate/status/${task.taskId}',
+        ),
       );
+      if (response.statusCode == 429) {
+        print('Rate limit exceeded');
+        print(response);
+        return;
+      }
+
       if (response.statusCode != 200) {
         // TODO: handle error
 
