@@ -158,10 +158,7 @@ class _StableHordeBloc {
         continue;
       }
 
-      final image = response2.bodyBytes;
-
-      // Write image to file
-      await _writeImage(image);
+      await _writeFile(response2.bodyBytes);
 
       task.imageUrl = imageUrl;
       isar.writeTxn(() async {
@@ -170,10 +167,10 @@ class _StableHordeBloc {
     }
   }
 
-  Future<File> _writeImage(Uint8List bytes) async {
+  Future<File> _writeFile(Uint8List bytes) async {
     final directory = await getApplicationDocumentsDirectory();
 
-    final path = directory.path + '/' + DateTime.now().millisecondsSinceEpoch.toString();
+    final path = directory.path + '/' + DateTime.now().millisecondsSinceEpoch.toString() + '.webp';
     final file = await File(path).create();
     print(file.path);
 
