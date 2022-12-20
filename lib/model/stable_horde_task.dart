@@ -10,8 +10,8 @@ class StableHordeTask {
 
   String? imageUrl;
 
-  DateTime startTime;
+  DateTime? firstShowProgressIndicatorTime;
   DateTime? estimatedCompletionTime;
 
-  StableHordeTask(this.taskId, this.startTime);
+  StableHordeTask(this.taskId);
 }

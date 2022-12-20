@@ -71,7 +71,7 @@ class _MyArtTabState extends State<MyArtTab>
     } else {
       return Center(
         child: TimedProgressIndicator(
-          startTime: task.startTime,
+          startTime: task.firstShowProgressIndicatorTime!,
           completionTime: task.estimatedCompletionTime!,
         ),
       );

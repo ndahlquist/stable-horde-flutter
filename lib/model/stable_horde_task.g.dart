@@ -22,15 +22,15 @@ const StableHordeTaskSchema = CollectionSchema(
       name: r'estimatedCompletionTime',
       type: IsarType.dateTime,
     ),
-    r'imageUrl': PropertySchema(
+    r'firstShowProgressIndicatorTime': PropertySchema(
       id: 1,
+      name: r'firstShowProgressIndicatorTime',
+      type: IsarType.dateTime,
+    ),
+    r'imageUrl': PropertySchema(
+      id: 2,
       name: r'imageUrl',
       type: IsarType.string,
-    ),
-    r'startTime': PropertySchema(
-      id: 2,
-      name: r'startTime',
-      type: IsarType.dateTime,
     ),
     r'taskId': PropertySchema(
       id: 3,
@@ -75,8 +75,8 @@ void _stableHordeTaskSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeDateTime(offsets[0], object.estimatedCompletionTime);
-  writer.writeString(offsets[1], object.imageUrl);
-  writer.writeDateTime(offsets[2], object.startTime);
+  writer.writeDateTime(offsets[1], object.firstShowProgressIndicatorTime);
+  writer.writeString(offsets[2], object.imageUrl);
   writer.writeString(offsets[3], object.taskId);
 }
 
@@ -88,11 +88,11 @@ StableHordeTask _stableHordeTaskDeserialize(
 ) {
   final object = StableHordeTask(
     reader.readString(offsets[3]),
-    reader.readDateTime(offsets[2]),
   );
   object.estimatedCompletionTime = reader.readDateTimeOrNull(offsets[0]);
+  object.firstShowProgressIndicatorTime = reader.readDateTimeOrNull(offsets[1]);
   object.id = id;
-  object.imageUrl = reader.readStringOrNull(offsets[1]);
+  object.imageUrl = reader.readStringOrNull(offsets[2]);
   return object;
 }
 
@@ -106,9 +106,9 @@ P _stableHordeTaskDeserializeProp<P>(
     case 0:
       return (reader.readDateTimeOrNull(offset)) as P;
     case 1:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readDateTimeOrNull(offset)) as P;
     case 2:
-      return (reader.readDateTime(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 3:
       return (reader.readString(offset)) as P;
     default:
@@ -277,6 +277,80 @@ extension StableHordeTaskQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
         property: r'estimatedCompletionTime',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      firstShowProgressIndicatorTimeIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'firstShowProgressIndicatorTime',
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      firstShowProgressIndicatorTimeIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'firstShowProgressIndicatorTime',
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      firstShowProgressIndicatorTimeEqualTo(DateTime? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'firstShowProgressIndicatorTime',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      firstShowProgressIndicatorTimeGreaterThan(
+    DateTime? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'firstShowProgressIndicatorTime',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      firstShowProgressIndicatorTimeLessThan(
+    DateTime? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'firstShowProgressIndicatorTime',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      firstShowProgressIndicatorTimeBetween(
+    DateTime? lower,
+    DateTime? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'firstShowProgressIndicatorTime',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -496,62 +570,6 @@ extension StableHordeTaskQueryFilter
   }
 
   QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
-      startTimeEqualTo(DateTime value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'startTime',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
-      startTimeGreaterThan(
-    DateTime value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'startTime',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
-      startTimeLessThan(
-    DateTime value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'startTime',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
-      startTimeBetween(
-    DateTime lower,
-    DateTime upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'startTime',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
-
-  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
       taskIdEqualTo(
     String value, {
     bool caseSensitive = true,
@@ -711,6 +729,20 @@ extension StableHordeTaskQuerySortBy
   }
 
   QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy>
+      sortByFirstShowProgressIndicatorTime() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'firstShowProgressIndicatorTime', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy>
+      sortByFirstShowProgressIndicatorTimeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'firstShowProgressIndicatorTime', Sort.desc);
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy>
       sortByImageUrl() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'imageUrl', Sort.asc);
@@ -721,20 +753,6 @@ extension StableHordeTaskQuerySortBy
       sortByImageUrlDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'imageUrl', Sort.desc);
-    });
-  }
-
-  QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy>
-      sortByStartTime() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'startTime', Sort.asc);
-    });
-  }
-
-  QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy>
-      sortByStartTimeDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'startTime', Sort.desc);
     });
   }
 
@@ -768,6 +786,20 @@ extension StableHordeTaskQuerySortThenBy
     });
   }
 
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy>
+      thenByFirstShowProgressIndicatorTime() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'firstShowProgressIndicatorTime', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy>
+      thenByFirstShowProgressIndicatorTimeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'firstShowProgressIndicatorTime', Sort.desc);
+    });
+  }
+
   QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
@@ -794,20 +826,6 @@ extension StableHordeTaskQuerySortThenBy
     });
   }
 
-  QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy>
-      thenByStartTime() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'startTime', Sort.asc);
-    });
-  }
-
-  QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy>
-      thenByStartTimeDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'startTime', Sort.desc);
-    });
-  }
-
   QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy> thenByTaskId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'taskId', Sort.asc);
@@ -831,17 +849,17 @@ extension StableHordeTaskQueryWhereDistinct
     });
   }
 
+  QueryBuilder<StableHordeTask, StableHordeTask, QDistinct>
+      distinctByFirstShowProgressIndicatorTime() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'firstShowProgressIndicatorTime');
+    });
+  }
+
   QueryBuilder<StableHordeTask, StableHordeTask, QDistinct> distinctByImageUrl(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'imageUrl', caseSensitive: caseSensitive);
-    });
-  }
-
-  QueryBuilder<StableHordeTask, StableHordeTask, QDistinct>
-      distinctByStartTime() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'startTime');
     });
   }
 
@@ -868,16 +886,16 @@ extension StableHordeTaskQueryProperty
     });
   }
 
-  QueryBuilder<StableHordeTask, String?, QQueryOperations> imageUrlProperty() {
+  QueryBuilder<StableHordeTask, DateTime?, QQueryOperations>
+      firstShowProgressIndicatorTimeProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'imageUrl');
+      return query.addPropertyName(r'firstShowProgressIndicatorTime');
     });
   }
 
-  QueryBuilder<StableHordeTask, DateTime, QQueryOperations>
-      startTimeProperty() {
+  QueryBuilder<StableHordeTask, String?, QQueryOperations> imageUrlProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'startTime');
+      return query.addPropertyName(r'imageUrl');
     });
   }
 
