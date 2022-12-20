@@ -55,21 +55,29 @@ class SettingsPage extends StatelessWidget {
   Widget _apiKeyField() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12),
-      child: TextField(
-        decoration: const InputDecoration(
-          labelText: 'API Key',
-          labelStyle: TextStyle(color: Colors.white),
-          enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.white),
-          ),
-          focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.white),
-          ),
-        ),
-        style: const TextStyle(color: Colors.white),
-        onChanged: (value) {
-          sharedPrefsBloc.setApiKey(value);
-        },
+      child: FutureBuilder<String?>(
+        future: sharedPrefsBloc.getApiKey(),
+        builder: (context, snapshot) {
+          final apiKey = snapshot.data ?? '';
+
+          return TextField(
+            controller: TextEditingController(text: apiKey),
+            decoration: const InputDecoration(
+              labelText: 'API Key',
+              labelStyle: TextStyle(color: Colors.white),
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.white),
+              ),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.white),
+              ),
+            ),
+            style: const TextStyle(color: Colors.white),
+            onChanged: (value) {
+              sharedPrefsBloc.setApiKey(value);
+            },
+          );
+        }
       ),
     );
   }
