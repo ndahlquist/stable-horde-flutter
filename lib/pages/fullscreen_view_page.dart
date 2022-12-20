@@ -63,11 +63,11 @@ class FullScreenViewPage extends StatelessWidget {
                   File(imagePath),
                 ),
         ),
-        const Padding(
-          padding: EdgeInsets.all(12),
+        Padding(
+          padding: const EdgeInsets.all(12),
           child: Text(
-            'lorem ipsum',
-            style: TextStyle(color: Colors.white),
+            task.prompt,
+            style: const TextStyle(color: Colors.white),
           ),
         ),
       ],
