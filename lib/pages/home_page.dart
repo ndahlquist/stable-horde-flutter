@@ -17,6 +17,19 @@ class _HomePageState extends State<HomePage> {
   int _selectedPage = 0;
 
   @override
+  void initState() {
+    super.initState();
+
+    homeController.animateToPageCallback = (page) {
+      _pageController.animateToPage(
+        page,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeInOut,
+      );
+    };
+  }
+
+  @override
   void dispose() {
     _pageController.dispose();
     super.dispose();
@@ -50,12 +63,12 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: stableHordeGrey,
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: Icon(Icons.account_circle),
-              label: 'My Art',
+              icon: Icon(Icons.draw),
+              label: 'Dream',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.explore),
-              label: 'Dream',
+              icon: Icon(Icons.account_circle),
+              label: 'My Art',
             ),
           ],
           currentIndex: _selectedPage,
@@ -77,8 +90,8 @@ class _HomePageState extends State<HomePage> {
     return PageView(
       controller: _pageController,
       children: const [
-        MyArtTab(),
         DreamTab(),
+        MyArtTab(),
       ],
       onPageChanged: (page) {
         setState(() {
@@ -88,3 +101,16 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+
+class _HomeController {
+  void Function(int)? animateToPageCallback;
+
+  void animateToPage(int page) {
+    final callback = animateToPageCallback;
+    if (callback != null) {
+      callback(page);
+    }
+  }
+}
+
+final homeController = _HomeController();
