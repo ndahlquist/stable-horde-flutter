@@ -12,7 +12,8 @@ environment:
   flutter: '>=3.3.7'
 
 dependencies:
-  cached_network_image: ^3.0.0
+
+  expandable: ^5.0.1
 
   flutter:
     sdk: flutter
