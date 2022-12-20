@@ -10,51 +10,11 @@ class _StableHordeBloc {
     String prompt,
     double mutationRate,
   ) async {
-    /// headers = {
-    /// 'Accept': '* / *',
-    /// 'Accept-Language': 'en-US,en;q=0.9',
-    /// 'Connection': 'keep-alive',
-    /// 'apikey': 'rFs6AHt5qy6Ew0QnK8M9XQ',
-    /// }
-    ///
-    /// source_image = requests.get(init_image_url).content
-    /// print(len(source_image))
-    ///
-    /// json_data = {
-    /// 'prompt': prompt,
-    /// 'params': {
-    /// 'steps': 30,
-    /// 'n': 1,
-    /// 'sampler_name': 'k_euler',
-    /// 'width': 512,
-    /// 'height': 512,
-    /// 'cfg_scale': 7,
-    /// 'seed_variation': 1000,
-    /// 'seed': '',
-    /// 'karras': True,
-    /// 'denoising_strength': strength,
-    /// 'post_processing': [],
-    /// },
-    /// 'nsfw': False,
-    /// 'censor_nsfw': False,
-    /// 'trusted_workers': False,
-    /// 'source_processing': 'img2img',
-    /// 'source_image': base64.b64encode(source_image).decode('utf-8'),
-    /// 'models': [
-    /// 'stable_diffusion',
-    /// ],
-    /// }
-    ///
-    /// start = time.time()
-    /// response = requests.post(
-    /// 'https://stablehorde.net/api/v2/generate/async', headers=headers, json=json_data
-    /// )
-
     final headers = {
       'Accept': '* / *',
       'Accept-Language': 'en-US,en;q=0.9',
       'Connection': 'keep-alive',
-      'apikey': 'oad7PZBRUgwrpucqgEBgEw',
+      'apikey': 'oad7PZBRUgwrpucqgEBgEw', // TODO
       "Content-Type": "application/json",
     };
 
@@ -100,10 +60,53 @@ class _StableHordeBloc {
     final jsonResponse = jsonDecode(response.body);
 
     final taskId = jsonResponse['id'];
+    print(taskId);
 
     await isar.writeTxn(() async {
       isar.stableHordeTasks.put(StableHordeTask(taskId));
     });
+
+    for (int i = 0; i < 30; i++) {
+      await Future.delayed(Duration(seconds: 1));
+      _updateTasks();
+    }
+  }
+
+  Future _updateTasks() async {
+    final tasks = await isar.stableHordeTasks.where().findAll();
+    for (final task in tasks) {
+      final response = await http.get(
+        Uri.parse('https://stablehorde.net/api/v2/generate/status/${task.taskId}'),
+      );
+      if (response.statusCode != 200) {
+        // TODO: handle error
+
+        // Delete task
+        isar.writeTxn(() async {
+          isar.stableHordeTasks.delete(task.id);
+        });
+        continue;
+      }
+
+      final jsonResponse = jsonDecode(response.body);
+      print(jsonResponse);
+      final generations = jsonResponse['generations'] as List;
+
+      if (generations.isEmpty) {
+        continue;
+      }
+
+      assert(generations.length == 1);
+
+      final generation = generations.first;
+      final image = generation['img'];
+
+      print(image);
+
+    }
+    /*return isar.writeTxn(() async {
+
+    });*/
   }
 
   Future<List<StableHordeTask>> _getTasks() async {
