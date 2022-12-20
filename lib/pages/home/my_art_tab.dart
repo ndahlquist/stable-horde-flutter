@@ -7,7 +7,6 @@ import 'package:stable_horde_flutter/colors.dart';
 import 'package:stable_horde_flutter/model/stable_horde_task.dart';
 import 'package:stable_horde_flutter/pages/fullscreen_view_page.dart';
 import 'package:stable_horde_flutter/widgets/task_progress_indicator.dart';
-import 'package:stable_horde_flutter/widgets/timed_progress_indicator.dart';
 
 class MyArtTab extends StatefulWidget {
   const MyArtTab({super.key});
@@ -79,7 +78,6 @@ class _MyArtTabState extends State<MyArtTab>
       },
     );
   }
-
 
   @override
   bool get wantKeepAlive => true;

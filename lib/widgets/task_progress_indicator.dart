@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:stable_horde_flutter/model/stable_horde_task.dart';
 import 'package:stable_horde_flutter/widgets/timed_progress_indicator.dart';
@@ -28,5 +27,4 @@ class TaskProgressIndicator extends StatelessWidget {
       );
     }
   }
-
 }
