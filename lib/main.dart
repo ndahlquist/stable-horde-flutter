@@ -79,9 +79,9 @@ class _MyAppState extends State<MyApp> {
         brightness: Brightness.dark,
 
         primarySwatch: Colors.blue,
-        /*textTheme: GoogleFonts.ubuntuTextTheme(
+        textTheme: GoogleFonts.ubuntuTextTheme(
           ThemeData(brightness: Brightness.dark).textTheme,
-        ),*/
+        ),
       ),
       home: FutureBuilder(
         future: FirebaseRemoteConfig.instance.fetchAndActivate(),
