@@ -55,12 +55,11 @@ class FullScreenViewPage extends StatelessWidget {
         AspectRatio(
           aspectRatio: 1,
           child: imagePath == null
-              ?  ColoredBox(color: stableHordeGrey)
+              ? const ColoredBox(color: stableHordeGrey)
               : Image.file(
                   File(imagePath),
                 ),
         ),
-
         const Padding(
           padding: EdgeInsets.all(12),
           child: Text(
@@ -70,7 +69,5 @@ class FullScreenViewPage extends StatelessWidget {
         ),
       ],
     );
-
-    return const Placeholder();
   }
 }
