@@ -16,10 +16,14 @@ class SettingsPage extends StatelessWidget {
         title: const Text('Settings'),
       ),
       body: Column(
-        children:  [
+        children: [
           _apiKeyField(),
           const Padding(
-            padding: EdgeInsets.only(top: 64.0, left: 16.0, bottom: 16, ),
+            padding: EdgeInsets.only(
+              top: 64.0,
+              left: 16.0,
+              bottom: 16,
+            ),
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
@@ -56,29 +60,28 @@ class SettingsPage extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12),
       child: FutureBuilder<String?>(
-        future: sharedPrefsBloc.getApiKey(),
-        builder: (context, snapshot) {
-          final apiKey = snapshot.data ?? '';
+          future: sharedPrefsBloc.getApiKey(),
+          builder: (context, snapshot) {
+            final apiKey = snapshot.data ?? '';
 
-          return TextField(
-            controller: TextEditingController(text: apiKey),
-            decoration: const InputDecoration(
-              labelText: 'API Key',
-              labelStyle: TextStyle(color: Colors.white),
-              enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.white),
+            return TextField(
+              controller: TextEditingController(text: apiKey),
+              decoration: const InputDecoration(
+                labelText: 'API Key',
+                labelStyle: TextStyle(color: Colors.white),
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white),
+                ),
               ),
-              focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.white),
-              ),
-            ),
-            style: const TextStyle(color: Colors.white),
-            onChanged: (value) {
-              sharedPrefsBloc.setApiKey(value);
-            },
-          );
-        }
-      ),
+              style: const TextStyle(color: Colors.white),
+              onChanged: (value) {
+                sharedPrefsBloc.setApiKey(value);
+              },
+            );
+          }),
     );
   }
 }
