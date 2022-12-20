@@ -32,16 +32,23 @@ class _DreamTabState extends State<DreamTab> {
         children: [
           const SizedBox(height: 16),
           _promptWidget(),
-      ExpandablePanel(
-        header: Text("Advanced Options"),
-        collapsed: SizedBox.shrink(),
-        expanded: Text("expanded", softWrap: true, ),
-        //tapHeaderToExpand: true,
-        //hasIcon: true,
-      ),
-          ElevatedButton(
-            onPressed: _attemptToGenerate,
-            child: const Text("Generate"),
+          ExpandablePanel(
+            header: Text("Advanced Options"),
+            collapsed: SizedBox.shrink(),
+            expanded: Text(
+              "expanded",
+              softWrap: true,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: FractionallySizedBox(
+              widthFactor: 1,
+              child: ElevatedButton(
+                onPressed: _attemptToGenerate,
+                child: const Text("Generate"),
+              ),
+            ),
           ),
         ],
       ),
