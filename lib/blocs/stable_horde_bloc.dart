@@ -91,7 +91,7 @@ class _StableHordeBloc {
       if (response.statusCode != 200) {
         final exception = Exception(
           'Failed to get task status: '
-              '${response.statusCode} ${response.body}',
+          '${response.statusCode} ${response.body}',
         );
         print(exception);
         Sentry.captureException(exception, stackTrace: StackTrace.current);
@@ -123,35 +123,27 @@ class _StableHordeBloc {
 
       final generation = generations.first;
       final imageUrl = generation['img'];
-
-      // Download imageUrl to file
-      final response2 = await http.get(Uri.parse(imageUrl));
-      if (response2.statusCode != 200) {
-        final exception = Exception(
-          'Failed to download image: '
-              '${response2.statusCode} ${response2.body}',
-        );
-        print(exception);
-        Sentry.captureException(exception, stackTrace: StackTrace.current);
-        continue;
-      }
-
-      final file = await _writeFile(response2.bodyBytes);
-
-      task.imagePath = file.path;
+      final imageFile = await _downloadImageFromUrl(imageUrl);
+      task.imagePath = imageFile.path;
       await isar.writeTxn(() async {
         isar.stableHordeTasks.put(task);
       });
 
-      break;
-
-      if (i == 999) {
-        throw Exception('Failed to complete tasks');
-      }
+      return;
     }
+
+    throw Exception('Failed to complete task');
   }
 
-  Future<File> _writeFile(Uint8List bytes) async {
+  Future<File> _downloadImageFromUrl(String url) async {
+    final response = await http.get(Uri.parse(url));
+    if (response.statusCode != 200) {
+      throw Exception(
+        'Failed to download image: '
+        '${response.statusCode} ${response.body}',
+      );
+    }
+
     final directory = await getApplicationDocumentsDirectory();
 
     final path = directory.path +
@@ -159,11 +151,7 @@ class _StableHordeBloc {
         DateTime.now().millisecondsSinceEpoch.toString() +
         '.webp';
     final file = await File(path).create();
-    print(file.path);
-
-    // Write image to file
-    await file.writeAsBytes(bytes);
-
+    await file.writeAsBytes(response.bodyBytes);
     return file;
   }
 
