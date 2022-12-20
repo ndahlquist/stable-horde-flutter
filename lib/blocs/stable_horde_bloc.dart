@@ -81,6 +81,7 @@ class _StableHordeBloc {
       'models': [
         'stable_diffusion',
       ],
+      'r2': true,
     };
 
     // Make a POST request with the json data
@@ -91,8 +92,10 @@ class _StableHordeBloc {
     );
 
     if (response.statusCode != 202) {
-      throw Exception('Failed to request diffusion: '
-          '${response.statusCode} ${response.body}');
+      throw Exception(
+        'Failed to request diffusion: '
+        '${response.statusCode} ${response.body}',
+      );
     }
     final jsonResponse = jsonDecode(response.body);
 
