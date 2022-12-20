@@ -108,7 +108,7 @@ class _StableHordeBloc {
       print('Estimated completion time: $estimatedCompletionTime');
 
       task.firstShowProgressIndicatorTime ??= DateTime.now();
-      task.estimatedCompletionTime = estimatedCompletionTime;
+      task.estimatedCompletionTime = estimatedCompletionTime;  
 
       final generations = jsonResponse['generations'] as List;
 
