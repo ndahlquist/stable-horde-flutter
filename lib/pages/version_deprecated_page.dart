@@ -12,7 +12,7 @@ class _DeprecatedPageState extends State<VersionDeprecatedPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: zoomscrollerPurple,
+      backgroundColor: stableHordePurple,
       body: Stack(
         children: [
           Container(
@@ -21,8 +21,8 @@ class _DeprecatedPageState extends State<VersionDeprecatedPage> {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  zoomscrollerPurple.withOpacity(.8),
-                  zoomscrollerPurple,
+                  stableHordePurple.withOpacity(.8),
+                  stableHordePurple,
                 ],
               ),
             ),
@@ -33,7 +33,7 @@ class _DeprecatedPageState extends State<VersionDeprecatedPage> {
               children: const [
                 Spacer(),
                 Text(
-                  'This version of ZoomScroller is no longer supported.\n\nPlease update to the latest version.',
+                  'This version of Stable Horde is no longer supported.\n\nPlease update to the latest version.',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 18,
