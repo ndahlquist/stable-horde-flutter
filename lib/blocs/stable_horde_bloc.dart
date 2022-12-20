@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:isar/isar.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stable_horde_flutter/main.dart';
 import 'package:stable_horde_flutter/model/stable_horde_task.dart';
 
@@ -10,51 +11,11 @@ class _StableHordeBloc {
     String prompt,
     double mutationRate,
   ) async {
-    /// headers = {
-    /// 'Accept': '* / *',
-    /// 'Accept-Language': 'en-US,en;q=0.9',
-    /// 'Connection': 'keep-alive',
-    /// 'apikey': 'rFs6AHt5qy6Ew0QnK8M9XQ',
-    /// }
-    ///
-    /// source_image = requests.get(init_image_url).content
-    /// print(len(source_image))
-    ///
-    /// json_data = {
-    /// 'prompt': prompt,
-    /// 'params': {
-    /// 'steps': 30,
-    /// 'n': 1,
-    /// 'sampler_name': 'k_euler',
-    /// 'width': 512,
-    /// 'height': 512,
-    /// 'cfg_scale': 7,
-    /// 'seed_variation': 1000,
-    /// 'seed': '',
-    /// 'karras': True,
-    /// 'denoising_strength': strength,
-    /// 'post_processing': [],
-    /// },
-    /// 'nsfw': False,
-    /// 'censor_nsfw': False,
-    /// 'trusted_workers': False,
-    /// 'source_processing': 'img2img',
-    /// 'source_image': base64.b64encode(source_image).decode('utf-8'),
-    /// 'models': [
-    /// 'stable_diffusion',
-    /// ],
-    /// }
-    ///
-    /// start = time.time()
-    /// response = requests.post(
-    /// 'https://stablehorde.net/api/v2/generate/async', headers=headers, json=json_data
-    /// )
-
     final headers = {
       'Accept': '* / *',
       'Accept-Language': 'en-US,en;q=0.9',
       'Connection': 'keep-alive',
-      'apikey': 'oad7PZBRUgwrpucqgEBgEw',
+      'apikey': 'oad7PZBRUgwrpucqgEBgEw', // TODO
       "Content-Type": "application/json",
     };
 
@@ -81,6 +42,7 @@ class _StableHordeBloc {
       'models': [
         'stable_diffusion',
       ],
+      'r2': true,
     };
 
     // Make a POST request with the json data
@@ -91,16 +53,101 @@ class _StableHordeBloc {
     );
 
     if (response.statusCode != 202) {
-      throw Exception('Failed to request diffusion: '
-          '${response.statusCode} ${response.body}');
+      throw Exception(
+        'Failed to request diffusion: '
+        '${response.statusCode} ${response.body}',
+      );
     }
     final jsonResponse = jsonDecode(response.body);
 
     final taskId = jsonResponse['id'];
+    print(taskId);
 
     await isar.writeTxn(() async {
       isar.stableHordeTasks.put(StableHordeTask(taskId));
     });
+
+    for (int i = 0; i < 1000; i++) {
+      await Future.delayed(const Duration(seconds: 1));
+      print('update $i');
+      _updateTasks();
+
+      var tasks = await isar.stableHordeTasks.where().findAll();
+      final unfinishedTasks = tasks.where((task) => task.imageUrl == null);
+      if (unfinishedTasks.isEmpty) {
+        break;
+      }
+
+      if (i == 999) {
+        throw Exception('Failed to complete tasks');
+      }
+    }
+  }
+
+  Future _updateTasks() async {
+    final tasks = await isar.stableHordeTasks.where().findAll();
+    for (final task in tasks) {
+      if (task.imageUrl != null) {
+        continue;
+      }
+
+      if (task.estimatedCompletionTime != null) {
+        if (DateTime.now().isBefore(task.estimatedCompletionTime!)) {
+          continue;
+        }
+      }
+
+      final response = await http.get(
+        Uri.parse(
+          'https://stablehorde.net/api/v2/generate/status/${task.taskId}',
+        ),
+      );
+      if (response.statusCode == 429) {
+        print('Rate limit exceeded');
+        print(response);
+        return;
+      }
+
+      if (response.statusCode != 200) {
+        final exception = Exception(
+          'Failed to get task status: '
+          '${response.statusCode} ${response.body}',
+        );
+        print(exception);
+        Sentry.captureException(exception, stackTrace: StackTrace.current);
+        continue;
+      }
+
+      final jsonResponse = jsonDecode(response.body);
+      print(jsonResponse);
+
+      final waitSeconds = jsonResponse['wait_time'];
+      final estimatedCompletionTime =
+          DateTime.now().add(Duration(seconds: waitSeconds));
+      print('Estimated completion time: $estimatedCompletionTime');
+
+      task.firstShowProgressIndicatorTime ??= DateTime.now();
+      task.estimatedCompletionTime = estimatedCompletionTime;
+
+      final generations = jsonResponse['generations'] as List;
+
+      if (generations.isEmpty) {
+        isar.writeTxn(() async {
+          isar.stableHordeTasks.put(task);
+        });
+        continue;
+      }
+
+      assert(generations.length == 1);
+
+      final generation = generations.first;
+      final imageUrl = generation['img'];
+
+      task.imageUrl = imageUrl;
+      isar.writeTxn(() async {
+        isar.stableHordeTasks.put(task);
+      });
+    }
   }
 
   Future<List<StableHordeTask>> _getTasks() async {

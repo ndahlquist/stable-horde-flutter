@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stable_horde_flutter/blocs/stable_horde_bloc.dart';
 import 'package:stable_horde_flutter/model/stable_horde_task.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:stable_horde_flutter/widgets/timed_progress_indicator.dart';
 
 class MyArtTab extends StatefulWidget {
   const MyArtTab({super.key});
@@ -31,26 +33,51 @@ class _MyArtTabState extends State<MyArtTab>
             stackTrace: snapshot.stackTrace,
           );
         }
-        final tasks = snapshot.data ?? [];
+        var tasks = snapshot.data ?? [];
 
-        return ListView.builder(
+        tasks = tasks.reversed.toList();
+
+        return GridView.builder(
           itemCount: tasks.length,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            childAspectRatio: 1.0,
+          ),
           itemBuilder: (context, index) {
             final task = tasks[index];
 
-            return ListTile(
-              title: Text(
-                task.taskId,
-                style: const TextStyle(
-                  fontSize: 12,
-                  color: Colors.white,
+            return Stack(children: [
+              if (task.imageUrl != null)
+                CachedNetworkImage(
+                  imageUrl: task.imageUrl!,
+                  fit: BoxFit.cover,
                 ),
-              ),
-            );
+              _progressIndicator(task),
+            ]);
           },
         );
       },
     );
+  }
+
+  Widget _progressIndicator(StableHordeTask task) {
+    // Once the task is complete, hide the progress indicator.
+    if (task.imageUrl != null) {
+      return const SizedBox.shrink();
+    }
+
+    if (task.estimatedCompletionTime == null) {
+      return const Center(child: CircularProgressIndicator());
+    } else {
+      return Center(
+        child: TimedProgressIndicator(
+          startTime: task.firstShowProgressIndicatorTime!,
+          completionTime: task.estimatedCompletionTime!.add(
+            const Duration(seconds: 2),
+          ),
+        ),
+      );
+    }
   }
 
   @override
