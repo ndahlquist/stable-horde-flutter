@@ -1,8 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stable_horde_flutter/blocs/stable_horde_bloc.dart';
 import 'package:stable_horde_flutter/model/stable_horde_task.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:stable_horde_flutter/widgets/timed_progress_indicator.dart';
 
 class MyArtTab extends StatefulWidget {
@@ -47,9 +48,9 @@ class _MyArtTabState extends State<MyArtTab>
             final task = tasks[index];
 
             return Stack(children: [
-              if (task.imageUrl != null)
-                CachedNetworkImage(
-                  imageUrl: task.imageUrl!,
+              if (task.imagePath != null)
+                Image.file(
+                  File(task.imagePath!),
                   fit: BoxFit.cover,
                 ),
               _progressIndicator(task),
@@ -62,7 +63,7 @@ class _MyArtTabState extends State<MyArtTab>
 
   Widget _progressIndicator(StableHordeTask task) {
     // Once the task is complete, hide the progress indicator.
-    if (task.imageUrl != null) {
+    if (task.isComplete()) {
       return const SizedBox.shrink();
     }
 

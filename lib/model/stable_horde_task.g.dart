@@ -27,9 +27,9 @@ const StableHordeTaskSchema = CollectionSchema(
       name: r'firstShowProgressIndicatorTime',
       type: IsarType.dateTime,
     ),
-    r'imageUrl': PropertySchema(
+    r'imagePath': PropertySchema(
       id: 2,
-      name: r'imageUrl',
+      name: r'imagePath',
       type: IsarType.string,
     ),
     r'taskId': PropertySchema(
@@ -59,7 +59,7 @@ int _stableHordeTaskEstimateSize(
 ) {
   var bytesCount = offsets.last;
   {
-    final value = object.imageUrl;
+    final value = object.imagePath;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
     }
@@ -76,7 +76,7 @@ void _stableHordeTaskSerialize(
 ) {
   writer.writeDateTime(offsets[0], object.estimatedCompletionTime);
   writer.writeDateTime(offsets[1], object.firstShowProgressIndicatorTime);
-  writer.writeString(offsets[2], object.imageUrl);
+  writer.writeString(offsets[2], object.imagePath);
   writer.writeString(offsets[3], object.taskId);
 }
 
@@ -92,7 +92,7 @@ StableHordeTask _stableHordeTaskDeserialize(
   object.estimatedCompletionTime = reader.readDateTimeOrNull(offsets[0]);
   object.firstShowProgressIndicatorTime = reader.readDateTimeOrNull(offsets[1]);
   object.id = id;
-  object.imageUrl = reader.readStringOrNull(offsets[2]);
+  object.imagePath = reader.readStringOrNull(offsets[2]);
   return object;
 }
 
@@ -416,31 +416,31 @@ extension StableHordeTaskQueryFilter
   }
 
   QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
-      imageUrlIsNull() {
+      imagePathIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'imageUrl',
+        property: r'imagePath',
       ));
     });
   }
 
   QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
-      imageUrlIsNotNull() {
+      imagePathIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'imageUrl',
+        property: r'imagePath',
       ));
     });
   }
 
   QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
-      imageUrlEqualTo(
+      imagePathEqualTo(
     String? value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'imageUrl',
+        property: r'imagePath',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -448,7 +448,7 @@ extension StableHordeTaskQueryFilter
   }
 
   QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
-      imageUrlGreaterThan(
+      imagePathGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -456,7 +456,7 @@ extension StableHordeTaskQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'imageUrl',
+        property: r'imagePath',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -464,7 +464,7 @@ extension StableHordeTaskQueryFilter
   }
 
   QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
-      imageUrlLessThan(
+      imagePathLessThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -472,7 +472,7 @@ extension StableHordeTaskQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'imageUrl',
+        property: r'imagePath',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -480,7 +480,7 @@ extension StableHordeTaskQueryFilter
   }
 
   QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
-      imageUrlBetween(
+      imagePathBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -489,7 +489,7 @@ extension StableHordeTaskQueryFilter
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'imageUrl',
+        property: r'imagePath',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -500,13 +500,13 @@ extension StableHordeTaskQueryFilter
   }
 
   QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
-      imageUrlStartsWith(
+      imagePathStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'imageUrl',
+        property: r'imagePath',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -514,13 +514,13 @@ extension StableHordeTaskQueryFilter
   }
 
   QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
-      imageUrlEndsWith(
+      imagePathEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'imageUrl',
+        property: r'imagePath',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -528,10 +528,10 @@ extension StableHordeTaskQueryFilter
   }
 
   QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
-      imageUrlContains(String value, {bool caseSensitive = true}) {
+      imagePathContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
-        property: r'imageUrl',
+        property: r'imagePath',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -539,10 +539,10 @@ extension StableHordeTaskQueryFilter
   }
 
   QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
-      imageUrlMatches(String pattern, {bool caseSensitive = true}) {
+      imagePathMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
-        property: r'imageUrl',
+        property: r'imagePath',
         wildcard: pattern,
         caseSensitive: caseSensitive,
       ));
@@ -550,20 +550,20 @@ extension StableHordeTaskQueryFilter
   }
 
   QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
-      imageUrlIsEmpty() {
+      imagePathIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'imageUrl',
+        property: r'imagePath',
         value: '',
       ));
     });
   }
 
   QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
-      imageUrlIsNotEmpty() {
+      imagePathIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'imageUrl',
+        property: r'imagePath',
         value: '',
       ));
     });
@@ -743,16 +743,16 @@ extension StableHordeTaskQuerySortBy
   }
 
   QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy>
-      sortByImageUrl() {
+      sortByImagePath() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'imageUrl', Sort.asc);
+      return query.addSortBy(r'imagePath', Sort.asc);
     });
   }
 
   QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy>
-      sortByImageUrlDesc() {
+      sortByImagePathDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'imageUrl', Sort.desc);
+      return query.addSortBy(r'imagePath', Sort.desc);
     });
   }
 
@@ -813,16 +813,16 @@ extension StableHordeTaskQuerySortThenBy
   }
 
   QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy>
-      thenByImageUrl() {
+      thenByImagePath() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'imageUrl', Sort.asc);
+      return query.addSortBy(r'imagePath', Sort.asc);
     });
   }
 
   QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy>
-      thenByImageUrlDesc() {
+      thenByImagePathDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'imageUrl', Sort.desc);
+      return query.addSortBy(r'imagePath', Sort.desc);
     });
   }
 
@@ -856,10 +856,10 @@ extension StableHordeTaskQueryWhereDistinct
     });
   }
 
-  QueryBuilder<StableHordeTask, StableHordeTask, QDistinct> distinctByImageUrl(
+  QueryBuilder<StableHordeTask, StableHordeTask, QDistinct> distinctByImagePath(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'imageUrl', caseSensitive: caseSensitive);
+      return query.addDistinctBy(r'imagePath', caseSensitive: caseSensitive);
     });
   }
 
@@ -893,9 +893,9 @@ extension StableHordeTaskQueryProperty
     });
   }
 
-  QueryBuilder<StableHordeTask, String?, QQueryOperations> imageUrlProperty() {
+  QueryBuilder<StableHordeTask, String?, QQueryOperations> imagePathProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'imageUrl');
+      return query.addPropertyName(r'imagePath');
     });
   }
 
