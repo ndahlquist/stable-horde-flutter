@@ -5,6 +5,7 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stable_horde_flutter/blocs/stable_horde_bloc.dart';
 import 'package:stable_horde_flutter/colors.dart';
 import 'package:stable_horde_flutter/model/stable_horde_task.dart';
+import 'package:stable_horde_flutter/widgets/task_progress_indicator.dart';
 
 class FullScreenViewPage extends StatelessWidget {
   final int initialIndex;
@@ -50,18 +51,12 @@ class FullScreenViewPage extends StatelessWidget {
   }
 
   Widget _page(BuildContext context, StableHordeTask task) {
-    final imagePath = task.imagePath;
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         AspectRatio(
           aspectRatio: 1,
-          child: imagePath == null
-              ? const ColoredBox(color: stableHordeGrey)
-              : Image.file(
-                  File(imagePath),
-                ),
+          child: _imageSection(context, task),
         ),
         const Padding(
           padding: EdgeInsets.all(12),
@@ -71,6 +66,28 @@ class FullScreenViewPage extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _imageSection(BuildContext context, StableHordeTask task) {
+    final imagePath = task.imagePath;
+
+    if (imagePath == null) {
+      return Stack(
+        children: [
+          const FractionallySizedBox(
+            widthFactor: 1,
+            heightFactor: 1,
+            child: ColoredBox(color: stableHordeGrey),
+          ),
+          TaskProgressIndicator(task),
+        ],
+      );
+    }
+
+    return Image.file(
+      File(imagePath),
+      fit: BoxFit.cover,
     );
   }
 }
