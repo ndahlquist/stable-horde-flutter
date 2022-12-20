@@ -67,7 +67,7 @@ class _StableHordeBloc {
     });
 
     for (int i = 0; i < 30; i++) {
-      await Future.delayed(Duration(seconds: 2));
+      await Future.delayed(Duration(seconds: 6));
       _updateTasks();
     }
   }

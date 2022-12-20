@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stable_horde_flutter/blocs/stable_horde_bloc.dart';
 import 'package:stable_horde_flutter/model/stable_horde_task.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class MyArtTab extends StatefulWidget {
   const MyArtTab({super.key});
@@ -31,22 +32,32 @@ class _MyArtTabState extends State<MyArtTab>
             stackTrace: snapshot.stackTrace,
           );
         }
-        final tasks = snapshot.data ?? [];
+        var tasks = snapshot.data ?? [];
 
-        return ListView.builder(
+        tasks = tasks.reversed.toList();
+
+        return GridView.builder(
           itemCount: tasks.length,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            childAspectRatio: 1.0,
+          ),
           itemBuilder: (context, index) {
             final task = tasks[index];
 
-            return ListTile(
-              title: Text(
-                task.taskId,
-                style: const TextStyle(
-                  fontSize: 12,
-                  color: Colors.white,
+            return Stack(children: [
+              if (task.imageUrl != null)
+                CachedNetworkImage(
+                  imageUrl: task.imageUrl!,
+                  fit: BoxFit.cover,
                 ),
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Text(task.taskId),
               ),
-            );
+            ]);
           },
         );
       },
