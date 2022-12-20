@@ -35,8 +35,7 @@ class _DeprecatedPageState extends State<VersionDeprecatedPage> {
                 Text(
                   'This version of Stable Horde is no longer supported.\n\nPlease update to the latest version.',
                   style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
+                    fontSize: 18
                   ),
                   textAlign: TextAlign.center,
                 ),

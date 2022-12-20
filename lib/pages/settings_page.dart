@@ -31,7 +31,6 @@ class SettingsPage extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white,
                 ),
                 textAlign: TextAlign.left,
               ),
@@ -39,15 +38,13 @@ class SettingsPage extends StatelessWidget {
           ),
           const ListTile(
             title: Text(
-              'Privacy Policy',
-              style: TextStyle(color: Colors.white),
+              'Privacy Policy'
             ),
             onTap: launchPrivacyPolicy,
           ),
           const ListTile(
             title: Text(
-              'Terms of Service',
-              style: TextStyle(color: Colors.white),
+              'Terms of Service'
             ),
             onTap: launchTermsOfService,
           ),
@@ -68,7 +65,6 @@ class SettingsPage extends StatelessWidget {
               controller: TextEditingController(text: apiKey),
               decoration: const InputDecoration(
                 labelText: 'API Key',
-                labelStyle: TextStyle(color: Colors.white),
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.white),
                 ),
