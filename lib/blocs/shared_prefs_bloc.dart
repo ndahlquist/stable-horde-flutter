@@ -15,14 +15,18 @@ class _SharedPrefsBloc {
     await prefs.setString(_promptKey, prompt);
   }
 
-  Future<String> getApiKey() async {
+  Future<String?> getApiKey() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getString(_apiKeyKey) ?? "";
+    return prefs.getString(_apiKeyKey);
   }
 
-  Future<void> setApiKey(String apiKey) async {
+  Future<void> setApiKey(String? apiKey) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_apiKeyKey, apiKey);
+    if (apiKey != null) {
+      await prefs.setString(_apiKeyKey, apiKey);
+    } else {
+      await prefs.remove(_apiKeyKey);
+    }
   }
 }
 
