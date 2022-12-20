@@ -76,7 +76,7 @@ class _StableHordeBloc {
       _updateTasks();
 
       var tasks = await isar.stableHordeTasks.where().findAll();
-      final unfinishedTasks = tasks.where((task) => task.imagePath == null);
+      final unfinishedTasks = tasks.where((task) => !task.isComplete());
       if (unfinishedTasks.isEmpty) {
         break;
       }
@@ -90,7 +90,7 @@ class _StableHordeBloc {
   Future _updateTasks() async {
     final tasks = await isar.stableHordeTasks.where().findAll();
     for (final task in tasks) {
-      if (task.imagePath != null) {
+      if (task.isComplete()) {
         continue;
       }
 

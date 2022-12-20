@@ -62,7 +62,7 @@ class _MyArtTabState extends State<MyArtTab>
 
   Widget _progressIndicator(StableHordeTask task) {
     // Once the task is complete, hide the progress indicator.
-    if (task.imagePath != null) {
+    if (task.isComplete()) {
       return const SizedBox.shrink();
     }
 

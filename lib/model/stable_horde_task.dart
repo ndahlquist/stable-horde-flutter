@@ -14,4 +14,8 @@ class StableHordeTask {
   DateTime? estimatedCompletionTime;
 
   StableHordeTask(this.taskId);
+
+  bool isComplete() {
+    return imagePath != null;
+  }
 }
