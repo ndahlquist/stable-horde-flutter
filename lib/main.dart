@@ -74,9 +74,14 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: 'Stable Horde',
       debugShowCheckedModeBanner: false,
+      //themeMode: ThemeMode.,
       theme: ThemeData(
+        brightness: Brightness.dark,
+
         primarySwatch: Colors.blue,
-        textTheme: GoogleFonts.ubuntuTextTheme(),
+        /*textTheme: GoogleFonts.ubuntuTextTheme(
+          ThemeData(brightness: Brightness.dark).textTheme,
+        ),*/
       ),
       home: FutureBuilder(
         future: FirebaseRemoteConfig.instance.fetchAndActivate(),
