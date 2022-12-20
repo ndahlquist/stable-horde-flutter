@@ -67,7 +67,7 @@ class _StableHordeBloc {
     });
 
     for (int i = 0; i < 30; i++) {
-      await Future.delayed(Duration(seconds: 6));
+      await Future.delayed(const Duration(seconds: 2));
       _updateTasks();
     }
   }
@@ -77,6 +77,12 @@ class _StableHordeBloc {
     for (final task in tasks) {
       if (task.imageUrl != null) {
         continue;
+      }
+
+      if (task.estimatedCompletionTime != null) {
+        if (DateTime.now().isBefore(task.estimatedCompletionTime!)) {
+          continue;
+        }
       }
 
       final response = await http.get(
