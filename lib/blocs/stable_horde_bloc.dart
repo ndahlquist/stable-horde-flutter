@@ -67,9 +67,20 @@ class _StableHordeBloc {
       isar.stableHordeTasks.put(StableHordeTask(taskId));
     });
 
-    for (int i = 0; i < 30; i++) {
-      await Future.delayed(const Duration(seconds: 2));
+    for (int i = 0; i < 1000; i++) {
+      await Future.delayed(const Duration(seconds: 1));
+      print('update $i');
       _updateTasks();
+
+      var tasks = await isar.stableHordeTasks.where().findAll();
+      final unfinishedTasks = tasks.where((task) => task.imageUrl == null);
+      if (unfinishedTasks.isEmpty) {
+        break;
+      }
+
+      if (i == 999) {
+        throw Exception('Failed to complete tasks');
+      }
     }
   }
 
