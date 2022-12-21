@@ -124,15 +124,16 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
     }
 
     return FutureBuilder<Directory>(
-        future: getApplicationDocumentsDirectory(),
-        builder: (context, snapshot) {
-          final directory = snapshot.data;
-          if (directory == null) return const SizedBox();
+      future: getApplicationDocumentsDirectory(),
+      builder: (context, snapshot) {
+        final directory = snapshot.data;
+        if (directory == null) return const SizedBox();
 
-          return Image.file(
-            File(directory.path + '/' + filename),
-            fit: BoxFit.cover,
-          );
-        },);
+        return Image.file(
+          File(directory.path + '/' + filename),
+          fit: BoxFit.cover,
+        );
+      },
+    );
   }
 }
