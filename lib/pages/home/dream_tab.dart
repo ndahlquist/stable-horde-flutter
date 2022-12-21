@@ -63,22 +63,21 @@ class _DreamTabState extends State<DreamTab> {
     return Column(
       children: [
         FutureBuilder<String>(
-          future: sharedPrefsBloc.getNegativePrompt(),
-          builder: (context, snapshot) {
-            final negativePrompt = snapshot.data ?? "";
+            future: sharedPrefsBloc.getNegativePrompt(),
+            builder: (context, snapshot) {
+              final negativePrompt = snapshot.data ?? "";
 
-            return TextField(
-              controller: TextEditingController(text: negativePrompt),
-              decoration: _inputDecoration('Negative Prompt'),
-              keyboardType: TextInputType.multiline,
-              maxLines: 5,
-              textCapitalization: TextCapitalization.sentences,
-              onChanged: (negativePrompt) {
-                sharedPrefsBloc.setNegativePrompt(negativePrompt);
-              },
-            );
-          }
-        ),
+              return TextField(
+                controller: TextEditingController(text: negativePrompt),
+                decoration: _inputDecoration('Negative Prompt'),
+                keyboardType: TextInputType.multiline,
+                maxLines: 5,
+                textCapitalization: TextCapitalization.sentences,
+                onChanged: (negativePrompt) {
+                  sharedPrefsBloc.setNegativePrompt(negativePrompt);
+                },
+              );
+            }),
       ],
     );
   }
