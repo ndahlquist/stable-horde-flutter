@@ -7,7 +7,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/main.dart';
-import 'package:stable_horde_flutter/model/stable_diffusion_model.dart';
+import 'package:stable_horde_flutter/model/stable_horde_model.dart';
 import 'package:stable_horde_flutter/model/stable_horde_task.dart';
 
 class _StableHordeBloc {
@@ -171,7 +171,7 @@ class _StableHordeBloc {
     }
   }
 
-  Future<List<StableDiffusionModel>> _getModels() async {
+  Future<List<StableHordeModel>> _getModels() async {
     final response = await http.get(
       Uri.parse(
         'https://stablehorde.net/api/v2/status/models',
@@ -187,12 +187,12 @@ class _StableHordeBloc {
 
     final jsonResponse = jsonDecode(response.body) as List;
 
-    final List<StableDiffusionModel> models = [];
+    final List<StableHordeModel> models = [];
     for (final entry in jsonResponse) {
       final count = entry['count'];
       if (count == 0) continue;
       models.add(
-        StableDiffusionModel(
+        StableHordeModel(
           entry['name'],
           count,
         ),
@@ -202,8 +202,8 @@ class _StableHordeBloc {
     return models;
   }
 
-  Future<List<StableDiffusionModel>> _getModelDetails(
-      List<StableDiffusionModel> models) async {
+  Future<List<StableHordeModel>> _getModelDetails(
+      List<StableHordeModel> models,) async {
     final response = await http.get(
       Uri.parse(
         'https://raw.githubusercontent.com/Sygil-Dev/nataili-model-reference/main/db.json',
@@ -219,7 +219,7 @@ class _StableHordeBloc {
 
     final jsonResponse = jsonDecode(response.body) as Map<String, dynamic>;
 
-    final List<StableDiffusionModel> modelsWithDetails = [];
+    final List<StableHordeModel> modelsWithDetails = [];
     for (final model in models) {
       final details = jsonResponse[model.name];
       final showcases = details['showcases'];
@@ -236,7 +236,7 @@ class _StableHordeBloc {
     return modelsWithDetails;
   }
 
-  Future<List<StableDiffusionModel>> getModels() async {
+  Future<List<StableHordeModel>> getModels() async {
     final models = await _getModels();
 
     models.sort((a, b) => b.workerCount.compareTo(a.workerCount));

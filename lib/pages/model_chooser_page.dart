@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stable_horde_flutter/blocs/stable_horde_bloc.dart';
-import 'package:stable_horde_flutter/model/stable_diffusion_model.dart';
+import 'package:stable_horde_flutter/model/stable_horde_model.dart';
 
 class ModelChooserPage extends StatelessWidget {
   const ModelChooserPage({super.key});
@@ -16,7 +16,7 @@ class ModelChooserPage extends StatelessWidget {
         elevation: 0,
         title: const Text("Models"),
       ),
-      body: FutureBuilder<List<StableDiffusionModel>>(
+      body: FutureBuilder<List<StableHordeModel>>(
         future: stableHordeBloc.getModels(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -39,8 +39,10 @@ class ModelChooserPage extends StatelessWidget {
             itemBuilder: (context, index) {
               final model = models[index];
               return Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 6, horizontal: 12,),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 6,
+                  horizontal: 12,
+                ),
                 child: SizedBox(
                   height: 128,
                   child: Row(
@@ -65,7 +67,8 @@ class ModelChooserPage extends StatelessWidget {
                                 ),
                               ),
                               const SizedBox(height: 4),
-                              Text("${model.workerCount} worker${model.workerCount == 1 ? "" : "s"}"),
+                              Text(
+                                  "${model.workerCount} worker${model.workerCount == 1 ? "" : "s"}"),
                               const SizedBox(height: 4),
                               Text(model.description!),
                             ],

@@ -1,9 +1,9 @@
-class StableDiffusionModel {
+class StableHordeModel {
   final String name;
   final int workerCount;
 
   String? description;
   String? previewImageUrl;
 
-  StableDiffusionModel(this.name, this.workerCount);
+  StableHordeModel(this.name, this.workerCount);
 }
