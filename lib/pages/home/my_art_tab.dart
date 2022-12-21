@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stable_horde_flutter/blocs/stable_horde_bloc.dart';
 import 'package:stable_horde_flutter/colors.dart';
@@ -65,10 +66,18 @@ class _MyArtTabState extends State<MyArtTab>
                     heightFactor: 1,
                     child: ColoredBox(color: stableHordeGrey),
                   ),
-                  if (task.imagePath != null)
-                    Image.file(
-                      File(task.imagePath!),
-                      fit: BoxFit.cover,
+                  if (task.imageFilename != null)
+                    FutureBuilder<Directory>(
+                      future: getApplicationDocumentsDirectory(),
+                      builder: (context, snapshot) {
+                        final directory = snapshot.data;
+                        if (directory == null) return const SizedBox();
+
+                        return Image.file(
+                          File(directory.path +'/'+ task.imageFilename!),
+                          fit: BoxFit.cover,
+                        );
+                      },
                     ),
                   TaskProgressIndicator(task),
                 ],
