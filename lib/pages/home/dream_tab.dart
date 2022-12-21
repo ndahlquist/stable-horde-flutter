@@ -12,7 +12,6 @@ class DreamTab extends StatefulWidget {
 }
 
 class _DreamTabState extends State<DreamTab> {
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -52,44 +51,44 @@ class _DreamTabState extends State<DreamTab> {
     return Column(
       children: [
         FutureBuilder<String>(
-            future: sharedPrefsBloc.getNegativePrompt(),
-            builder: (context, snapshot) {
-              final negativePrompt = snapshot.data ?? "";
+          future: sharedPrefsBloc.getNegativePrompt(),
+          builder: (context, snapshot) {
+            final negativePrompt = snapshot.data ?? "";
 
-              return TextField(
-                controller: TextEditingController(text: negativePrompt),
-                decoration: _inputDecoration('Negative Prompt'),
-                keyboardType: TextInputType.multiline,
-                maxLines: 5,
-                textCapitalization: TextCapitalization.sentences,
-                onChanged: (negativePrompt) {
-                  sharedPrefsBloc.setNegativePrompt(negativePrompt);
-                },
-              );
-            }),
+            return TextField(
+              controller: TextEditingController(text: negativePrompt),
+              decoration: _inputDecoration('Negative Prompt'),
+              keyboardType: TextInputType.multiline,
+              maxLines: 5,
+              textCapitalization: TextCapitalization.sentences,
+              onChanged: (negativePrompt) {
+                sharedPrefsBloc.setNegativePrompt(negativePrompt);
+              },
+            );
+          },
+        ),
       ],
     );
   }
 
   Widget _promptWidget() {
     return FutureBuilder<String>(
-      future: sharedPrefsBloc.getPrompt(),
-      builder: (context, snapshot) {
-        final prompt = snapshot.data ?? "";
+        future: sharedPrefsBloc.getPrompt(),
+        builder: (context, snapshot) {
+          final prompt = snapshot.data ?? "";
 
-        return TextField(
-          controller: TextEditingController(text: prompt),
-          decoration: _inputDecoration('Prompt'),
-          keyboardType: TextInputType.multiline,
-          maxLines: 5,
-          autofocus: true,
-          textCapitalization: TextCapitalization.sentences,
-          onChanged: (prompt) {
-            sharedPrefsBloc.setPrompt(prompt);
-          },
-        );
-      }
-    );
+          return TextField(
+            controller: TextEditingController(text: prompt),
+            decoration: _inputDecoration('Prompt'),
+            keyboardType: TextInputType.multiline,
+            maxLines: 5,
+            autofocus: true,
+            textCapitalization: TextCapitalization.sentences,
+            onChanged: (prompt) {
+              sharedPrefsBloc.setPrompt(prompt);
+            },
+          );
+        });
   }
 
   InputDecoration _inputDecoration(String label) {

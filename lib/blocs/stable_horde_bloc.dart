@@ -31,10 +31,8 @@ class _StableHordeBloc {
       "apikey": apiKey,
     };
 
-
     final json = {
-      'prompt': prompt,
-      'negative_prompt': negativePrompt,
+      'prompt': prompt + " ### " + negativePrompt,
       'params': {
         'steps': 30,
         'n': 1,
