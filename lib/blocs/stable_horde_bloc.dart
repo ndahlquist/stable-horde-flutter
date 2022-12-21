@@ -14,6 +14,7 @@ class _StableHordeBloc {
   Future requestDiffusion() async {
     final prompt = await sharedPrefsBloc.getPrompt();
     final negativePrompt = await sharedPrefsBloc.getNegativePrompt();
+    final model = await sharedPrefsBloc.getModel();
 
     // Add new task to db.
     final dbId = await isar.writeTxn(() async {
@@ -52,9 +53,7 @@ class _StableHordeBloc {
       'trusted_workers': false,
       //'source_processing': 'img2img',
       //'source_image': base64.encode(sourceImage.buffer.asUint8List()),
-      'models': [
-        'stable_diffusion',
-      ],
+      'models': [model],
       'r2': true,
     };
 

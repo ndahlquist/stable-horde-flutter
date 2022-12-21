@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/blocs/stable_horde_bloc.dart';
 import 'package:stable_horde_flutter/model/stable_horde_model.dart';
 
@@ -38,44 +39,50 @@ class ModelChooserPage extends StatelessWidget {
             itemCount: models.length,
             itemBuilder: (context, index) {
               final model = models[index];
-              return Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 6,
-                  horizontal: 12,
-                ),
-                child: SizedBox(
-                  height: 128,
-                  child: Row(
-                    children: [
-                      AspectRatio(
-                        aspectRatio: 1,
-                        child: CachedNetworkImage(
-                          imageUrl: model.previewImageUrl!,
-                        ),
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                model.name,
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                  "${model.workerCount} worker${model.workerCount == 1 ? "" : "s"}"),
-                              const SizedBox(height: 4),
-                              Text(model.description!),
-                            ],
+              return GestureDetector(
+                onTap: () async {
+                  await sharedPrefsBloc.setModel(model.name);
+                  Navigator.of(context).pop();
+                },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 6,
+                    horizontal: 12,
+                  ),
+                  child: SizedBox(
+                    height: 128,
+                    child: Row(
+                      children: [
+                        AspectRatio(
+                          aspectRatio: 1,
+                          child: CachedNetworkImage(
+                            imageUrl: model.previewImageUrl!,
                           ),
                         ),
-                      ),
-                    ],
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  model.name,
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                    "${model.workerCount} worker${model.workerCount == 1 ? "" : "s"}"),
+                                const SizedBox(height: 4),
+                                Text(model.description!),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               );

@@ -71,7 +71,6 @@ class _DreamTabState extends State<DreamTab> {
         ),
         const SizedBox(height: 16),
         const FractionallySizedBox(widthFactor: 1, child: ModelButton()),
-
       ],
     );
   }
