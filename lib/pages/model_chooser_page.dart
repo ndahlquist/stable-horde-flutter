@@ -61,7 +61,7 @@ class ModelChooserPage extends StatelessWidget {
                         ),
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsets.all(8),
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -72,11 +72,22 @@ class ModelChooserPage extends StatelessWidget {
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                const SizedBox(height: 4),
+                                const SizedBox(height: 2),
                                 Text(
-                                    "${model.workerCount} worker${model.workerCount == 1 ? "" : "s"}"),
-                                const SizedBox(height: 4),
-                                Text(model.description),
+                                  "${model.workerCount} worker${model.workerCount == 1 ? "" : "s"}",
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    fontStyle: FontStyle.italic,
+                                  ),
+                                ),
+                                const SizedBox(height: 2),
+                                Expanded(
+                                  child: Text(
+                                    model.description,
+                                    style: const TextStyle(fontSize: 12),
+                                    softWrap: true,
+                                  ),
+                                ),
                               ],
                             ),
                           ),

@@ -26,6 +26,7 @@ class _DreamTabState extends State<DreamTab> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12),
       child: SingleChildScrollView(
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         child: Column(
           children: [
             const SizedBox(height: 16),
