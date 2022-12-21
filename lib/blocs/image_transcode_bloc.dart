@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:isolate';
 
 import 'package:flutter/foundation.dart';
 import 'package:image/image.dart';
@@ -23,7 +22,7 @@ class _ImageTranscodeBloc {
   Future<File> transcodeAndSaveImage(StableHordeTask task) async {
     final inputFile = File(task.imagePath!);
 
-    final downloadDir;
+    final String downloadDir;
     if (Platform.isAndroid) {
       downloadDir = "/storage/emulated/0/Download/";
     } else if (Platform.isIOS) {
