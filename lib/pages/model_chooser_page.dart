@@ -34,7 +34,12 @@ class ModelChooserPage extends StatelessWidget {
             itemCount: models.length,
             itemBuilder: (context, index) {
               final model = models[index];
-              return Text(model.description);
+              return Column(
+                children: [
+                  Text(model.name),
+                  Text(model.description),
+                ],
+              );
             },
           );
         },
