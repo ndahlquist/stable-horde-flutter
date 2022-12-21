@@ -238,6 +238,9 @@ class _StableHordeBloc {
 
   Future<List<StableDiffusionModel>> getModels() async {
     final models = await _getModels();
+
+    models.sort((a, b) => b.workerCount.compareTo(a.workerCount));
+
     return await _getModelDetails(models);
   }
 }

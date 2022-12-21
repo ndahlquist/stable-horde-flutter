@@ -33,13 +33,14 @@ class ModelChooserPage extends StatelessWidget {
             );
           }
           var models = snapshot.data ?? [];
+
           return ListView.builder(
             itemCount: models.length,
             itemBuilder: (context, index) {
               final model = models[index];
               return Padding(
                 padding:
-                    const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                    const EdgeInsets.symmetric(vertical: 6, horizontal: 12,),
                 child: SizedBox(
                   height: 128,
                   child: Row(
@@ -63,7 +64,9 @@ class ModelChooserPage extends StatelessWidget {
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              const SizedBox(height: 8),
+                              const SizedBox(height: 4),
+                              Text("${model.workerCount} worker${model.workerCount == 1 ? "" : "s"}"),
+                              const SizedBox(height: 4),
                               Text(model.description!),
                             ],
                           ),
