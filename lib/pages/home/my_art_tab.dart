@@ -74,7 +74,7 @@ class _MyArtTabState extends State<MyArtTab>
                         if (directory == null) return const SizedBox();
 
                         return Image.file(
-                          File(directory.path +'/'+ task.imageFilename!),
+                          File(directory.path + '/' + task.imageFilename!),
                           fit: BoxFit.cover,
                         );
                       },
