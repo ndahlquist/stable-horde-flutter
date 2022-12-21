@@ -84,11 +84,14 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
     );
   }
 
-  Widget _saveButton() {
+  Widget _saveButton(StableHordeTask task) {
+
+    if (!task.isComplete()) return const SizedBox.shrink();
+
+
     return IconButton(
       icon: const Icon(Icons.download),
       onPressed: () async {
-        final task = tasks[pageController.page!.toInt()];
 
         final outputFile = await imageTranscodeBloc.transcodeAndSaveImage(task);
 
@@ -120,7 +123,7 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
           const SizedBox(height: 12),
           Text(task.model),
           const Spacer(),
-          _saveButton(),
+          _saveButton(task),
           const SizedBox(height: 12),
         ],
       ),
