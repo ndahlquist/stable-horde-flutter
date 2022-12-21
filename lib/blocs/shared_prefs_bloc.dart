@@ -6,6 +6,7 @@ class _SharedPrefsBloc {
 
   static const _promptKey = 'PROMPT_KEY';
   static const _negativePromptKey = 'NEGATIVE_PROMPT_KEY';
+  static const _modelKey = 'MODEL_KEY';
 
   Future<String?> getApiKey() async {
     final prefs = await SharedPreferences.getInstance();
@@ -42,6 +43,16 @@ class _SharedPrefsBloc {
   Future setNegativePrompt(String prompt) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_negativePromptKey, prompt);
+  }
+
+  Future<String> getModel() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_modelKey) ?? "stable_diffusion";
+  }
+
+  Future setModel(String modelName) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_modelKey, modelName);
   }
 }
 
