@@ -1,9 +1,6 @@
 import 'dart:io';
-import 'dart:isolate';
 
 import 'package:flutter/material.dart';
-import 'package:image/image.dart' as img;
-import 'package:path_provider/path_provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stable_horde_flutter/blocs/image_transcode_bloc.dart';
 import 'package:stable_horde_flutter/blocs/stable_horde_bloc.dart';
@@ -122,7 +119,7 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
           ],
           const SizedBox(height: 12),
           Text(task.model),
-          Spacer(),
+          const Spacer(),
           _saveButton(),
           const SizedBox(height: 12),
         ],
