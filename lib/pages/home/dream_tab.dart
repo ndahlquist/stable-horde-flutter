@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/blocs/stable_horde_bloc.dart';
 import 'package:stable_horde_flutter/pages/home_page.dart';
+import 'package:stable_horde_flutter/pages/model_chooser_page.dart';
 
 class DreamTab extends StatefulWidget {
   const DreamTab({super.key});
@@ -12,9 +13,6 @@ class DreamTab extends StatefulWidget {
 }
 
 class _DreamTabState extends State<DreamTab> {
-
-
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -70,28 +68,40 @@ class _DreamTabState extends State<DreamTab> {
             );
           },
         ),
+        ElevatedButton(
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const ModelChooserPage(),
+              ),
+            );
+
+          },
+          child: Text("Models"),
+        ),
       ],
     );
   }
 
   Widget _promptWidget() {
     return FutureBuilder<String>(
-        future: sharedPrefsBloc.getPrompt(),
-        builder: (context, snapshot) {
-          final prompt = snapshot.data ?? "";
+      future: sharedPrefsBloc.getPrompt(),
+      builder: (context, snapshot) {
+        final prompt = snapshot.data ?? "";
 
-          return TextField(
-            controller: TextEditingController(text: prompt),
-            decoration: _inputDecoration('Prompt'),
-            keyboardType: TextInputType.multiline,
-            maxLines: 5,
-            autofocus: true,
-            textCapitalization: TextCapitalization.sentences,
-            onChanged: (prompt) {
-              sharedPrefsBloc.setPrompt(prompt);
-            },
-          );
-        },);
+        return TextField(
+          controller: TextEditingController(text: prompt),
+          decoration: _inputDecoration('Prompt'),
+          keyboardType: TextInputType.multiline,
+          maxLines: 5,
+          autofocus: true,
+          textCapitalization: TextCapitalization.sentences,
+          onChanged: (prompt) {
+            sharedPrefsBloc.setPrompt(prompt);
+          },
+        );
+      },
+    );
   }
 
   InputDecoration _inputDecoration(String label) {
