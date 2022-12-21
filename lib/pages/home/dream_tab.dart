@@ -14,6 +14,14 @@ class DreamTab extends StatefulWidget {
 
 class _DreamTabState extends State<DreamTab> {
   @override
+  void initState() {
+    super.initState();
+
+    // Run this proactively to avoid loading on the model page.
+    stableHordeBloc.getModels();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12),
