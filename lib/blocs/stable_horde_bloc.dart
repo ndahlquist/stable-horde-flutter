@@ -194,16 +194,19 @@ class _StableHordeBloc {
         continue;
       }
 
+      final showcases = entry['showcases'] as List?;
+      if (showcases == null) {
+        continue;
+      }
+
       models.add(
         StableDiffusionModel(
           entry['name'],
           entry['description'],
-          'previewImageUrl',
+          showcases[0],
         ),
       );
     }
-
-    print(models);
 
     return models;
   }
