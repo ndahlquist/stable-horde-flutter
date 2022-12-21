@@ -149,7 +149,7 @@ class _StableHordeBloc {
       );
     }
 
-    final directory = await getApplicationDocumentsDirectory();
+    final directory = await getApplicationSupportDirectory();
 
     final path = directory.path +
         '/' +
