@@ -47,7 +47,7 @@ class ModelChooserPage extends StatelessWidget {
                       AspectRatio(
                         aspectRatio: 1,
                         child: CachedNetworkImage(
-                          imageUrl: model.previewImageUrl,
+                          imageUrl: model.previewImageUrl!,
                         ),
                       ),
                       Expanded(
@@ -64,7 +64,7 @@ class ModelChooserPage extends StatelessWidget {
                                 ),
                               ),
                               const SizedBox(height: 8),
-                              Text(model.description),
+                              Text(model.description!),
                             ],
                           ),
                         ),
