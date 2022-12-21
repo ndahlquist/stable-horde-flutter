@@ -14,12 +14,10 @@ class DreamTab extends StatefulWidget {
 class _DreamTabState extends State<DreamTab> {
   String _prompt = "";
 
-  final _negativePromptController = TextEditingController();
-
   @override
   void initState() {
     super.initState();
-    sharedPrefsBloc.getLastPrompt().then((value) {
+    sharedPrefsBloc.getPrompt().then((value) {
       setState(() {
         _prompt = value;
       });
@@ -64,15 +62,22 @@ class _DreamTabState extends State<DreamTab> {
   Widget _advancedOptions() {
     return Column(
       children: [
-        TextField(
-          controller: _negativePromptController,
-          decoration: _inputDecoration('Negative Prompt'),
-          keyboardType: TextInputType.multiline,
-          maxLines: 5,
-          textCapitalization: TextCapitalization.sentences,
-          onChanged: (value) {
-            //sharedPrefsBloc.setApiKey(value);
-          },
+        FutureBuilder<String>(
+          future: sharedPrefsBloc.getNegativePrompt(),
+          builder: (context, snapshot) {
+            final negativePrompt = snapshot.data ?? "";
+
+            return TextField(
+              controller: TextEditingController(text: negativePrompt),
+              decoration: _inputDecoration('Negative Prompt'),
+              keyboardType: TextInputType.multiline,
+              maxLines: 5,
+              textCapitalization: TextCapitalization.sentences,
+              onChanged: (negativePrompt) {
+                sharedPrefsBloc.setNegativePrompt(negativePrompt);
+              },
+            );
+          }
         ),
       ],
     );
