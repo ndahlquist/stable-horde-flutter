@@ -7,6 +7,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/main.dart';
+import 'package:stable_horde_flutter/model/stable_diffusion_model.dart';
 import 'package:stable_horde_flutter/model/stable_horde_task.dart';
 
 class _StableHordeBloc {
@@ -168,6 +169,43 @@ class _StableHordeBloc {
     await for (final _ in snapshots) {
       yield await _getTasks();
     }
+  }
+
+  Future<List<StableDiffusionModel>> getModels() async {
+    final response = await http.get(
+      Uri.parse(
+        'https://raw.githubusercontent.com/Sygil-Dev/nataili-model-reference/main/db.json',
+      ),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception(
+        'Failed to get models: '
+        '${response.statusCode} ${response.body}',
+      );
+    }
+
+    final jsonResponse = jsonDecode(response.body) as Map<String, dynamic>;
+
+    final List<StableDiffusionModel> models = [];
+    for (final entry in jsonResponse.values) {
+      final type = entry['type'];
+      if (type != 'ckpt') {
+        continue;
+      }
+
+      models.add(
+        StableDiffusionModel(
+          entry['name'],
+          entry['description'],
+          'previewImageUrl',
+        ),
+      );
+    }
+
+    print(models);
+
+    return models;
   }
 }
 

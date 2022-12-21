@@ -12,6 +12,9 @@ class DreamTab extends StatefulWidget {
 }
 
 class _DreamTabState extends State<DreamTab> {
+
+
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -88,7 +91,7 @@ class _DreamTabState extends State<DreamTab> {
               sharedPrefsBloc.setPrompt(prompt);
             },
           );
-        });
+        },);
   }
 
   InputDecoration _inputDecoration(String label) {
@@ -116,5 +119,11 @@ class _DreamTabState extends State<DreamTab> {
 
     stableHordeBloc.requestDiffusion();
     homeController.animateToPage(1);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    stableHordeBloc.getModels();
   }
 }
