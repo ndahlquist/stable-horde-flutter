@@ -12,17 +12,6 @@ class DreamTab extends StatefulWidget {
 }
 
 class _DreamTabState extends State<DreamTab> {
-  String _prompt = "";
-
-  @override
-  void initState() {
-    super.initState();
-    sharedPrefsBloc.getPrompt().then((value) {
-      setState(() {
-        _prompt = value;
-      });
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,16 +72,23 @@ class _DreamTabState extends State<DreamTab> {
   }
 
   Widget _promptWidget() {
-    return TextField(
-      controller: TextEditingController(text: _prompt),
-      decoration: _inputDecoration('Prompt'),
-      keyboardType: TextInputType.multiline,
-      maxLines: 5,
-      autofocus: true,
-      textCapitalization: TextCapitalization.sentences,
-      onChanged: (prompt) {
-        sharedPrefsBloc.setPrompt(prompt);
-      },
+    return FutureBuilder<String>(
+      future: sharedPrefsBloc.getPrompt(),
+      builder: (context, snapshot) {
+        final prompt = snapshot.data ?? "";
+
+        return TextField(
+          controller: TextEditingController(text: prompt),
+          decoration: _inputDecoration('Prompt'),
+          keyboardType: TextInputType.multiline,
+          maxLines: 5,
+          autofocus: true,
+          textCapitalization: TextCapitalization.sentences,
+          onChanged: (prompt) {
+            sharedPrefsBloc.setPrompt(prompt);
+          },
+        );
+      }
     );
   }
 
@@ -109,7 +105,8 @@ class _DreamTabState extends State<DreamTab> {
   }
 
   Future _attemptToGenerate() async {
-    if (_prompt.trim().isEmpty) {
+    final prompt = await sharedPrefsBloc.getPrompt();
+    if (prompt.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text("Please enter a prompt first."),
