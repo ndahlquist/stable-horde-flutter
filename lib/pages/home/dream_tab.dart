@@ -97,7 +97,7 @@ class _DreamTabState extends State<DreamTab> {
           autofocus: true,
           textCapitalization: TextCapitalization.sentences,
           onChanged: (prompt) {
-            sharedPrefsBloc.setPrompt(prompt);
+            sharedPrefsBloc.setPrompt(prompt.trim());
           },
         );
       },
@@ -118,7 +118,7 @@ class _DreamTabState extends State<DreamTab> {
 
   Future _attemptToGenerate() async {
     final prompt = await sharedPrefsBloc.getPrompt();
-    if (prompt.trim().isEmpty) {
+    if (prompt.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text("Please enter a prompt first."),

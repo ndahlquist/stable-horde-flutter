@@ -128,8 +128,7 @@ class _StableHordeBloc {
 
       final generation = generations.first;
       final imageUrl = generation['img'];
-      final imageFile = await _downloadImageFromUrl(imageUrl);
-      task.imagePath = imageFile.path;
+      task.imageFilename = await _downloadImageFromUrl(imageUrl);
       await isar.writeTxn(() async {
         isar.stableHordeTasks.put(task);
       });
@@ -140,7 +139,7 @@ class _StableHordeBloc {
     throw Exception('Failed to complete task');
   }
 
-  Future<File> _downloadImageFromUrl(String url) async {
+  Future<String> _downloadImageFromUrl(String url) async {
     final response = await http.get(Uri.parse(url));
     if (response.statusCode != 200) {
       throw Exception(
@@ -151,13 +150,12 @@ class _StableHordeBloc {
 
     final directory = await getApplicationSupportDirectory();
 
-    final path = directory.path +
-        '/' +
-        DateTime.now().millisecondsSinceEpoch.toString() +
-        '.webp';
+    final filename = '${DateTime.now().millisecondsSinceEpoch}.webp';
+
+    final path = directory.path + '/' + filename;
     final file = await File(path).create();
     await file.writeAsBytes(response.bodyBytes);
-    return file;
+    return filename;
   }
 
   Future<List<StableHordeTask>> _getTasks() async {

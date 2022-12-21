@@ -10,7 +10,7 @@ class StableHordeTask {
   String model;
   String negativePrompt;
 
-  String? imagePath;
+  String? imageFilename;
 
   DateTime? firstShowProgressIndicatorTime;
   DateTime? estimatedCompletionTime;
@@ -18,6 +18,6 @@ class StableHordeTask {
   StableHordeTask(this.prompt, this.negativePrompt, this.model);
 
   bool isComplete() {
-    return imagePath != null;
+    return imageFilename != null;
   }
 }
