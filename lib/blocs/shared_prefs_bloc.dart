@@ -34,7 +34,6 @@ class _SharedPrefsBloc {
     await prefs.setString(_promptKey, prompt);
   }
 
-
   Future<String> getNegativePrompt() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString(_negativePromptKey) ?? "";
