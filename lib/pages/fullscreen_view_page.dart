@@ -3,11 +3,14 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:stable_horde_flutter/blocs/image_transcode_bloc.dart';
 import 'package:stable_horde_flutter/blocs/stable_horde_bloc.dart';
 import 'package:stable_horde_flutter/colors.dart';
 import 'package:stable_horde_flutter/main.dart';
 import 'package:stable_horde_flutter/model/stable_horde_task.dart';
 import 'package:stable_horde_flutter/widgets/task_progress_indicator.dart';
+
+import 'package:share_plus/share_plus.dart';
 
 class FullScreenViewPage extends StatefulWidget {
   final int initialIndex;
@@ -84,6 +87,19 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
     );
   }
 
+  Widget _shareButton(StableHordeTask task) {
+    if (!task.isComplete()) return const SizedBox.shrink();
+
+    return IconButton(
+      icon: Icon(Icons.adaptive.share),
+      onPressed: () async {
+        final outputFile = await imageTranscodeBloc.transcodeImageToJpg(task);
+
+        Share.shareXFiles([XFile(outputFile.path)]);
+      },
+    );
+  }
+
   Widget _page(BuildContext context, StableHordeTask task) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -102,6 +118,9 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
           ],
           const SizedBox(height: 12),
           Text(task.model),
+          const Spacer(),
+          _shareButton(task),
+          const SizedBox(height: 12),
         ],
       ),
     );

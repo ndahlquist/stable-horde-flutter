@@ -39,6 +39,8 @@ dependencies:
 
   path_provider: ^2.0.11
 
+  share_plus: ^6.3.0
+
 
 
 dev_dependencies:
