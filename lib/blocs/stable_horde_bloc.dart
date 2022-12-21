@@ -171,7 +171,7 @@ class _StableHordeBloc {
     }
   }
 
-  Future<List<StableHordeModel>> _getModels() async {
+  Future<List<StableHordeBaseModel>> _getModels() async {
     final response = await http.get(
       Uri.parse(
         'https://stablehorde.net/api/v2/status/models',
@@ -187,12 +187,12 @@ class _StableHordeBloc {
 
     final jsonResponse = jsonDecode(response.body) as List;
 
-    final List<StableHordeModel> models = [];
+    final List<StableHordeBaseModel> models = [];
     for (final entry in jsonResponse) {
       final count = entry['count'];
       if (count == 0) continue;
       models.add(
-        StableHordeModel(
+        StableHordeBaseModel(
           entry['name'],
           count,
         ),
@@ -203,7 +203,8 @@ class _StableHordeBloc {
   }
 
   Future<List<StableHordeModel>> _getModelDetails(
-      List<StableHordeModel> models,) async {
+    List<StableHordeBaseModel> models,
+  ) async {
     final response = await http.get(
       Uri.parse(
         'https://raw.githubusercontent.com/Sygil-Dev/nataili-model-reference/main/db.json',
@@ -224,13 +225,18 @@ class _StableHordeBloc {
       final details = jsonResponse[model.name];
       final showcases = details['showcases'];
       if (showcases == null) {
-        print('Warning: skipping {model.name} because it has no showcases');
+        print('Warning: skipping ${model.name} because it has no showcases');
         continue;
       }
 
-      model.previewImageUrl = showcases[0];
-      model.description = details['description'];
-      modelsWithDetails.add(model);
+      modelsWithDetails.add(
+        StableHordeModel(
+          model.name,
+          model.workerCount,
+          details['description'],
+          showcases[0],
+        ),
+      );
     }
 
     return modelsWithDetails;
