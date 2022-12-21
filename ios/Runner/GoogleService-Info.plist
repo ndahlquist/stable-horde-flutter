@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>37481550434-ts8j0jihl9atjjnp0see606t394l3u1n.apps.googleusercontent.com</string>
+	<string>37481550434-72gjqinhhvbl08lbdkkhnpcus8dh528e.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.37481550434-ts8j0jihl9atjjnp0see606t394l3u1n</string>
+	<string>com.googleusercontent.apps.37481550434-72gjqinhhvbl08lbdkkhnpcus8dh528e</string>
 	<key>API_KEY</key>
 	<string>AIzaSyAnNTPD7l2hXxRv3PILxxd4kQ0flIrOQZg</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.stableHordeFlutter</string>
+	<string>com.nicd.stablehorde</string>
 	<key>PROJECT_ID</key>
 	<string>stable-horde-flutter</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:37481550434:ios:94431eb35ec84beedc373b</string>
+	<string>1:37481550434:ios:da1837f0dd07cb70dc373b</string>
 </dict>
 </plist>
