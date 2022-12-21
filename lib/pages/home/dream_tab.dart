@@ -122,10 +122,4 @@ class _DreamTabState extends State<DreamTab> {
     stableHordeBloc.requestDiffusion();
     homeController.animateToPage(1);
   }
-
-  @override
-  void initState() {
-    super.initState();
-    stableHordeBloc.getModels();
-  }
 }
