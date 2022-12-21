@@ -35,9 +35,12 @@ class ModelChooserPage extends StatelessWidget {
             itemBuilder: (context, index) {
               final model = models[index];
               return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  SizedBox(height: 32),
                   Text(model.name),
                   Text(model.description),
+                  SizedBox(height: 32),
                 ],
               );
             },
