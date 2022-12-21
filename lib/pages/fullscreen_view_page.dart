@@ -51,18 +51,25 @@ class FullScreenViewPage extends StatelessWidget {
   }
 
   Widget _page(BuildContext context, StableHordeTask task) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        AspectRatio(
-          aspectRatio: 1,
-          child: _imageSection(context, task),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(12),
-          child: Text(task.prompt),
-        ),
-      ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          AspectRatio(
+            aspectRatio: 1,
+            child: _imageSection(context, task),
+          ),
+          const SizedBox(height: 12),
+          Text(task.prompt),
+          const SizedBox(height: 12),
+          if (task.negativePrompt.isNotEmpty) ...[
+            Text("Negative prompt: ${task.negativePrompt}"),
+          ],
+          const SizedBox(height: 12),
+          Text(task.model),
+        ],
+      ),
     );
   }
 
