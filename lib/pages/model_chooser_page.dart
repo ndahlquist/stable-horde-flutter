@@ -11,7 +11,11 @@ class ModelChooserPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF230D49),
-      appBar: AppBar(backgroundColor: Colors.transparent, elevation: 0),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: const Text("Models"),
+      ),
       body: FutureBuilder<List<StableDiffusionModel>>(
         future: stableHordeBloc.getModels(),
         builder: (context, snapshot) {
@@ -42,8 +46,9 @@ class ModelChooserPage extends StatelessWidget {
                     children: [
                       AspectRatio(
                         aspectRatio: 1,
-                        child:
-                            CachedNetworkImage(imageUrl: model.previewImageUrl),
+                        child: CachedNetworkImage(
+                          imageUrl: model.previewImageUrl,
+                        ),
                       ),
                       Expanded(
                         child: Padding(
