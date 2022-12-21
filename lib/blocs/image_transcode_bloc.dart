@@ -25,14 +25,14 @@ class _ImageTranscodeBloc {
 
     final String downloadDir;
     if (Platform.isAndroid) {
-      downloadDir = "/storage/emulated/0/Download/";
+      downloadDir = "/storage/emulated/0/Download";
     } else if (Platform.isIOS) {
       downloadDir = (await getApplicationDocumentsDirectory()).path;
     } else {
       throw Exception("Unsupported platform");
     }
 
-    final outputFile = File("$downloadDir${task.id}.jpg");
+    final outputFile = File("$downloadDir/${task.id}.jpg");
 
     await compute(
       _saveImage,
