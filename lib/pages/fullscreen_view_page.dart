@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stable_horde_flutter/blocs/stable_horde_bloc.dart';
 import 'package:stable_horde_flutter/colors.dart';
@@ -107,9 +108,9 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
   }
 
   Widget _imageSection(BuildContext context, StableHordeTask task) {
-    final imagePath = task.imagePath;
+    final filename = task.imageFilename;
 
-    if (imagePath == null) {
+    if (filename == null) {
       return Stack(
         children: [
           const FractionallySizedBox(
@@ -122,9 +123,17 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
       );
     }
 
-    return Image.file(
-      File(imagePath),
-      fit: BoxFit.cover,
+    return FutureBuilder<Directory>(
+      future: getApplicationDocumentsDirectory(),
+      builder: (context, snapshot) {
+        final directory = snapshot.data;
+        if (directory == null) return const SizedBox();
+
+        return Image.file(
+          File(directory.path + '/' + filename),
+          fit: BoxFit.cover,
+        );
+      },
     );
   }
 }
