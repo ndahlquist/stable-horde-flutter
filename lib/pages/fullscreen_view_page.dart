@@ -133,6 +133,6 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
             File(directory.path + '/' + filename),
             fit: BoxFit.cover,
           );
-        });
+        },);
   }
 }
