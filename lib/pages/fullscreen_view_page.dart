@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:image/image.dart' as img;
 import 'package:path_provider/path_provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stable_horde_flutter/blocs/stable_horde_bloc.dart';
@@ -84,6 +85,7 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
     );
   }
 
+  void _saveImage() {}
 
   Widget _saveButton() {
     return IconButton(
@@ -92,21 +94,24 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
         final task = tasks[pageController.page!.toInt()];
         final path = task.imagePath!;
 
+        // TODO: Move to isolate.
+        final image = img.decodeWebP(File(path).readAsBytesSync())!;
+
         final downloadDir;
-        if(Platform.isAndroid) {
+        if (Platform.isAndroid) {
           downloadDir = "/storage/emulated/0/Download/";
-        } else if(Platform.isIOS) {
+        } else if (Platform.isIOS) {
           downloadDir = (await getApplicationDocumentsDirectory()).path;
         } else {
           throw Exception("Unsupported platform");
         }
 
-        final outFile = "$downloadDir${task.id}.webp";
+        final outFile = "$downloadDir${task.id}.jpg";
 
-        await File(path).copy(outFile);
+        File(outFile).writeAsBytesSync(img.encodeJpg(image));
 
         ScaffoldMessenger.of(context).showSnackBar(
-           SnackBar(
+          SnackBar(
             content: Text("Saved to $outFile"),
           ),
         );
