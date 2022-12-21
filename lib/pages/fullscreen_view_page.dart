@@ -87,7 +87,7 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
     );
   }
 
-  Widget _saveButton(StableHordeTask task) {
+  Widget _shareButton(StableHordeTask task) {
     if (!task.isComplete()) return const SizedBox.shrink();
 
     return IconButton(
@@ -96,12 +96,6 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
         final outputFile = await imageTranscodeBloc.transcodeImageToJpg(task);
 
         Share.shareXFiles([XFile(outputFile.path)]);
-
-        /*ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text("Saved to ${outputFile.path}"),
-          ),
-        );*/
       },
     );
   }
@@ -125,7 +119,7 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
           const SizedBox(height: 12),
           Text(task.model),
           const Spacer(),
-          _saveButton(task),
+          _shareButton(task),
           const SizedBox(height: 12),
         ],
       ),
