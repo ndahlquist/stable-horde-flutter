@@ -4,6 +4,7 @@ import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/blocs/stable_horde_bloc.dart';
 import 'package:stable_horde_flutter/pages/home_page.dart';
 import 'package:stable_horde_flutter/pages/model_chooser_page.dart';
+import 'package:stable_horde_flutter/widgets/model_button.dart';
 
 class DreamTab extends StatefulWidget {
   const DreamTab({super.key});
@@ -68,17 +69,9 @@ class _DreamTabState extends State<DreamTab> {
             );
           },
         ),
-        ElevatedButton(
-          onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => const ModelChooserPage(),
-              ),
-            );
+        const SizedBox(height: 16),
+        const FractionallySizedBox(widthFactor: 1, child: ModelButton()),
 
-          },
-          child: Text("Models"),
-        ),
       ],
     );
   }
