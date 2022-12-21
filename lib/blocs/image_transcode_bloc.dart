@@ -20,7 +20,8 @@ class _ImageTranscodeBloc {
   }
 
   Future<File> transcodeAndSaveImage(StableHordeTask task) async {
-    final inputFile = File(task.imagePath!);
+    final directory = await getApplicationDocumentsDirectory();
+    final inputFile = File(directory.path + '/' + task.imageFilename!);
 
     final String downloadDir;
     if (Platform.isAndroid) {

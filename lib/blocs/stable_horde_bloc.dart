@@ -148,7 +148,7 @@ class _StableHordeBloc {
       );
     }
 
-    final directory = await getApplicationSupportDirectory();
+    final directory = await getApplicationDocumentsDirectory();
 
     final filename = '${DateTime.now().millisecondsSinceEpoch}.webp';
 
