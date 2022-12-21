@@ -19,20 +19,15 @@ class _ImageTranscodeBloc {
     param.outputFile.writeAsBytesSync(encodeJpg(image));
   }
 
-  Future<File> transcodeAndSaveImage(StableHordeTask task) async {
+  Future<File> transcodeImageToJpg(StableHordeTask task) async {
     final directory = await getApplicationDocumentsDirectory();
     final inputFile = File(directory.path + '/' + task.imageFilename!);
 
-    final String downloadDir;
-    if (Platform.isAndroid) {
-      downloadDir = "/storage/emulated/0/Download";
-    } else if (Platform.isIOS) {
-      downloadDir = (await getApplicationDocumentsDirectory()).path;
-    } else {
-      throw Exception("Unsupported platform");
-    }
+    final String dir = (await getTemporaryDirectory()).path;
 
-    final outputFile = File("$downloadDir/${task.id}.jpg");
+    final outputFile = File(
+      "$dir/${DateTime.now().millisecondsSinceEpoch}.jpg",
+    );
 
     await compute(
       _saveImage,

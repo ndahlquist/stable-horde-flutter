@@ -10,6 +10,8 @@ import 'package:stable_horde_flutter/main.dart';
 import 'package:stable_horde_flutter/model/stable_horde_task.dart';
 import 'package:stable_horde_flutter/widgets/task_progress_indicator.dart';
 
+import 'package:share_plus/share_plus.dart';
+
 class FullScreenViewPage extends StatefulWidget {
   final int initialIndex;
 
@@ -89,15 +91,17 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
     if (!task.isComplete()) return const SizedBox.shrink();
 
     return IconButton(
-      icon: const Icon(Icons.download),
+      icon: Icon(Icons.adaptive.share),
       onPressed: () async {
-        final outputFile = await imageTranscodeBloc.transcodeAndSaveImage(task);
+        final outputFile = await imageTranscodeBloc.transcodeImageToJpg(task);
 
-        ScaffoldMessenger.of(context).showSnackBar(
+        Share.shareXFiles([XFile(outputFile.path)]);
+
+        /*ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text("Saved to ${outputFile.path}"),
           ),
-        );
+        );*/
       },
     );
   }
