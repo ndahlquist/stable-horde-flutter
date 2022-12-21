@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/pages/model_chooser_page.dart';
@@ -11,9 +10,7 @@ class ModelButton extends StatefulWidget {
 }
 
 class _ModelButtonState extends State<ModelButton> {
-
   String currentModel = "stable_diffusion";
-
 
   @override
   void initState() {

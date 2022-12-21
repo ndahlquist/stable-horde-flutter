@@ -56,7 +56,7 @@ class ModelChooserPage extends StatelessWidget {
                         AspectRatio(
                           aspectRatio: 1,
                           child: CachedNetworkImage(
-                            imageUrl: model.previewImageUrl!,
+                            imageUrl: model.previewImageUrl,
                           ),
                         ),
                         Expanded(
@@ -76,7 +76,7 @@ class ModelChooserPage extends StatelessWidget {
                                 Text(
                                     "${model.workerCount} worker${model.workerCount == 1 ? "" : "s"}"),
                                 const SizedBox(height: 4),
-                                Text(model.description!),
+                                Text(model.description),
                               ],
                             ),
                           ),
