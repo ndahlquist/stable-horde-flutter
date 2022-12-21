@@ -7,16 +7,35 @@ import 'package:stable_horde_flutter/colors.dart';
 import 'package:stable_horde_flutter/model/stable_horde_task.dart';
 import 'package:stable_horde_flutter/widgets/task_progress_indicator.dart';
 
-class FullScreenViewPage extends StatelessWidget {
+class FullScreenViewPage extends StatefulWidget {
   final int initialIndex;
 
   const FullScreenViewPage({super.key, required this.initialIndex});
 
   @override
+  State<FullScreenViewPage> createState() => _FullScreenViewPageState();
+}
+
+class _FullScreenViewPageState extends State<FullScreenViewPage> {
+  late PageController pageController;
+
+  @override
+  void initState() {
+    super.initState();
+    pageController = PageController(initialPage: widget.initialIndex);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF230D49),
-      appBar: AppBar(backgroundColor: Colors.transparent, elevation: 0),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        actions: [
+          _deleteButton(),
+        ],
+      ),
       body: StreamBuilder<List<StableHordeTask>>(
         stream: stableHordeBloc.getTasksStream(),
         builder: (context, snapshot) {
@@ -37,7 +56,7 @@ class FullScreenViewPage extends StatelessWidget {
 
           tasks = tasks.reversed.toList();
           return PageView.builder(
-            controller: PageController(initialPage: initialIndex),
+            controller: pageController,
             scrollDirection: Axis.vertical,
             itemCount: tasks.length,
             itemBuilder: (context, index) {
@@ -47,6 +66,15 @@ class FullScreenViewPage extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+
+  Widget _deleteButton() {
+    return IconButton(
+      icon: const Icon(Icons.delete),
+      onPressed: () {
+        // Show confirmation dialog.
+      },
     );
   }
 
