@@ -68,7 +68,6 @@ class SettingsPage extends StatelessWidget {
                   borderSide: BorderSide(color: Colors.white),
                 ),
               ),
-              style: const TextStyle(color: Colors.white),
               onChanged: (value) {
                 sharedPrefsBloc.setApiKey(value);
               },

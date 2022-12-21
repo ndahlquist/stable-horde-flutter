@@ -37,11 +37,11 @@ class _DreamTabState extends State<DreamTab> {
             _promptWidget(),
             const SizedBox(height: 16),
             ExpandablePanel(
-              header: Text(
+              header: const Text(
                 "Advanced Options",
                 style: TextStyle(fontSize: 24),
               ),
-              collapsed: SizedBox.shrink(),
+              collapsed: const SizedBox.shrink(),
               expanded: _advancedOptions(),
               theme: const ExpandableThemeData(
                 iconColor: Colors.white,
@@ -66,16 +66,7 @@ class _DreamTabState extends State<DreamTab> {
       children: [
         TextField(
           controller: _negativePromptController,
-          decoration: const InputDecoration(
-            labelText: 'Negative Prompt',
-            enabledBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Colors.white),
-            ),
-            focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Colors.white),
-            ),
-          ),
-          style: const TextStyle(color: Colors.white),
+          decoration: _inputDecoration('Negative Prompt'),
           onChanged: (value) {
             //sharedPrefsBloc.setApiKey(value);
           },
@@ -85,22 +76,24 @@ class _DreamTabState extends State<DreamTab> {
   }
 
   Widget _promptWidget() {
-
     return TextField(
       controller: TextEditingController(text: _prompt),
-      decoration: const InputDecoration(
-        labelText: 'Prompt',
-        enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.white),
-        ),
-        focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.white),
-        ),
-      ),
-      style: const TextStyle(color: Colors.white),
+      decoration: _inputDecoration('Prompt'),
       onChanged: (prompt) {
         sharedPrefsBloc.setPrompt(prompt);
       },
+    );
+  }
+
+  InputDecoration _inputDecoration(String label) {
+    return  InputDecoration(
+      labelText: label,
+      enabledBorder: const UnderlineInputBorder(
+        borderSide: BorderSide(color: Colors.white),
+      ),
+      focusedBorder: const UnderlineInputBorder(
+        borderSide: BorderSide(color: Colors.white),
+      ),
     );
   }
 
