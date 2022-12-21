@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/blocs/stable_horde_bloc.dart';
 import 'package:stable_horde_flutter/pages/home_page.dart';
-import 'package:stable_horde_flutter/pages/prompt_edit_page.dart';
 
 class DreamTab extends StatefulWidget {
   const DreamTab({super.key});
@@ -14,6 +13,8 @@ class DreamTab extends StatefulWidget {
 
 class _DreamTabState extends State<DreamTab> {
   String _prompt = "";
+
+  final _negativePromptController = TextEditingController();
 
   @override
   void initState() {
@@ -41,10 +42,7 @@ class _DreamTabState extends State<DreamTab> {
                 style: TextStyle(fontSize: 24),
               ),
               collapsed: SizedBox.shrink(),
-              expanded: Text(
-                "expanded",
-                softWrap: true,
-              ),
+              expanded: _advancedOptions(),
               theme: const ExpandableThemeData(
                 iconColor: Colors.white,
               ),
@@ -63,50 +61,51 @@ class _DreamTabState extends State<DreamTab> {
     );
   }
 
-  Widget _promptWidget() {
-    String promptToShow = _prompt.trim();
-    if (promptToShow.isEmpty) {
-      promptToShow = "Tap here to describe what we're painting today.";
-    }
-
-    return GestureDetector(
-      onTap: () async {
-        final newPrompt = await Navigator.of(context).push<String>(
-          MaterialPageRoute(
-            builder: (_) => PromptEditPage(initialText: _prompt),
-          ),
-        );
-        if (newPrompt == null) return;
-        sharedPrefsBloc.setPrompt(newPrompt);
-        setState(() {
-          _prompt = newPrompt;
-        });
-      },
-      child: FractionallySizedBox(
-        widthFactor: 1,
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white.withOpacity(.1),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Text(
-              promptToShow,
-              maxLines: 3,
-              style: TextStyle(
-                fontSize: _prompt.isEmpty ? 16 : 10,
-              ),
-              textAlign: TextAlign.center,
+  Widget _advancedOptions() {
+    return Column(
+      children: [
+        TextField(
+          controller: _negativePromptController,
+          decoration: const InputDecoration(
+            labelText: 'Negative Prompt',
+            enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.white),
+            ),
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.white),
             ),
           ),
+          style: const TextStyle(color: Colors.white),
+          onChanged: (value) {
+            //sharedPrefsBloc.setApiKey(value);
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _promptWidget() {
+
+    return TextField(
+      controller: TextEditingController(text: _prompt),
+      decoration: const InputDecoration(
+        labelText: 'Prompt',
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.white),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.white),
         ),
       ),
+      style: const TextStyle(color: Colors.white),
+      onChanged: (prompt) {
+        sharedPrefsBloc.setPrompt(prompt);
+      },
     );
   }
 
   Future _attemptToGenerate() async {
-    if (_prompt.isEmpty) {
+    if (_prompt.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text("Please enter a prompt first."),
