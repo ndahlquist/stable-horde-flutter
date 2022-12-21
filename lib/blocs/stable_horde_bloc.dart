@@ -242,12 +242,19 @@ class _StableHordeBloc {
     return modelsWithDetails;
   }
 
+  List<StableHordeModel>? _cachedModels;
+
   Future<List<StableHordeModel>> getModels() async {
+    if (_cachedModels != null) {
+      return _cachedModels!;
+    }
+
     final models = await _getModels();
 
     models.sort((a, b) => b.workerCount.compareTo(a.workerCount));
 
-    return await _getModelDetails(models);
+    _cachedModels = await _getModelDetails(models);
+    return _cachedModels!;
   }
 }
 
