@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stable_horde_flutter/blocs/stable_horde_bloc.dart';
 import 'package:stable_horde_flutter/colors.dart';
+import 'package:stable_horde_flutter/main.dart';
 import 'package:stable_horde_flutter/model/stable_horde_task.dart';
 import 'package:stable_horde_flutter/widgets/task_progress_indicator.dart';
 
@@ -18,6 +19,7 @@ class FullScreenViewPage extends StatefulWidget {
 
 class _FullScreenViewPageState extends State<FullScreenViewPage> {
   late PageController pageController;
+  late List<StableHordeTask> tasks;
 
   @override
   void initState() {
@@ -52,9 +54,8 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
               stackTrace: snapshot.stackTrace,
             );
           }
-          var tasks = snapshot.data ?? [];
+          tasks = snapshot.data?.reversed.toList() ?? [];
 
-          tasks = tasks.reversed.toList();
           return PageView.builder(
             controller: pageController,
             scrollDirection: Axis.vertical,
@@ -73,7 +74,11 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
     return IconButton(
       icon: const Icon(Icons.delete),
       onPressed: () {
-        // Show confirmation dialog.
+        final task = tasks[pageController.page!.toInt()];
+        isar.writeTxn(() async {
+          return isar.stableHordeTasks.delete(task.id);
+        });
+        Navigator.of(context).pop();
       },
     );
   }
