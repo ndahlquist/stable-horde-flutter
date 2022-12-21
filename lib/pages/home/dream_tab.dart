@@ -67,6 +67,9 @@ class _DreamTabState extends State<DreamTab> {
         TextField(
           controller: _negativePromptController,
           decoration: _inputDecoration('Negative Prompt'),
+          keyboardType: TextInputType.multiline,
+          maxLines: 5,
+          textCapitalization: TextCapitalization.sentences,
           onChanged: (value) {
             //sharedPrefsBloc.setApiKey(value);
           },
@@ -79,6 +82,10 @@ class _DreamTabState extends State<DreamTab> {
     return TextField(
       controller: TextEditingController(text: _prompt),
       decoration: _inputDecoration('Prompt'),
+      keyboardType: TextInputType.multiline,
+      maxLines: 5,
+      autofocus: true,
+      textCapitalization: TextCapitalization.sentences,
       onChanged: (prompt) {
         sharedPrefsBloc.setPrompt(prompt);
       },
@@ -86,7 +93,7 @@ class _DreamTabState extends State<DreamTab> {
   }
 
   InputDecoration _inputDecoration(String label) {
-    return  InputDecoration(
+    return InputDecoration(
       labelText: label,
       enabledBorder: const UnderlineInputBorder(
         borderSide: BorderSide(color: Colors.white),
