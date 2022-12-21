@@ -15,36 +15,39 @@ class SettingsPage extends StatelessWidget {
         elevation: 0,
         title: const Text('Settings'),
       ),
-      body: Column(
-        children: [
-          _apiKeyField(),
-          const Padding(
-            padding: EdgeInsets.only(
-              top: 64.0,
-              left: 16.0,
-              bottom: 16,
-            ),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                'Legal',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+      body: SingleChildScrollView(
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+        child: Column(
+          children: [
+            _apiKeyField(),
+            const Padding(
+              padding: EdgeInsets.only(
+                top: 64.0,
+                left: 16.0,
+                bottom: 16,
+              ),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Legal',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.left,
                 ),
-                textAlign: TextAlign.left,
               ),
             ),
-          ),
-          const ListTile(
-            title: Text('Privacy Policy'),
-            onTap: launchPrivacyPolicy,
-          ),
-          const ListTile(
-            title: Text('Terms of Service'),
-            onTap: launchTermsOfService,
-          ),
-        ],
+            const ListTile(
+              title: Text('Privacy Policy'),
+              onTap: launchPrivacyPolicy,
+            ),
+            const ListTile(
+              title: Text('Terms of Service'),
+              onTap: launchTermsOfService,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -53,26 +56,27 @@ class SettingsPage extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12),
       child: FutureBuilder<String?>(
-          future: sharedPrefsBloc.getApiKey(),
-          builder: (context, snapshot) {
-            final apiKey = snapshot.data ?? '';
+        future: sharedPrefsBloc.getApiKey(),
+        builder: (context, snapshot) {
+          final apiKey = snapshot.data ?? '';
 
-            return TextField(
-              controller: TextEditingController(text: apiKey),
-              decoration: const InputDecoration(
-                labelText: 'API Key',
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white),
-                ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white),
-                ),
+          return TextField(
+            controller: TextEditingController(text: apiKey),
+            decoration: const InputDecoration(
+              labelText: 'API Key',
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.white),
               ),
-              onChanged: (value) {
-                sharedPrefsBloc.setApiKey(value);
-              },
-            );
-          }),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.white),
+              ),
+            ),
+            onChanged: (value) {
+              sharedPrefsBloc.setApiKey(value);
+            },
+          );
+        },
+      ),
     );
   }
 }
