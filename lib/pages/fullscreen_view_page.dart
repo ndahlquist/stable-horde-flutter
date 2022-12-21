@@ -4,19 +4,40 @@ import 'package:flutter/material.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stable_horde_flutter/blocs/stable_horde_bloc.dart';
 import 'package:stable_horde_flutter/colors.dart';
+import 'package:stable_horde_flutter/main.dart';
 import 'package:stable_horde_flutter/model/stable_horde_task.dart';
 import 'package:stable_horde_flutter/widgets/task_progress_indicator.dart';
 
-class FullScreenViewPage extends StatelessWidget {
+class FullScreenViewPage extends StatefulWidget {
   final int initialIndex;
 
   const FullScreenViewPage({super.key, required this.initialIndex});
 
   @override
+  State<FullScreenViewPage> createState() => _FullScreenViewPageState();
+}
+
+class _FullScreenViewPageState extends State<FullScreenViewPage> {
+  late PageController pageController;
+  late List<StableHordeTask> tasks;
+
+  @override
+  void initState() {
+    super.initState();
+    pageController = PageController(initialPage: widget.initialIndex);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF230D49),
-      appBar: AppBar(backgroundColor: Colors.transparent, elevation: 0),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        actions: [
+          _deleteButton(),
+        ],
+      ),
       body: StreamBuilder<List<StableHordeTask>>(
         stream: stableHordeBloc.getTasksStream(),
         builder: (context, snapshot) {
@@ -33,11 +54,10 @@ class FullScreenViewPage extends StatelessWidget {
               stackTrace: snapshot.stackTrace,
             );
           }
-          var tasks = snapshot.data ?? [];
+          tasks = snapshot.data?.reversed.toList() ?? [];
 
-          tasks = tasks.reversed.toList();
           return PageView.builder(
-            controller: PageController(initialPage: initialIndex),
+            controller: pageController,
             scrollDirection: Axis.vertical,
             itemCount: tasks.length,
             itemBuilder: (context, index) {
@@ -47,6 +67,19 @@ class FullScreenViewPage extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+
+  Widget _deleteButton() {
+    return IconButton(
+      icon: const Icon(Icons.delete),
+      onPressed: () {
+        final task = tasks[pageController.page!.toInt()];
+        isar.writeTxn(() async {
+          return isar.stableHordeTasks.delete(task.id);
+        });
+        Navigator.of(context).pop();
+      },
     );
   }
 
