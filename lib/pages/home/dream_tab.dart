@@ -119,7 +119,7 @@ class _DreamTabState extends State<DreamTab> {
       return;
     }
 
-    stableHordeBloc.requestDiffusion(_prompt);
+    stableHordeBloc.requestDiffusion();
     homeController.animateToPage(1);
   }
 }

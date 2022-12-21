@@ -10,7 +10,10 @@ import 'package:stable_horde_flutter/main.dart';
 import 'package:stable_horde_flutter/model/stable_horde_task.dart';
 
 class _StableHordeBloc {
-  Future requestDiffusion(String prompt) async {
+  Future requestDiffusion() async {
+    final prompt = await sharedPrefsBloc.getPrompt();
+    final negativePrompt = await sharedPrefsBloc.getNegativePrompt();
+
     // Add new task to db.
     final dbId = await isar.writeTxn(() async {
       return isar.stableHordeTasks.put(StableHordeTask(prompt));
@@ -28,8 +31,10 @@ class _StableHordeBloc {
       "apikey": apiKey,
     };
 
+
     final json = {
       'prompt': prompt,
+      'negative_prompt': negativePrompt,
       'params': {
         'steps': 30,
         'n': 1,
