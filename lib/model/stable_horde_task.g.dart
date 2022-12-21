@@ -32,8 +32,18 @@ const StableHordeTaskSchema = CollectionSchema(
       name: r'imagePath',
       type: IsarType.string,
     ),
-    r'prompt': PropertySchema(
+    r'model': PropertySchema(
       id: 3,
+      name: r'model',
+      type: IsarType.string,
+    ),
+    r'negativePrompt': PropertySchema(
+      id: 4,
+      name: r'negativePrompt',
+      type: IsarType.string,
+    ),
+    r'prompt': PropertySchema(
+      id: 5,
       name: r'prompt',
       type: IsarType.string,
     )
@@ -64,6 +74,8 @@ int _stableHordeTaskEstimateSize(
       bytesCount += 3 + value.length * 3;
     }
   }
+  bytesCount += 3 + object.model.length * 3;
+  bytesCount += 3 + object.negativePrompt.length * 3;
   bytesCount += 3 + object.prompt.length * 3;
   return bytesCount;
 }
@@ -77,7 +89,9 @@ void _stableHordeTaskSerialize(
   writer.writeDateTime(offsets[0], object.estimatedCompletionTime);
   writer.writeDateTime(offsets[1], object.firstShowProgressIndicatorTime);
   writer.writeString(offsets[2], object.imagePath);
-  writer.writeString(offsets[3], object.prompt);
+  writer.writeString(offsets[3], object.model);
+  writer.writeString(offsets[4], object.negativePrompt);
+  writer.writeString(offsets[5], object.prompt);
 }
 
 StableHordeTask _stableHordeTaskDeserialize(
@@ -87,6 +101,8 @@ StableHordeTask _stableHordeTaskDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = StableHordeTask(
+    reader.readString(offsets[5]),
+    reader.readString(offsets[4]),
     reader.readString(offsets[3]),
   );
   object.estimatedCompletionTime = reader.readDateTimeOrNull(offsets[0]);
@@ -110,6 +126,10 @@ P _stableHordeTaskDeserializeProp<P>(
     case 2:
       return (reader.readStringOrNull(offset)) as P;
     case 3:
+      return (reader.readString(offset)) as P;
+    case 4:
+      return (reader.readString(offset)) as P;
+    case 5:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -570,6 +590,278 @@ extension StableHordeTaskQueryFilter
   }
 
   QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      modelEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'model',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      modelGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'model',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      modelLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'model',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      modelBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'model',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      modelStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'model',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      modelEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'model',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      modelContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'model',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      modelMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'model',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      modelIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'model',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      modelIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'model',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      negativePromptEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'negativePrompt',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      negativePromptGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'negativePrompt',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      negativePromptLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'negativePrompt',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      negativePromptBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'negativePrompt',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      negativePromptStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'negativePrompt',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      negativePromptEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'negativePrompt',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      negativePromptContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'negativePrompt',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      negativePromptMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'negativePrompt',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      negativePromptIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'negativePrompt',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      negativePromptIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'negativePrompt',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
       promptEqualTo(
     String value, {
     bool caseSensitive = true,
@@ -756,6 +1048,33 @@ extension StableHordeTaskQuerySortBy
     });
   }
 
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy> sortByModel() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'model', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy>
+      sortByModelDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'model', Sort.desc);
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy>
+      sortByNegativePrompt() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'negativePrompt', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy>
+      sortByNegativePromptDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'negativePrompt', Sort.desc);
+    });
+  }
+
   QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy> sortByPrompt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'prompt', Sort.asc);
@@ -826,6 +1145,33 @@ extension StableHordeTaskQuerySortThenBy
     });
   }
 
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy> thenByModel() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'model', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy>
+      thenByModelDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'model', Sort.desc);
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy>
+      thenByNegativePrompt() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'negativePrompt', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy>
+      thenByNegativePromptDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'negativePrompt', Sort.desc);
+    });
+  }
+
   QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy> thenByPrompt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'prompt', Sort.asc);
@@ -863,6 +1209,21 @@ extension StableHordeTaskQueryWhereDistinct
     });
   }
 
+  QueryBuilder<StableHordeTask, StableHordeTask, QDistinct> distinctByModel(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'model', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QDistinct>
+      distinctByNegativePrompt({bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'negativePrompt',
+          caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<StableHordeTask, StableHordeTask, QDistinct> distinctByPrompt(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -896,6 +1257,19 @@ extension StableHordeTaskQueryProperty
   QueryBuilder<StableHordeTask, String?, QQueryOperations> imagePathProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'imagePath');
+    });
+  }
+
+  QueryBuilder<StableHordeTask, String, QQueryOperations> modelProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'model');
+    });
+  }
+
+  QueryBuilder<StableHordeTask, String, QQueryOperations>
+      negativePromptProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'negativePrompt');
     });
   }
 

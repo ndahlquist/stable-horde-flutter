@@ -18,7 +18,8 @@ class _StableHordeBloc {
 
     // Add new task to db.
     final dbId = await isar.writeTxn(() async {
-      return isar.stableHordeTasks.put(StableHordeTask(prompt));
+      final task = StableHordeTask(prompt, negativePrompt, model);
+      return isar.stableHordeTasks.put(task);
     });
     final task = await isar.stableHordeTasks.get(dbId);
 
