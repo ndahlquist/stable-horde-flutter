@@ -41,6 +41,7 @@ class _MyArtTabState extends State<MyArtTab>
         tasks = tasks.reversed.toList();
 
         return GridView.builder(
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           itemCount: tasks.length,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,

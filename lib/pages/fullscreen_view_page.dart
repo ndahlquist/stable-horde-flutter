@@ -85,14 +85,11 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
   }
 
   Widget _saveButton(StableHordeTask task) {
-
     if (!task.isComplete()) return const SizedBox.shrink();
-
 
     return IconButton(
       icon: const Icon(Icons.download),
       onPressed: () async {
-
         final outputFile = await imageTranscodeBloc.transcodeAndSaveImage(task);
 
         ScaffoldMessenger.of(context).showSnackBar(
