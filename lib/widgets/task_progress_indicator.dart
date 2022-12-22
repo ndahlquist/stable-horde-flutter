@@ -22,9 +22,7 @@ class TaskProgressIndicator extends StatelessWidget {
           duration: Duration(milliseconds: 500),
           child: TimedProgressIndicator(
             startTime: task.firstShowProgressIndicatorTime!,
-            completionTime: task.estimatedCompletionTime!.add(
-              const Duration(seconds: 2),
-            ),
+            completionTime: task.estimatedCompletionTime!,
           ),
         ),
       );

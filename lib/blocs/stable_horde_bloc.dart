@@ -85,8 +85,8 @@ class _StableHordeBloc {
     for (int i = 0; i < 10000; i++) {
       await Future.delayed(const Duration(seconds: 2));
       print('update $i');
-      if (task.estimatedCompletionTime != null) {
-        if (DateTime.now().isBefore(task.estimatedCompletionTime!)) {
+      if (task.nextUpdateTime != null) {
+        if (DateTime.now().isBefore(task.nextUpdateTime!)) {
           continue;
         }
       }
@@ -122,7 +122,16 @@ class _StableHordeBloc {
       print('Estimated completion time: $estimatedCompletionTime');
 
       task.firstShowProgressIndicatorTime ??= DateTime.now();
-      task.estimatedCompletionTime = estimatedCompletionTime;
+      task.estimatedCompletionTime = estimatedCompletionTime.add(
+        const Duration(seconds: 2),
+      );
+
+      // Update at least every 15 seconds.
+      if (waitSeconds > 15) {
+        task.nextUpdateTime = DateTime.now().add(const Duration(seconds: 15));
+      } else {
+        task.nextUpdateTime = estimatedCompletionTime;
+      }
 
       final generations = jsonResponse['generations'] as List;
 

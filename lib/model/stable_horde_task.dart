@@ -16,6 +16,7 @@ class StableHordeTask {
   String? imageFilename;
 
   DateTime? firstShowProgressIndicatorTime;
+  DateTime? nextUpdateTime;
   DateTime? estimatedCompletionTime;
 
   StableHordeTask(this.prompt, this.negativePrompt, this.model);
