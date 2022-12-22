@@ -179,7 +179,7 @@ class _StableHordeBloc {
         continue;
       }
 
-      await requestDiffusion();
+      _waitOnTask(task);
     }
   }
 
