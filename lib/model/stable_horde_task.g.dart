@@ -107,7 +107,7 @@ StableHordeTask _stableHordeTaskDeserialize(
   );
   object.estimatedCompletionTime = reader.readDateTimeOrNull(offsets[0]);
   object.firstShowProgressIndicatorTime = reader.readDateTimeOrNull(offsets[1]);
-  object.id = id;
+  object.dbId = id;
   object.imageFilename = reader.readStringOrNull(offsets[2]);
   return object;
 }
@@ -137,7 +137,7 @@ P _stableHordeTaskDeserializeProp<P>(
 }
 
 Id _stableHordeTaskGetId(StableHordeTask object) {
-  return object.id;
+  return object.dbId;
 }
 
 List<IsarLinkBase<dynamic>> _stableHordeTaskGetLinks(StableHordeTask object) {
@@ -146,7 +146,7 @@ List<IsarLinkBase<dynamic>> _stableHordeTaskGetLinks(StableHordeTask object) {
 
 void _stableHordeTaskAttach(
     IsarCollection<dynamic> col, Id id, StableHordeTask object) {
-  object.id = id;
+  object.dbId = id;
 }
 
 extension StableHordeTaskQueryWhereSort

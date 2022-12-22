@@ -80,7 +80,7 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
       onPressed: () {
         final task = tasks[pageController.page!.toInt()];
         isar.writeTxn(() async {
-          return isar.stableHordeTasks.delete(task.id);
+          return isar.stableHordeTasks.delete(task.dbId);
         });
         Navigator.of(context).pop();
       },

@@ -21,7 +21,8 @@ class _StableHordeBloc {
       final task = StableHordeTask(prompt, negativePrompt, model);
       return isar.stableHordeTasks.put(task);
     });
-    final task = await isar.stableHordeTasks.get(dbId)!;
+    final task = await isar.stableHordeTasks.get(dbId);
+    task!;
 
     var apiKey = await sharedPrefsBloc.getApiKey();
     apiKey ??= "0000000000"; // Anonymous API key.
@@ -71,7 +72,11 @@ class _StableHordeBloc {
       );
     }
     final jsonResponse = jsonDecode(response.body);
-    final taskId = jsonResponse['id']!;
+
+    task.stableHordeId = jsonResponse['id']!;
+    await isar.writeTxn(() async {
+      isar.stableHordeTasks.put(task);
+    });
 
     _waitOnTask(task);
   }
@@ -88,7 +93,7 @@ class _StableHordeBloc {
 
       final response = await http.get(
         Uri.parse(
-          'https://stablehorde.net/api/v2/generate/status/$taskId',
+          'https://stablehorde.net/api/v2/generate/status/${task.stableHordeId!}',
         ),
       );
       if (response.statusCode == 429) {

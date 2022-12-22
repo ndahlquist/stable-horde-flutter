@@ -4,11 +4,14 @@ part 'stable_horde_task.g.dart';
 
 @collection
 class StableHordeTask {
-  Id id = Isar.autoIncrement;
+  Id dbId = Isar.autoIncrement;
 
   String prompt;
   String model;
   String negativePrompt;
+
+  // Id used to reference this task via the stable horde API.
+  String? stableHordeId;
 
   String? imageFilename;
 
