@@ -55,8 +55,11 @@ class ModelChooserPage extends StatelessWidget {
                       children: [
                         AspectRatio(
                           aspectRatio: 1,
-                          child: CachedNetworkImage(
-                            imageUrl: model.previewImageUrl,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(4),
+                            child: CachedNetworkImage(
+                              imageUrl: model.previewImageUrl,
+                            ),
                           ),
                         ),
                         Expanded(
