@@ -101,35 +101,40 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
   }
 
   Widget _page(BuildContext context, StableHordeTask task) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          AspectRatio(
-            aspectRatio: 1,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(4),
-              child: AnimatedSwitcher(
-                duration: const Duration(milliseconds: 500),
-                switchInCurve: Curves.easeInOut,
-                switchOutCurve: Curves.easeInOut,
-                child: _imageSection(context, task),
+    return SafeArea(
+      left: false,
+      top: false,
+      right: false,
+      minimum: const EdgeInsets.only(bottom: 12),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            AspectRatio(
+              aspectRatio: 1,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(4),
+                child: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 500),
+                  switchInCurve: Curves.easeInOut,
+                  switchOutCurve: Curves.easeInOut,
+                  child: _imageSection(context, task),
+                ),
               ),
             ),
-          ),
-          const SizedBox(height: 12),
-          Text(task.prompt),
-          const SizedBox(height: 12),
-          if (task.negativePrompt.isNotEmpty) ...[
-            Text("Negative prompt: ${task.negativePrompt}"),
+            const SizedBox(height: 12),
+            Text(task.prompt),
+            const SizedBox(height: 12),
+            if (task.negativePrompt.isNotEmpty) ...[
+              Text("Negative prompt: ${task.negativePrompt}"),
+            ],
+            const SizedBox(height: 12),
+            Text(task.model),
+            const Spacer(),
+            _shareButton(task),
           ],
-          const SizedBox(height: 12),
-          Text(task.model),
-          const Spacer(),
-          _shareButton(task),
-          const SizedBox(height: 12),
-        ],
+        ),
       ),
     );
   }
