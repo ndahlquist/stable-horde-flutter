@@ -42,13 +42,18 @@ const StableHordeTaskSchema = CollectionSchema(
       name: r'negativePrompt',
       type: IsarType.string,
     ),
-    r'prompt': PropertySchema(
+    r'nextUpdateTime': PropertySchema(
       id: 5,
+      name: r'nextUpdateTime',
+      type: IsarType.dateTime,
+    ),
+    r'prompt': PropertySchema(
+      id: 6,
       name: r'prompt',
       type: IsarType.string,
     ),
     r'stableHordeId': PropertySchema(
-      id: 6,
+      id: 7,
       name: r'stableHordeId',
       type: IsarType.string,
     )
@@ -102,8 +107,9 @@ void _stableHordeTaskSerialize(
   writer.writeString(offsets[2], object.imageFilename);
   writer.writeString(offsets[3], object.model);
   writer.writeString(offsets[4], object.negativePrompt);
-  writer.writeString(offsets[5], object.prompt);
-  writer.writeString(offsets[6], object.stableHordeId);
+  writer.writeDateTime(offsets[5], object.nextUpdateTime);
+  writer.writeString(offsets[6], object.prompt);
+  writer.writeString(offsets[7], object.stableHordeId);
 }
 
 StableHordeTask _stableHordeTaskDeserialize(
@@ -113,7 +119,7 @@ StableHordeTask _stableHordeTaskDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = StableHordeTask(
-    reader.readString(offsets[5]),
+    reader.readString(offsets[6]),
     reader.readString(offsets[4]),
     reader.readString(offsets[3]),
   );
@@ -121,7 +127,8 @@ StableHordeTask _stableHordeTaskDeserialize(
   object.estimatedCompletionTime = reader.readDateTimeOrNull(offsets[0]);
   object.firstShowProgressIndicatorTime = reader.readDateTimeOrNull(offsets[1]);
   object.imageFilename = reader.readStringOrNull(offsets[2]);
-  object.stableHordeId = reader.readStringOrNull(offsets[6]);
+  object.nextUpdateTime = reader.readDateTimeOrNull(offsets[5]);
+  object.stableHordeId = reader.readStringOrNull(offsets[7]);
   return object;
 }
 
@@ -143,8 +150,10 @@ P _stableHordeTaskDeserializeProp<P>(
     case 4:
       return (reader.readString(offset)) as P;
     case 5:
-      return (reader.readString(offset)) as P;
+      return (reader.readDateTimeOrNull(offset)) as P;
     case 6:
+      return (reader.readString(offset)) as P;
+    case 7:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -876,6 +885,80 @@ extension StableHordeTaskQueryFilter
   }
 
   QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      nextUpdateTimeIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'nextUpdateTime',
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      nextUpdateTimeIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'nextUpdateTime',
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      nextUpdateTimeEqualTo(DateTime? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'nextUpdateTime',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      nextUpdateTimeGreaterThan(
+    DateTime? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'nextUpdateTime',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      nextUpdateTimeLessThan(
+    DateTime? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'nextUpdateTime',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      nextUpdateTimeBetween(
+    DateTime? lower,
+    DateTime? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'nextUpdateTime',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
       promptEqualTo(
     String value, {
     bool caseSensitive = true,
@@ -1243,6 +1326,20 @@ extension StableHordeTaskQuerySortBy
     });
   }
 
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy>
+      sortByNextUpdateTime() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'nextUpdateTime', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy>
+      sortByNextUpdateTimeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'nextUpdateTime', Sort.desc);
+    });
+  }
+
   QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy> sortByPrompt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'prompt', Sort.asc);
@@ -1355,6 +1452,20 @@ extension StableHordeTaskQuerySortThenBy
     });
   }
 
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy>
+      thenByNextUpdateTime() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'nextUpdateTime', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy>
+      thenByNextUpdateTimeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'nextUpdateTime', Sort.desc);
+    });
+  }
+
   QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy> thenByPrompt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'prompt', Sort.asc);
@@ -1422,6 +1533,13 @@ extension StableHordeTaskQueryWhereDistinct
     });
   }
 
+  QueryBuilder<StableHordeTask, StableHordeTask, QDistinct>
+      distinctByNextUpdateTime() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'nextUpdateTime');
+    });
+  }
+
   QueryBuilder<StableHordeTask, StableHordeTask, QDistinct> distinctByPrompt(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1477,6 +1595,13 @@ extension StableHordeTaskQueryProperty
       negativePromptProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'negativePrompt');
+    });
+  }
+
+  QueryBuilder<StableHordeTask, DateTime?, QQueryOperations>
+      nextUpdateTimeProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'nextUpdateTime');
     });
   }
 

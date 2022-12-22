@@ -20,9 +20,7 @@ class TaskProgressIndicator extends StatelessWidget {
       return Center(
         child: TimedProgressIndicator(
           startTime: task.firstShowProgressIndicatorTime!,
-          completionTime: task.estimatedCompletionTime!.add(
-            const Duration(seconds: 2),
-          ),
+          completionTime: task.estimatedCompletionTime!,
         ),
       );
     }
