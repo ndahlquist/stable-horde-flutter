@@ -49,7 +49,7 @@ class _TaskProgressIndicatorState extends State<TaskProgressIndicator> {
     } else {
       progressIndicator = Center(
         child: AnimatedSwitcher(
-          duration: const Duration(milliseconds: 500),
+          duration: const Duration(milliseconds: 200),
           child: TimedProgressIndicator(
             key: ValueKey(widget.task.estimatedCompletionTime),
             startTime: widget.task.firstShowProgressIndicatorTime!,
