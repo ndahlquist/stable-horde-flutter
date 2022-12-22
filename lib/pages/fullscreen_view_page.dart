@@ -35,7 +35,8 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF230D49),
+      //backgroundColor: const Color(0xFF230D49),
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -118,9 +119,6 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
           ),
         ),
         SafeArea(
-          left: false,
-          top: false,
-          right: false,
           minimum: const EdgeInsets.only(bottom: 12),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12),
