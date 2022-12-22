@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
@@ -34,9 +35,10 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF230D49),
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
+        title: const Text('Stable Horde'),
         elevation: 0,
         actions: [
           _deleteButton(),
@@ -101,71 +103,108 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
   }
 
   Widget _page(BuildContext context, StableHordeTask task) {
-    return SafeArea(
-      left: false,
-      top: false,
-      right: false,
-      minimum: const EdgeInsets.only(bottom: 12),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            AspectRatio(
-              aspectRatio: 1,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(4),
-                child: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 500),
-                  switchInCurve: Curves.easeInOut,
-                  switchOutCurve: Curves.easeInOut,
-                  child: _imageSection(context, task),
-                ),
+    return ClipRect(
+      child: Stack(
+        children: [
+          FractionallySizedBox(
+            heightFactor: 1,
+            child: ImageFiltered(
+              imageFilter: ImageFilter.blur(
+                sigmaX: 64,
+                sigmaY: 64,
+                tileMode: TileMode.clamp,
+              ),
+              child: _darken(
+                child: _image(context, task),
               ),
             ),
-            const SizedBox(height: 12),
-            Text(task.prompt),
-            const SizedBox(height: 12),
-            if (task.negativePrompt.isNotEmpty) ...[
-              Text("Negative prompt: ${task.negativePrompt}"),
-            ],
-            const SizedBox(height: 12),
-            Text(task.model),
-            const Spacer(),
-            _shareButton(task),
-          ],
-        ),
+          ),
+          SafeArea(
+            minimum: const EdgeInsets.only(bottom: 12),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  AspectRatio(
+                    aspectRatio: 1,
+                    child: Stack(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(4),
+                          child: _image(context, task),
+                        ),
+                        if (!task.isComplete()) TaskProgressIndicator(task),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Text(task.prompt),
+                  const SizedBox(height: 12),
+                  if (task.negativePrompt.isNotEmpty) ...[
+                    Text("Negative prompt: ${task.negativePrompt}"),
+                  ],
+                  const SizedBox(height: 12),
+                  Text(task.model),
+                  const Spacer(),
+                  _shareButton(task),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
 
-  Widget _imageSection(BuildContext context, StableHordeTask task) {
-    final filename = task.imageFilename;
-
-    if (filename == null) {
-      return Stack(
-        children: [
-          const FractionallySizedBox(
-            widthFactor: 1,
-            heightFactor: 1,
-            child: ColoredBox(color: stableHordeGrey),
-          ),
-          TaskProgressIndicator(task),
-        ],
-      );
-    }
-
+  Widget _image(BuildContext context, StableHordeTask task) {
     return FutureBuilder<Directory>(
       future: getApplicationDocumentsDirectory(),
       builder: (context, snapshot) {
-        final directory = snapshot.data;
-        if (directory == null) return const SizedBox();
+        final filename = task.imageFilename;
 
-        return Image.file(
-          File(directory.path + '/' + filename),
-          fit: BoxFit.cover,
+        final directory = snapshot.data;
+
+        final Widget child;
+
+        if (directory == null || filename == null) {
+          child = const FractionallySizedBox(
+            widthFactor: 1,
+            heightFactor: 1,
+            key: ValueKey('colored box'),
+            child: ColoredBox(color: stableHordeGrey),
+          );
+        } else {
+          child = FractionallySizedBox(
+            widthFactor: 1,
+            heightFactor: 1,
+            key: ValueKey(filename),
+            child: Image.file(
+              File(directory.path + '/' + filename),
+              fit: BoxFit.cover,
+            ),
+          );
+        }
+
+        return AnimatedSwitcher(
+          duration: const Duration(milliseconds: 500),
+          switchInCurve: Curves.easeInOut,
+          switchOutCurve: Curves.easeInOut,
+          child: child,
         );
       },
+    );
+  }
+
+  // Applying a slight dark shade to the shadows gives some contrast
+  //  for the case that the foreground is very bright.
+  Widget _darken({required Widget child}) {
+    return ColorFiltered(
+      colorFilter: ColorFilter.mode(
+        Colors.grey[600]!,
+        BlendMode.modulate,
+      ),
+      child: child,
     );
   }
 }
