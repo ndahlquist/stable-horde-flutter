@@ -132,7 +132,11 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
                           borderRadius: BorderRadius.circular(4),
                           child: TaskImage(task: task),
                         ),
-                        if (!task.isComplete()) TaskProgressIndicator(task),
+                        if (!task.isComplete())
+                          TaskProgressIndicator(
+                            task,
+                            showText: true,
+                          ),
                       ],
                     ),
                   ),
