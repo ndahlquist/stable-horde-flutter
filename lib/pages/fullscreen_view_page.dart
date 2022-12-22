@@ -43,7 +43,6 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
         actions: [
           _deleteButton(),
         ],
-
       ),
       body: StreamBuilder<List<StableHordeTask>>(
         stream: stableHordeBloc.getTasksStream(),
@@ -116,7 +115,7 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
                 tileMode: TileMode.clamp,
               ),
               child: _darken(
-                child: _imageSection(context, task),
+                child: _image(context, task),
               ),
             ),
           ),
@@ -129,14 +128,19 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
                 children: [
                   AspectRatio(
                     aspectRatio: 1,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(4),
-                      child: AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 500),
-                        switchInCurve: Curves.easeInOut,
-                        switchOutCurve: Curves.easeInOut,
-                        child: _imageSection(context, task),
-                      ),
+                    child: Stack(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(4),
+                          child: AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 500),
+                            switchInCurve: Curves.easeInOut,
+                            switchOutCurve: Curves.easeInOut,
+                            child: _image(context, task),
+                          ),
+                        ),
+                        if (!task.isComplete()) TaskProgressIndicator(task),
+                      ],
                     ),
                   ),
                   const SizedBox(height: 12),
@@ -158,19 +162,14 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
     );
   }
 
-  Widget _imageSection(BuildContext context, StableHordeTask task) {
+  Widget _image(BuildContext context, StableHordeTask task) {
     final filename = task.imageFilename;
 
     if (filename == null) {
-      return Stack(
-        children: [
-          const FractionallySizedBox(
-            widthFactor: 1,
-            heightFactor: 1,
-            child: ColoredBox(color: stableHordeGrey),
-          ),
-          TaskProgressIndicator(task),
-        ],
+      return const FractionallySizedBox(
+        widthFactor: 1,
+        heightFactor: 1,
+        child: ColoredBox(color: stableHordeGrey),
       );
     }
 
