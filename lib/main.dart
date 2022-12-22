@@ -55,7 +55,7 @@ Future _mainGuarded() async {
         // We recommend adjusting this value in production.
         options.tracesSampleRate = 1.0;
       },
-      appRunner: () => const MyApp(),
+      appRunner: () => runApp(const MyApp()),
     );
   }
 }
