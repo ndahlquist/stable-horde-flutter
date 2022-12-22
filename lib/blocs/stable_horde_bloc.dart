@@ -82,7 +82,7 @@ class _StableHordeBloc {
   }
 
   Future _waitOnTask(StableHordeTask task) async {
-    for (int i = 0; i < 1000; i++) {
+    for (int i = 0; i < 10000; i++) {
       await Future.delayed(const Duration(seconds: 2));
       print('update $i');
       if (task.estimatedCompletionTime != null) {

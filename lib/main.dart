@@ -69,15 +69,12 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
-
   @override
   void initState() {
     super.initState();
 
     stableHordeBloc.resumeIncompleteTasks();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -105,5 +102,4 @@ class _MyAppState extends State<MyApp> {
       ),
     );
   }
-
 }
