@@ -105,7 +105,7 @@ class _StableHordeBloc {
       if (response.statusCode != 200) {
         final exception = Exception(
           'Failed to get task status: '
-              '${response.statusCode} ${response.body}',
+          '${response.statusCode} ${response.body}',
         );
         print(exception);
         Sentry.captureException(exception, stackTrace: StackTrace.current);
