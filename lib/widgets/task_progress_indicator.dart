@@ -15,15 +15,41 @@ class TaskProgressIndicator extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
+    final Widget progressIndicator;
     if (task.estimatedCompletionTime == null) {
-      return const Center(child: CircularProgressIndicator());
+      progressIndicator = const Center(child: CircularProgressIndicator());
     } else {
-      return Center(
+      progressIndicator = Center(
         child: TimedProgressIndicator(
           startTime: task.firstShowProgressIndicatorTime!,
           completionTime: task.estimatedCompletionTime!,
         ),
       );
     }
+
+    if (!showText) {
+      return progressIndicator;
+    }
+
+    final String loadingMessage;
+    if (task.estimatedCompletionTime == null) {
+      loadingMessage = 'Loading...';
+    } else {
+      loadingMessage =
+          'Estimated completion time: ${task.estimatedCompletionTime!.difference(DateTime.now()).inSeconds} seconds';
+    }
+
+    return Stack(
+      children: [
+        progressIndicator,
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Align(
+            alignment: Alignment.bottomLeft,
+            child: Text(loadingMessage),
+          ),
+        ),
+      ],
+    );
   }
 }
