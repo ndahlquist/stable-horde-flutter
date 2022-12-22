@@ -48,9 +48,13 @@ class _TaskProgressIndicatorState extends State<TaskProgressIndicator> {
       progressIndicator = const Center(child: CircularProgressIndicator());
     } else {
       progressIndicator = Center(
-        child: TimedProgressIndicator(
-          startTime: widget.task.firstShowProgressIndicatorTime!,
-          completionTime: widget.task.estimatedCompletionTime!,
+        child: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 500),
+          child: TimedProgressIndicator(
+            key: ValueKey(widget.task.estimatedCompletionTime),
+            startTime: widget.task.firstShowProgressIndicatorTime!,
+            completionTime: widget.task.estimatedCompletionTime!,
+          ),
         ),
       );
     }
@@ -66,7 +70,7 @@ class _TaskProgressIndicatorState extends State<TaskProgressIndicator> {
       final difference = widget.task.estimatedCompletionTime!.difference(
         DateTime.now(),
       );
-      loadingMessage = 'ETA: ${difference.inSeconds} s';
+      loadingMessage = 'ETA: ${difference.inSeconds}s';
     }
 
     return Stack(
