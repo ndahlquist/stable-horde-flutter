@@ -1,12 +1,9 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stable_horde_flutter/blocs/stable_horde_bloc.dart';
-import 'package:stable_horde_flutter/colors.dart';
 import 'package:stable_horde_flutter/model/stable_horde_task.dart';
 import 'package:stable_horde_flutter/pages/fullscreen_view_page.dart';
+import 'package:stable_horde_flutter/widgets/task_image.dart';
 import 'package:stable_horde_flutter/widgets/task_progress_indicator.dart';
 
 class MyArtTab extends StatefulWidget {
@@ -61,24 +58,7 @@ class _MyArtTabState extends State<MyArtTab>
               },
               child: Stack(
                 children: [
-                  const FractionallySizedBox(
-                    widthFactor: 1,
-                    heightFactor: 1,
-                    child: ColoredBox(color: stableHordeGrey),
-                  ),
-                  if (task.imageFilename != null)
-                    FutureBuilder<Directory>(
-                      future: getApplicationDocumentsDirectory(),
-                      builder: (context, snapshot) {
-                        final directory = snapshot.data;
-                        if (directory == null) return const SizedBox();
-
-                        return Image.file(
-                          File(directory.path + '/' + task.imageFilename!),
-                          fit: BoxFit.cover,
-                        );
-                      },
-                    ),
+                  TaskImage(task: task),
                   TaskProgressIndicator(task),
                 ],
               ),
