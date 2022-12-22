@@ -193,7 +193,7 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
   Widget _darken({required Widget child}) {
     return ColorFiltered(
       colorFilter: ColorFilter.mode(
-        Colors.grey[400]!,
+        Colors.grey[600]!,
         BlendMode.modulate,
       ),
       child: child,
