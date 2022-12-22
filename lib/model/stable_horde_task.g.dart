@@ -46,13 +46,18 @@ const StableHordeTaskSchema = CollectionSchema(
       id: 5,
       name: r'prompt',
       type: IsarType.string,
+    ),
+    r'stableHordeId': PropertySchema(
+      id: 6,
+      name: r'stableHordeId',
+      type: IsarType.string,
     )
   },
   estimateSize: _stableHordeTaskEstimateSize,
   serialize: _stableHordeTaskSerialize,
   deserialize: _stableHordeTaskDeserialize,
   deserializeProp: _stableHordeTaskDeserializeProp,
-  idName: r'id',
+  idName: r'dbId',
   indexes: {},
   links: {},
   embeddedSchemas: {},
@@ -77,6 +82,12 @@ int _stableHordeTaskEstimateSize(
   bytesCount += 3 + object.model.length * 3;
   bytesCount += 3 + object.negativePrompt.length * 3;
   bytesCount += 3 + object.prompt.length * 3;
+  {
+    final value = object.stableHordeId;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   return bytesCount;
 }
 
@@ -92,6 +103,7 @@ void _stableHordeTaskSerialize(
   writer.writeString(offsets[3], object.model);
   writer.writeString(offsets[4], object.negativePrompt);
   writer.writeString(offsets[5], object.prompt);
+  writer.writeString(offsets[6], object.stableHordeId);
 }
 
 StableHordeTask _stableHordeTaskDeserialize(
@@ -105,10 +117,11 @@ StableHordeTask _stableHordeTaskDeserialize(
     reader.readString(offsets[4]),
     reader.readString(offsets[3]),
   );
+  object.dbId = id;
   object.estimatedCompletionTime = reader.readDateTimeOrNull(offsets[0]);
   object.firstShowProgressIndicatorTime = reader.readDateTimeOrNull(offsets[1]);
-  object.id = id;
   object.imageFilename = reader.readStringOrNull(offsets[2]);
+  object.stableHordeId = reader.readStringOrNull(offsets[6]);
   return object;
 }
 
@@ -131,13 +144,15 @@ P _stableHordeTaskDeserializeProp<P>(
       return (reader.readString(offset)) as P;
     case 5:
       return (reader.readString(offset)) as P;
+    case 6:
+      return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
 }
 
 Id _stableHordeTaskGetId(StableHordeTask object) {
-  return object.id;
+  return object.dbId;
 }
 
 List<IsarLinkBase<dynamic>> _stableHordeTaskGetLinks(StableHordeTask object) {
@@ -146,12 +161,12 @@ List<IsarLinkBase<dynamic>> _stableHordeTaskGetLinks(StableHordeTask object) {
 
 void _stableHordeTaskAttach(
     IsarCollection<dynamic> col, Id id, StableHordeTask object) {
-  object.id = id;
+  object.dbId = id;
 }
 
 extension StableHordeTaskQueryWhereSort
     on QueryBuilder<StableHordeTask, StableHordeTask, QWhere> {
-  QueryBuilder<StableHordeTask, StableHordeTask, QAfterWhere> anyId() {
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterWhere> anyDbId() {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(const IdWhereClause.any());
     });
@@ -160,69 +175,68 @@ extension StableHordeTaskQueryWhereSort
 
 extension StableHordeTaskQueryWhere
     on QueryBuilder<StableHordeTask, StableHordeTask, QWhereClause> {
-  QueryBuilder<StableHordeTask, StableHordeTask, QAfterWhereClause> idEqualTo(
-      Id id) {
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterWhereClause> dbIdEqualTo(
+      Id dbId) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IdWhereClause.between(
-        lower: id,
-        upper: id,
+        lower: dbId,
+        upper: dbId,
       ));
     });
   }
 
   QueryBuilder<StableHordeTask, StableHordeTask, QAfterWhereClause>
-      idNotEqualTo(Id id) {
+      dbIdNotEqualTo(Id dbId) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
             .addWhereClause(
-              IdWhereClause.lessThan(upper: id, includeUpper: false),
+              IdWhereClause.lessThan(upper: dbId, includeUpper: false),
             )
             .addWhereClause(
-              IdWhereClause.greaterThan(lower: id, includeLower: false),
+              IdWhereClause.greaterThan(lower: dbId, includeLower: false),
             );
       } else {
         return query
             .addWhereClause(
-              IdWhereClause.greaterThan(lower: id, includeLower: false),
+              IdWhereClause.greaterThan(lower: dbId, includeLower: false),
             )
             .addWhereClause(
-              IdWhereClause.lessThan(upper: id, includeUpper: false),
+              IdWhereClause.lessThan(upper: dbId, includeUpper: false),
             );
       }
     });
   }
 
   QueryBuilder<StableHordeTask, StableHordeTask, QAfterWhereClause>
-      idGreaterThan(Id id, {bool include = false}) {
+      dbIdGreaterThan(Id dbId, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
-        IdWhereClause.greaterThan(lower: id, includeLower: include),
+        IdWhereClause.greaterThan(lower: dbId, includeLower: include),
       );
     });
   }
 
-  QueryBuilder<StableHordeTask, StableHordeTask, QAfterWhereClause> idLessThan(
-      Id id,
-      {bool include = false}) {
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterWhereClause>
+      dbIdLessThan(Id dbId, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
-        IdWhereClause.lessThan(upper: id, includeUpper: include),
+        IdWhereClause.lessThan(upper: dbId, includeUpper: include),
       );
     });
   }
 
-  QueryBuilder<StableHordeTask, StableHordeTask, QAfterWhereClause> idBetween(
-    Id lowerId,
-    Id upperId, {
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterWhereClause> dbIdBetween(
+    Id lowerDbId,
+    Id upperDbId, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IdWhereClause.between(
-        lower: lowerId,
+        lower: lowerDbId,
         includeLower: includeLower,
-        upper: upperId,
+        upper: upperDbId,
         includeUpper: includeUpper,
       ));
     });
@@ -231,6 +245,62 @@ extension StableHordeTaskQueryWhere
 
 extension StableHordeTaskQueryFilter
     on QueryBuilder<StableHordeTask, StableHordeTask, QFilterCondition> {
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      dbIdEqualTo(Id value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'dbId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      dbIdGreaterThan(
+    Id value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'dbId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      dbIdLessThan(
+    Id value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'dbId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      dbIdBetween(
+    Id lower,
+    Id upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'dbId',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
   QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
       estimatedCompletionTimeIsNull() {
     return QueryBuilder.apply(this, (query) {
@@ -371,62 +441,6 @@ extension StableHordeTaskQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
         property: r'firstShowProgressIndicatorTime',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
-
-  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
-      idEqualTo(Id value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'id',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
-      idGreaterThan(
-    Id value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'id',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
-      idLessThan(
-    Id value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'id',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
-      idBetween(
-    Id lower,
-    Id upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'id',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -996,6 +1010,160 @@ extension StableHordeTaskQueryFilter
       ));
     });
   }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      stableHordeIdIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'stableHordeId',
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      stableHordeIdIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'stableHordeId',
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      stableHordeIdEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'stableHordeId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      stableHordeIdGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'stableHordeId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      stableHordeIdLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'stableHordeId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      stableHordeIdBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'stableHordeId',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      stableHordeIdStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'stableHordeId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      stableHordeIdEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'stableHordeId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      stableHordeIdContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'stableHordeId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      stableHordeIdMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'stableHordeId',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      stableHordeIdIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'stableHordeId',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      stableHordeIdIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'stableHordeId',
+        value: '',
+      ));
+    });
+  }
 }
 
 extension StableHordeTaskQueryObject
@@ -1087,10 +1255,37 @@ extension StableHordeTaskQuerySortBy
       return query.addSortBy(r'prompt', Sort.desc);
     });
   }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy>
+      sortByStableHordeId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'stableHordeId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy>
+      sortByStableHordeIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'stableHordeId', Sort.desc);
+    });
+  }
 }
 
 extension StableHordeTaskQuerySortThenBy
     on QueryBuilder<StableHordeTask, StableHordeTask, QSortThenBy> {
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy> thenByDbId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'dbId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy>
+      thenByDbIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'dbId', Sort.desc);
+    });
+  }
+
   QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy>
       thenByEstimatedCompletionTime() {
     return QueryBuilder.apply(this, (query) {
@@ -1116,18 +1311,6 @@ extension StableHordeTaskQuerySortThenBy
       thenByFirstShowProgressIndicatorTimeDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'firstShowProgressIndicatorTime', Sort.desc);
-    });
-  }
-
-  QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy> thenById() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'id', Sort.asc);
-    });
-  }
-
-  QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy> thenByIdDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'id', Sort.desc);
     });
   }
 
@@ -1184,6 +1367,20 @@ extension StableHordeTaskQuerySortThenBy
       return query.addSortBy(r'prompt', Sort.desc);
     });
   }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy>
+      thenByStableHordeId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'stableHordeId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy>
+      thenByStableHordeIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'stableHordeId', Sort.desc);
+    });
+  }
 }
 
 extension StableHordeTaskQueryWhereDistinct
@@ -1231,13 +1428,21 @@ extension StableHordeTaskQueryWhereDistinct
       return query.addDistinctBy(r'prompt', caseSensitive: caseSensitive);
     });
   }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QDistinct>
+      distinctByStableHordeId({bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'stableHordeId',
+          caseSensitive: caseSensitive);
+    });
+  }
 }
 
 extension StableHordeTaskQueryProperty
     on QueryBuilder<StableHordeTask, StableHordeTask, QQueryProperty> {
-  QueryBuilder<StableHordeTask, int, QQueryOperations> idProperty() {
+  QueryBuilder<StableHordeTask, int, QQueryOperations> dbIdProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'id');
+      return query.addPropertyName(r'dbId');
     });
   }
 
@@ -1278,6 +1483,13 @@ extension StableHordeTaskQueryProperty
   QueryBuilder<StableHordeTask, String, QQueryOperations> promptProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'prompt');
+    });
+  }
+
+  QueryBuilder<StableHordeTask, String?, QQueryOperations>
+      stableHordeIdProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'stableHordeId');
     });
   }
 }

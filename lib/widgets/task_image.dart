@@ -23,7 +23,7 @@ class TaskImage extends StatelessWidget {
 
         if (directory == null || filename == null) {
           // Choose a pseudo-random color gradient for the background
-          final random = Random(task.id);
+          final random = Random(task.dbId);
           final color1 = Colors
               .primaries[random.nextInt(Colors.primaries.length)].shade500;
           final color2 = Colors

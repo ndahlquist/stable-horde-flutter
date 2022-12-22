@@ -22,6 +22,7 @@ class _StableHordeBloc {
       return isar.stableHordeTasks.put(task);
     });
     final task = await isar.stableHordeTasks.get(dbId);
+    task!;
 
     var apiKey = await sharedPrefsBloc.getApiKey();
     apiKey ??= "0000000000"; // Anonymous API key.
@@ -71,12 +72,20 @@ class _StableHordeBloc {
       );
     }
     final jsonResponse = jsonDecode(response.body);
-    final taskId = jsonResponse['id']!;
 
-    for (int i = 0; i < 1000; i++) {
+    task.stableHordeId = jsonResponse['id']!;
+    await isar.writeTxn(() async {
+      isar.stableHordeTasks.put(task);
+    });
+
+    _waitOnTask(task);
+  }
+
+  Future _waitOnTask(StableHordeTask task) async {
+    for (int i = 0; i < 10000; i++) {
       await Future.delayed(const Duration(seconds: 2));
       print('update $i');
-      if (task!.estimatedCompletionTime != null) {
+      if (task.estimatedCompletionTime != null) {
         if (DateTime.now().isBefore(task.estimatedCompletionTime!)) {
           continue;
         }
@@ -84,7 +93,7 @@ class _StableHordeBloc {
 
       final response = await http.get(
         Uri.parse(
-          'https://stablehorde.net/api/v2/generate/status/$taskId',
+          'https://stablehorde.net/api/v2/generate/status/${task.stableHordeId!}',
         ),
       );
       if (response.statusCode == 429) {
@@ -160,6 +169,18 @@ class _StableHordeBloc {
 
   Future<List<StableHordeTask>> _getTasks() async {
     return await isar.stableHordeTasks.where().findAll();
+  }
+
+  Future resumeIncompleteTasks() async {
+    final tasks = await _getTasks();
+
+    for (final task in tasks) {
+      if (task.isComplete()) {
+        continue;
+      }
+
+      _waitOnTask(task);
+    }
   }
 
   Stream<List<StableHordeTask>> getTasksStream() async* {
