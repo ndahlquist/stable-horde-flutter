@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
@@ -101,41 +102,58 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
   }
 
   Widget _page(BuildContext context, StableHordeTask task) {
-    return SafeArea(
-      left: false,
-      top: false,
-      right: false,
-      minimum: const EdgeInsets.only(bottom: 12),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            AspectRatio(
-              aspectRatio: 1,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(4),
-                child: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 500),
-                  switchInCurve: Curves.easeInOut,
-                  switchOutCurve: Curves.easeInOut,
-                  child: _imageSection(context, task),
-                ),
-              ),
+    return Stack(
+      children: [
+        FractionallySizedBox(
+          heightFactor: 1,
+          child: ImageFiltered(
+            imageFilter: ImageFilter.blur(
+              sigmaX: 64,
+              sigmaY: 64,
+              tileMode: TileMode.decal,
             ),
-            const SizedBox(height: 12),
-            Text(task.prompt),
-            const SizedBox(height: 12),
-            if (task.negativePrompt.isNotEmpty) ...[
-              Text("Negative prompt: ${task.negativePrompt}"),
-            ],
-            const SizedBox(height: 12),
-            Text(task.model),
-            const Spacer(),
-            _shareButton(task),
-          ],
+            child: _darken(
+              child: _imageSection(context, task),
+            ),
+          ),
         ),
-      ),
+        SafeArea(
+          left: false,
+          top: false,
+          right: false,
+          minimum: const EdgeInsets.only(bottom: 12),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AspectRatio(
+                  aspectRatio: 1,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(4),
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 500),
+                      switchInCurve: Curves.easeInOut,
+                      switchOutCurve: Curves.easeInOut,
+                      child: _imageSection(context, task),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Text(task.prompt),
+                const SizedBox(height: 12),
+                if (task.negativePrompt.isNotEmpty) ...[
+                  Text("Negative prompt: ${task.negativePrompt}"),
+                ],
+                const SizedBox(height: 12),
+                Text(task.model),
+                const Spacer(),
+                _shareButton(task),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -166,6 +184,18 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
           fit: BoxFit.cover,
         );
       },
+    );
+  }
+
+  // Applying a slight dark shade to the shadows gives some contrast
+  //  for the case that the foreground is very bright.
+  Widget _darken({required Widget child}) {
+    return ColorFiltered(
+      colorFilter: ColorFilter.mode(
+        Colors.grey[400]!,
+        BlendMode.modulate,
+      ),
+      child: child,
     );
   }
 }
