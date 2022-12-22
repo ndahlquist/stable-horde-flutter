@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -167,14 +168,30 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
 
         final Widget child;
 
-        if (directory == null || filename == null) {
-          child = const FractionallySizedBox(
+        ///if (directory == null || filename == null) {
+
+        // Choose a random color for the background
+        final random = Random(task.id);
+        final color1 = Colors.primaries[random.nextInt(Colors.primaries.length)].shade300;
+        final color2 = Colors.primaries[random.nextInt(Colors.primaries.length)].shade700;
+
+
+          child =  FractionallySizedBox(
             widthFactor: 1,
             heightFactor: 1,
             key: ValueKey('colored box'),
-            child: ColoredBox(color: stableHordeGrey),
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [color1, color2],
+                  stops: [0.0, 1.0],
+                ),
+              ),
+            ),
           );
-        } else {
+        /* //} else {
           child = FractionallySizedBox(
             widthFactor: 1,
             heightFactor: 1,
@@ -184,7 +201,7 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
               fit: BoxFit.cover,
             ),
           );
-        }
+        }*/
 
         return AnimatedSwitcher(
           duration: const Duration(milliseconds: 500),
