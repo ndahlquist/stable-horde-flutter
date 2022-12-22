@@ -174,17 +174,25 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
             child: ColoredBox(color: stableHordeGrey),
           );
         } else {
-          child = Image.file(
-            File(directory.path + '/' + filename),
-            fit: BoxFit.cover,
+          child = FractionallySizedBox(
+            widthFactor: 1,
+            heightFactor: 1,
+            child: Image.file(
+              File(directory.path + '/' + filename),
+              fit: BoxFit.cover,
+            ),
           );
         }
 
-        return AnimatedSwitcher(
-          duration: const Duration(milliseconds: 500),
-          switchInCurve: Curves.easeInOut,
-          switchOutCurve: Curves.easeInOut,
-          child: child,
+        return FractionallySizedBox(
+          widthFactor: 1,
+          heightFactor: 1,
+          child: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 500),
+            switchInCurve: Curves.easeInOut,
+            switchOutCurve: Curves.easeInOut,
+            child: child,
+          ),
         );
       },
     );
