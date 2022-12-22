@@ -108,7 +108,15 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
         children: [
           AspectRatio(
             aspectRatio: 1,
-            child: _imageSection(context, task),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(4),
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 500),
+                switchInCurve: Curves.easeInOut,
+                switchOutCurve: Curves.easeInOut,
+                child: _imageSection(context, task),
+              ),
+            ),
           ),
           const SizedBox(height: 12),
           Text(task.prompt),
