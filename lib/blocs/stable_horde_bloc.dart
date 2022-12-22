@@ -21,7 +21,7 @@ class _StableHordeBloc {
       final task = StableHordeTask(prompt, negativePrompt, model);
       return isar.stableHordeTasks.put(task);
     });
-    final task = await isar.stableHordeTasks.get(dbId);
+    final task = await isar.stableHordeTasks.get(dbId)!;
 
     var apiKey = await sharedPrefsBloc.getApiKey();
     apiKey ??= "0000000000"; // Anonymous API key.
@@ -73,10 +73,14 @@ class _StableHordeBloc {
     final jsonResponse = jsonDecode(response.body);
     final taskId = jsonResponse['id']!;
 
+    _waitOnTask(task);
+  }
+
+  Future _waitOnTask(StableHordeTask task) async {
     for (int i = 0; i < 1000; i++) {
       await Future.delayed(const Duration(seconds: 2));
       print('update $i');
-      if (task!.estimatedCompletionTime != null) {
+      if (task.estimatedCompletionTime != null) {
         if (DateTime.now().isBefore(task.estimatedCompletionTime!)) {
           continue;
         }
@@ -96,7 +100,7 @@ class _StableHordeBloc {
       if (response.statusCode != 200) {
         final exception = Exception(
           'Failed to get task status: '
-          '${response.statusCode} ${response.body}',
+              '${response.statusCode} ${response.body}',
         );
         print(exception);
         Sentry.captureException(exception, stackTrace: StackTrace.current);
@@ -160,6 +164,18 @@ class _StableHordeBloc {
 
   Future<List<StableHordeTask>> _getTasks() async {
     return await isar.stableHordeTasks.where().findAll();
+  }
+
+  Future resumeIncompleteTasks() async {
+    final tasks = await _getTasks();
+
+    for (final task in tasks) {
+      if (task.isComplete()) {
+        continue;
+      }
+
+      await requestDiffusion();
+    }
   }
 
   Stream<List<StableHordeTask>> getTasksStream() async* {
