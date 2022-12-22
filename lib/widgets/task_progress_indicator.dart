@@ -18,12 +18,9 @@ class TaskProgressIndicator extends StatelessWidget {
       return const Center(child: CircularProgressIndicator());
     } else {
       return Center(
-        child: AnimatedSwitcher(
-          duration: Duration(milliseconds: 500),
-          child: TimedProgressIndicator(
-            startTime: task.firstShowProgressIndicatorTime!,
-            completionTime: task.estimatedCompletionTime!,
-          ),
+        child: TimedProgressIndicator(
+          startTime: task.firstShowProgressIndicatorTime!,
+          completionTime: task.estimatedCompletionTime!,
         ),
       );
     }
