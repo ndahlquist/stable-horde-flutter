@@ -132,12 +132,7 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
                       children: [
                         ClipRRect(
                           borderRadius: BorderRadius.circular(4),
-                          child: AnimatedSwitcher(
-                            duration: const Duration(milliseconds: 500),
-                            switchInCurve: Curves.easeInOut,
-                            switchOutCurve: Curves.easeInOut,
-                            child: _image(context, task),
-                          ),
+                          child: _image(context, task),
                         ),
                         if (!task.isComplete()) TaskProgressIndicator(task),
                       ],
@@ -163,25 +158,33 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
   }
 
   Widget _image(BuildContext context, StableHordeTask task) {
-    final filename = task.imageFilename;
-
-    if (filename == null) {
-      return const FractionallySizedBox(
-        widthFactor: 1,
-        heightFactor: 1,
-        child: ColoredBox(color: stableHordeGrey),
-      );
-    }
-
     return FutureBuilder<Directory>(
       future: getApplicationDocumentsDirectory(),
       builder: (context, snapshot) {
-        final directory = snapshot.data;
-        if (directory == null) return const SizedBox();
+        final filename = task.imageFilename;
 
-        return Image.file(
-          File(directory.path + '/' + filename),
-          fit: BoxFit.cover,
+        final directory = snapshot.data;
+
+        final Widget child;
+
+        if (directory == null || filename == null) {
+          child = const FractionallySizedBox(
+            widthFactor: 1,
+            heightFactor: 1,
+            child: ColoredBox(color: stableHordeGrey),
+          );
+        } else {
+          child = Image.file(
+            File(directory.path + '/' + filename),
+            fit: BoxFit.cover,
+          );
+        }
+
+        return AnimatedSwitcher(
+          duration: const Duration(milliseconds: 500),
+          switchInCurve: Curves.easeInOut,
+          switchOutCurve: Curves.easeInOut,
+          child: child,
         );
       },
     );
