@@ -4,8 +4,9 @@ import 'package:stable_horde_flutter/widgets/timed_progress_indicator.dart';
 
 class TaskProgressIndicator extends StatelessWidget {
   final StableHordeTask task;
+  final bool showText;
 
-  const TaskProgressIndicator(this.task, {super.key});
+  const TaskProgressIndicator(this.task, {super.key, required this.showText});
 
   @override
   Widget build(BuildContext context) {

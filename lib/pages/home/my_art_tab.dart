@@ -59,7 +59,7 @@ class _MyArtTabState extends State<MyArtTab>
               child: Stack(
                 children: [
                   TaskImage(task: task),
-                  TaskProgressIndicator(task),
+                  TaskProgressIndicator(task, showText: false),
                 ],
               ),
             );
