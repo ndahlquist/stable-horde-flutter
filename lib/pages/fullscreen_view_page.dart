@@ -7,7 +7,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stable_horde_flutter/blocs/image_transcode_bloc.dart';
 import 'package:stable_horde_flutter/blocs/stable_horde_bloc.dart';
-import 'package:stable_horde_flutter/colors.dart';
 import 'package:stable_horde_flutter/main.dart';
 import 'package:stable_horde_flutter/model/stable_horde_task.dart';
 import 'package:stable_horde_flutter/widgets/task_progress_indicator.dart';
@@ -172,8 +171,8 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
 
         // Choose a random color for the background
         final random = Random(task.id);
-        final color1 = Colors.primaries[random.nextInt(Colors.primaries.length)].shade300;
-        final color2 = Colors.primaries[random.nextInt(Colors.primaries.length)].shade700;
+        final color1 = Colors.primaries[random.nextInt(Colors.primaries.length)].shade500;
+        final color2 = Colors.primaries[random.nextInt(Colors.primaries.length)].shade900;
 
 
           child =  FractionallySizedBox(
@@ -184,7 +183,7 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
+                  end: Alignment.bottomCenter,
                   colors: [color1, color2],
                   stops: [0.0, 1.0],
                 ),
