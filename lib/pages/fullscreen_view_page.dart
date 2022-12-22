@@ -38,10 +38,12 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
+        title: const Text('Stable Horde'),
         elevation: 0,
         actions: [
           _deleteButton(),
         ],
+
       ),
       body: StreamBuilder<List<StableHordeTask>>(
         stream: stableHordeBloc.getTasksStream(),
