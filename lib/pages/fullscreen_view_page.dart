@@ -1,14 +1,12 @@
-import 'dart:io';
-import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stable_horde_flutter/blocs/image_transcode_bloc.dart';
 import 'package:stable_horde_flutter/blocs/stable_horde_bloc.dart';
 import 'package:stable_horde_flutter/main.dart';
 import 'package:stable_horde_flutter/model/stable_horde_task.dart';
+import 'package:stable_horde_flutter/widgets/task_image.dart';
 import 'package:stable_horde_flutter/widgets/task_progress_indicator.dart';
 
 import 'package:share_plus/share_plus.dart';
@@ -115,7 +113,7 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
                 tileMode: TileMode.clamp,
               ),
               child: _darken(
-                child: _image(context, task),
+                child: TaskImage(task: task),
               ),
             ),
           ),
@@ -132,7 +130,7 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
                       children: [
                         ClipRRect(
                           borderRadius: BorderRadius.circular(4),
-                          child: _image(context, task),
+                          child: TaskImage(task: task),
                         ),
                         if (!task.isComplete()) TaskProgressIndicator(task),
                       ],
@@ -154,61 +152,6 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _image(BuildContext context, StableHordeTask task) {
-    return FutureBuilder<Directory>(
-      future: getApplicationDocumentsDirectory(),
-      builder: (context, snapshot) {
-        final filename = task.imageFilename;
-
-        final directory = snapshot.data;
-
-        final Widget child;
-
-        ///if (directory == null || filename == null) {
-
-        // Choose a random color for the background
-        final random = Random(task.id);
-        final color1 = Colors.primaries[random.nextInt(Colors.primaries.length)].shade500;
-        final color2 = Colors.primaries[random.nextInt(Colors.primaries.length)].shade900;
-
-
-          child =  FractionallySizedBox(
-            widthFactor: 1,
-            heightFactor: 1,
-            key: ValueKey('colored box'),
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomCenter,
-                  colors: [color1, color2],
-                  stops: [0.0, 1.0],
-                ),
-              ),
-            ),
-          );
-        /* //} else {
-          child = FractionallySizedBox(
-            widthFactor: 1,
-            heightFactor: 1,
-            key: ValueKey(filename),
-            child: Image.file(
-              File(directory.path + '/' + filename),
-              fit: BoxFit.cover,
-            ),
-          );
-        }*/
-
-        return AnimatedSwitcher(
-          duration: const Duration(milliseconds: 500),
-          switchInCurve: Curves.easeInOut,
-          switchOutCurve: Curves.easeInOut,
-          child: child,
-        );
-      },
     );
   }
 
