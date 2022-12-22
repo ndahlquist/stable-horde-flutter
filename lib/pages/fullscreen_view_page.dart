@@ -111,7 +111,7 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
             imageFilter: ImageFilter.blur(
               sigmaX: 64,
               sigmaY: 64,
-              tileMode: TileMode.decal,
+              tileMode: TileMode.clamp,
             ),
             child: _darken(
               child: _imageSection(context, task),
