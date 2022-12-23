@@ -38,8 +38,10 @@ class _ModelButtonState extends State<ModelButton> {
           });
         });
       },
-      child: Text("Model: $currentModel",
-        style: const TextStyle(color: Colors.black87),),
+      child: Text(
+        "Model: $currentModel",
+        style: const TextStyle(color: Colors.black87),
+      ),
     );
   }
 }
