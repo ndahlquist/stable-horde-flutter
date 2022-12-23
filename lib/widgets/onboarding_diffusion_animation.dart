@@ -88,7 +88,7 @@ class _OnboardingDiffusionAnimationState
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   for (int i = 0; i < (widget.showHorde ? 4 : 1); i++)
-                     AnimatedComputeBox(animationOffset: 1 - i / 4),
+                    AnimatedComputeBox(animationOffset: 1 - i / 4),
                 ],
               ),
               const Spacer(),
