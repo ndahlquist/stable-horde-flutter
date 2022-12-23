@@ -43,7 +43,6 @@ class _UserWidgetState extends State<UserWidget> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _loggedInUserWidget(user),
-              // Logout button
               Padding(
                 padding: const EdgeInsets.only(top: 16),
                 child: ElevatedButton(
