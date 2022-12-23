@@ -20,7 +20,16 @@ class UserWidget extends StatelessWidget {
           return SizedBox.shrink();
         }
 
-        return Text(data.username);
+        return Padding(
+          padding: const EdgeInsets.only(
+            left: 16,
+            bottom: 16,
+          ),
+          child: Text(
+            data.username,
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+        );
       },
     );
   }
