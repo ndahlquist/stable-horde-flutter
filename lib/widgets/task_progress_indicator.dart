@@ -64,29 +64,45 @@ class _TaskProgressIndicatorState extends State<TaskProgressIndicator> {
       return progressIndicator;
     }
 
-    String loadingMessage;
+    Widget loadingMessageWidget;
     if (widget.task.estimatedCompletionTime == null) {
-      loadingMessage = 'Loading...';
+      loadingMessageWidget = const Text('Loading...');
     } else {
       final difference = widget.task.estimatedCompletionTime!.difference(
         DateTime.now(),
       );
-      loadingMessage = 'ETA: ${difference.inSeconds}s\n';
+      String loadingMessage = 'ETA: ${difference.inSeconds}s\n';
 
       if (sharedPrefsBloc.getApiKey() == null) {
         loadingMessage += 'You are currently anonymous.\n';
         loadingMessage += 'For faster image generations, create an account.';
       }
+
+      loadingMessageWidget = RichText(
+        textScaleFactor: MediaQuery.of(context).textScaleFactor,
+        text: TextSpan(
+          text: 'ETA: ${difference.inSeconds}s\n',
+          style: DefaultTextStyle.of(context).style,
+          children: const <TextSpan>[
+            TextSpan(
+                text: 'https://stablehorde.net/register',
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            TextSpan(text: '.'),
+          ],
+        ),
+      );
+
+      loadingMessageWidget = Text(loadingMessage);
     }
 
     return Stack(
       children: [
         progressIndicator,
         Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8),
           child: Align(
             alignment: Alignment.bottomLeft,
-            child: Text(loadingMessage),
+            child: loadingMessageWidget,
           ),
         ),
       ],
