@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:stable_horde_flutter/blocs/stable_horde_user_bloc.dart';
 import 'package:stable_horde_flutter/model/stable_horde_user.dart';
 
@@ -17,17 +18,41 @@ class UserWidget extends StatelessWidget {
 
         var data = snapshot.data;
         if (data == null) {
-          return SizedBox.shrink();
+          return const SizedBox.shrink();
         }
 
         return Padding(
           padding: const EdgeInsets.only(
-            left: 16,
-            bottom: 16,
+            left: 12,
+            right: 12,
+            bottom: 64,
           ),
-          child: Text(
-            data.username,
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                data.username,
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                "${NumberFormat.decimalPattern().format(data.kudos)} kudos",
+                style: const TextStyle(fontSize: 18),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                "${NumberFormat.decimalPattern().format(data.numRequested)} images generated",
+                style: const TextStyle(fontSize: 18),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                "${NumberFormat.decimalPattern().format(data.numInferences)} images contributed",
+                style: const TextStyle(fontSize: 18),
+              ),
+            ],
           ),
         );
       },
