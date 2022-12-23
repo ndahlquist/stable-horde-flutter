@@ -61,9 +61,8 @@ class OnboardingDiffusionAnimation extends StatelessWidget {
                   child: SizedBox(
                     height: 128,
                     width: 128,
-                    child: CachedNetworkImage(
-                      imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/%22The_School_of_Athens%22_by_Raffaello_Sanzio_da_Urbino.jpg/2560px-%22The_School_of_Athens%22_by_Raffaello_Sanzio_da_Urbino.jpg',
-                      fit: BoxFit.cover,
+                    child: Image.asset(
+                      'assets/images/ios_icon.jpg',
                     ),
                   ),
                 ),

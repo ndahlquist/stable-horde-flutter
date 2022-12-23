@@ -63,4 +63,8 @@ flutter:
   uses-material-design: true
 
   assets:
+    - assets/images/cat.jpg
+    - assets/images/ios_icon.jpg
+    - assets/images/knollingcase.jpg
+
     - assets/vector_drawables/box.svg
