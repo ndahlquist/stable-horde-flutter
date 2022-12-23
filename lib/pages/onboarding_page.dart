@@ -102,8 +102,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
               ],
             ),
           ),
-          const Expanded(
-            child: OnboardingDiffusionAnimation(),
+          Expanded(
+            child: OnboardingDiffusionAnimation(showHorde: false),
           ),
           const Text(
               'On a PC with a powerful GPU, each image takes a few seconds to generate.'),
@@ -137,8 +137,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
               ],
             ),
           ),
-          const Expanded(
-            child: OnboardingDiffusionAnimation(),
+          Expanded(
+            child: OnboardingDiffusionAnimation(showHorde: true),
           ),
           RichText(
             textScaleFactor: MediaQuery.of(context).textScaleFactor,

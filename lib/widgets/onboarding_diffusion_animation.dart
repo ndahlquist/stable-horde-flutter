@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class OnboardingDiffusionAnimation extends StatefulWidget {
-  const OnboardingDiffusionAnimation({super.key});
+  final bool showHorde;
+
+   OnboardingDiffusionAnimation({super.key, required this.showHorde});
 
   @override
   State<OnboardingDiffusionAnimation> createState() =>
