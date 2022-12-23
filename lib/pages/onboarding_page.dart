@@ -91,7 +91,6 @@ class _OnboardingPageState extends State<OnboardingPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 16),
             RichText(
               textScaleFactor: MediaQuery.of(context).textScaleFactor,
               text: const TextSpan(
@@ -133,7 +132,6 @@ class _OnboardingPageState extends State<OnboardingPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 16),
             RichText(
               textScaleFactor: MediaQuery.of(context).textScaleFactor,
               text: const TextSpan(
