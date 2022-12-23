@@ -106,7 +106,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                     text: 'generates images from text',
                     style: TextStyle(fontStyle: FontStyle.italic),
                   ),
-                  TextSpan(text: '-- almost like magic!'),
+                  TextSpan(text: '— almost like magic!'),
                 ],
               ),
             ),
