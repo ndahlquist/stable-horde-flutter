@@ -120,7 +120,7 @@ class _TaskProgressIndicatorState extends State<TaskProgressIndicator> {
                   recognizer: TapGestureRecognizer()
                     ..onTap = () {
                       launchUrlInExternalApp(
-                        'https://github.com/db0/AI-Horde/blob/main/README_StableHorde.md',
+                        'https://github.com/db0/AI-Horde/blob/main/README_StableHorde.md#joining-the-horde',
                       );
                     },
                 ),

@@ -1,7 +1,9 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/colors.dart';
 import 'package:stable_horde_flutter/pages/home_page.dart';
+import 'package:stable_horde_flutter/utils/legal_links.dart';
 import 'package:stable_horde_flutter/widgets/onboarding_diffusion_animation.dart';
 
 class OnboardingPage extends StatefulWidget {
@@ -114,7 +116,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
             ),
             const SizedBox(height: 16),
             const Text(
-                'On a PC with a powerful GPU, each image takes a few seconds to generate.'),
+              'On a PC with a powerful GPU, each image takes a few seconds to generate.',
+            ),
             const SizedBox(height: 16),
             const Text("...But what if you don't have a powerful PC?"),
             const SizedBox(height: 36),
@@ -171,8 +174,26 @@ class _OnboardingPageState extends State<OnboardingPage> {
             const SizedBox(height: 4),
             const Text(" - Try not to request more images than you need."),
             const SizedBox(height: 4),
-            const Text(
-              " - Consider contributing back to the community by running your own worker!",
+            RichText(
+              textScaleFactor: MediaQuery.of(context).textScaleFactor,
+              text: TextSpan(
+                text: ' - Consider contributing back to the community by ',
+                children: [
+                  TextSpan(
+                    text: 'running your own worker',
+                    style: const TextStyle(
+                      decoration: TextDecoration.underline,
+                    ),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        launchUrlInExternalApp(
+                          'https://github.com/db0/AI-Horde/blob/main/README_StableHorde.md#joining-the-horde',
+                        );
+                      },
+                  ),
+                  const TextSpan(text: "!"),
+                ],
+              ),
             ),
             const SizedBox(height: 36),
           ],
