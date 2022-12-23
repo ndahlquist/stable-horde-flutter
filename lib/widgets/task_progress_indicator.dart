@@ -72,55 +72,48 @@ class _TaskProgressIndicatorState extends State<TaskProgressIndicator> {
         DateTime.now(),
       );
 
-      final Widget callToAction;
-      if (sharedPrefsBloc.getApiKey() == null) {
-        callToAction = RichText(
-          textScaleFactor: MediaQuery.of(context).textScaleFactor,
-          text: TextSpan(
-            text: 'You are currently anonymous.\n',
-            style: DefaultTextStyle.of(context).style,
-            children: const <TextSpan>[
-              TextSpan(text: 'For faster image generations, '),
-              TextSpan(
-                text: 'create an account',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              TextSpan(text: '.'),
-            ],
-          ),
-        );
-      } else {
-        callToAction = RichText(
-          textScaleFactor: MediaQuery.of(context).textScaleFactor,
-          text: TextSpan(
-            text: 'Stable Horde is a volunteer project! For faster image generations, consider ',
-            style: DefaultTextStyle.of(context).style,
-            children: const <TextSpan>[
-              TextSpan(
-                text: 'running a worker',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              TextSpan(text: ' or '),
-              TextSpan(
-                text: 'contributing to our Patreon',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              TextSpan(
-                text: '.',
-              ),
-            ],
-          ),
-        );
-      }
+      loadingMessageWidget = Text('ETA: ${difference.inSeconds}s');
+    }
 
-      loadingMessageWidget = Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Spacer(),
-          Text('ETA: ${difference.inSeconds}s'),
-          const SizedBox(height: 8),
-          callToAction,
-        ],
+    final Widget callToAction;
+    if (sharedPrefsBloc.getApiKey() == null) {
+      callToAction = RichText(
+        textScaleFactor: MediaQuery.of(context).textScaleFactor,
+        text: TextSpan(
+          text: 'You are currently anonymous.\n',
+          style: DefaultTextStyle.of(context).style,
+          children: const <TextSpan>[
+            TextSpan(text: 'For faster image generations, '),
+            TextSpan(
+              text: 'create an account',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            TextSpan(text: '.'),
+          ],
+        ),
+      );
+    } else {
+      callToAction = RichText(
+        textScaleFactor: MediaQuery.of(context).textScaleFactor,
+        text: TextSpan(
+          text:
+              'Stable Horde is a volunteer project! For faster image generations, consider ',
+          style: DefaultTextStyle.of(context).style,
+          children: const <TextSpan>[
+            TextSpan(
+              text: 'running a worker',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            TextSpan(text: ' or '),
+            TextSpan(
+              text: 'contributing to our Patreon',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            TextSpan(
+              text: '.',
+            ),
+          ],
+        ),
       );
     }
 
@@ -129,9 +122,14 @@ class _TaskProgressIndicatorState extends State<TaskProgressIndicator> {
         progressIndicator,
         Padding(
           padding: const EdgeInsets.all(8),
-          child: Align(
-            alignment: Alignment.bottomLeft,
-            child: loadingMessageWidget,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Spacer(),
+              loadingMessageWidget,
+              const SizedBox(height: 8),
+              callToAction,
+            ],
           ),
         ),
       ],
