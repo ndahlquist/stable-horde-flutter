@@ -13,34 +13,29 @@ class OnboardingDiffusionAnimation extends StatefulWidget {
 
 class _OnboardingDiffusionAnimationState
     extends State<OnboardingDiffusionAnimation> {
-
   static const Map<String, String> _prompts = {
     'A Renaissance portrait of a cat wearing glasses. Highly detailed.':
-    'assets/images/cat.jpg',
+        'assets/images/cat.jpg',
     'iOS icon app. Nature. Highly detailed, trending on artstation, IconsMi':
-    'assets/images/ios_icon.jpg',
+        'assets/images/ios_icon.jpg',
     'knollingcase, isometric render, a Greek underwater city with volcano, isometric display case, knolling teardown, transparent data visualization infographic':
-    'assets/images/knollingcase.jpg',
+        'assets/images/knollingcase.jpg',
   };
 
   late Timer _timer;
 
-  String _currentPrompt = '';
+  int _index = 0;
 
   @override
   void initState() {
     super.initState();
 
-    _timer = Timer.periodic(const Duration(milliseconds: 100), (_) {
+    _timer = Timer.periodic(const Duration(milliseconds: 1000), (_) {
       setState(() {
-        _currentPrompt = _prompts.keys.elementAt(
-          DateTime.now().millisecondsSinceEpoch % _prompts.length,
-        );
-
+        _index = (_index + 1) % _prompts.length;
       });
     });
   }
-
 
   @override
   void dispose() {
@@ -67,10 +62,15 @@ class _OnboardingDiffusionAnimationState
                 const Spacer(
                   flex: 3,
                 ),
-                 Text(
-                  _currentPrompt,
-                  style: TextStyle(fontSize: 16),
-                  textAlign: TextAlign.center,
+                SizedBox(
+                  height: 76,
+                  child: Center(
+                    child: Text(
+                      _prompts.keys.elementAt(_index),
+                      style: TextStyle(fontSize: 16),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
                 ),
                 const Spacer(),
                 const Icon(
@@ -123,5 +123,4 @@ class _OnboardingDiffusionAnimationState
       ),
     );
   }
-
 }
