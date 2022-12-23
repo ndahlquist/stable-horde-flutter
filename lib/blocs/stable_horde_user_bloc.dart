@@ -9,6 +9,7 @@ import 'package:http/http.dart' as http;
 class _StableHordeUserBloc {
   Future<StableHordeUser?> lookupUser(String? apiKey) async {
     apiKey ??= sharedPrefsBloc.getApiKey();
+    print('apikey $apiKey');
 
     if (apiKey == null) {
       return null;
