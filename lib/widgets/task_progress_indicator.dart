@@ -1,8 +1,10 @@
 import 'dart:async';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/model/stable_horde_task.dart';
+import 'package:stable_horde_flutter/pages/settings_page.dart';
 import 'package:stable_horde_flutter/widgets/timed_progress_indicator.dart';
 
 class TaskProgressIndicator extends StatefulWidget {
@@ -82,13 +84,22 @@ class _TaskProgressIndicatorState extends State<TaskProgressIndicator> {
         text: TextSpan(
           text: 'You are currently anonymous.\n',
           style: DefaultTextStyle.of(context).style,
-          children: const <TextSpan>[
-            TextSpan(text: 'For faster image generations, '),
+          children: [
+            const TextSpan(text: 'For faster image generations, '),
             TextSpan(
               text: 'create an account',
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: const TextStyle(fontWeight: FontWeight.bold),
+              recognizer: TapGestureRecognizer()
+                ..onTap = () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (c) => const SettingsPage(),
+                    ),
+                  );
+                },
             ),
-            TextSpan(text: '.'),
+            const TextSpan(text: '.'),
           ],
         ),
       );
