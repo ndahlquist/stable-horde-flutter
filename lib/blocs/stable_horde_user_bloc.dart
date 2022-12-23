@@ -29,6 +29,11 @@ class _StableHordeUserBloc {
       headers: headers,
     );
 
+    if (response.statusCode == 404) {
+      sharedPrefsBloc.setApiKey(null);
+      return null;
+    }
+
     if (response.statusCode != 200) {
       final exception = Exception(
         'Failed to get user: '
