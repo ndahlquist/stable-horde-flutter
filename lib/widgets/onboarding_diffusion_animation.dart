@@ -68,7 +68,7 @@ class _OnboardingDiffusionAnimationState
                 switchOutCurve: Curves.easeInOut,
                 child: SizedBox(
                   key: ValueKey(_index),
-                  height: 76,
+                  height: 40,
                   child: Center(
                     child: Text(
                       _prompts.keys.elementAt(_index),
