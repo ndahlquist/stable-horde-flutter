@@ -37,16 +37,17 @@ class SettingsPage extends StatelessWidget {
               ),
             ),
             ListTile(
-              title: const Text('stablehorde.net'),
+              title: const Text('StableHorde.net'),
               onTap: () {
                 launchUrlInExternalApp('https://stablehorde.net');
               },
             ),
-
             ListTile(
               title: const Text('FAQ'),
               onTap: () {
-                launchUrlInExternalApp('https://github.com/db0/AI-Horde/blob/main/FAQ.md');
+                launchUrlInExternalApp(
+                  'https://github.com/db0/AI-Horde/blob/main/FAQ.md',
+                );
               },
             ),
             ListTile(
@@ -55,7 +56,6 @@ class SettingsPage extends StatelessWidget {
                 launchUrlInExternalApp('https://discord.gg/3DxrhksKzn');
               },
             ),
-
             const Padding(
               padding: EdgeInsets.only(
                 top: 64.0,
