@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/blocs/stable_horde_user_bloc.dart';
+import 'package:stable_horde_flutter/dialogs/login_dialog.dart';
 import 'package:stable_horde_flutter/model/stable_horde_user.dart';
 import 'package:stable_horde_flutter/utils/legal_links.dart';
 
@@ -59,23 +60,7 @@ class _UserWidgetState extends State<UserWidget> {
                     showDialog(
                       context: context,
                       builder: (context) {
-                        return AlertDialog(
-                          title: const Text('API Key'),
-                          content: TextField(
-                            onChanged: (value) async {
-                              await sharedPrefsBloc.setApiKey(value);
-                            },
-                          ),
-                          actions: [
-                            TextButton(
-                              onPressed: () {
-                                setState(() {});
-                                Navigator.of(context).pop();
-                              },
-                              child: const Text('Continue'),
-                            ),
-                          ],
-                        );
+                        return LoginDialog();
                       },
                     );
                   },
