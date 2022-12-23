@@ -5,6 +5,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 class OnboardingDiffusionAnimation extends StatelessWidget {
   const OnboardingDiffusionAnimation({super.key});
 
+  static const Map<String, String> _prompts = {
+    'A Renaissance portrait of a cat wearing glasses. Highly detailed.': 'assets/images/ios_icon.jpg',
+  };
+
   @override
   Widget build(BuildContext context) {
     return Padding(
