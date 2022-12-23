@@ -73,7 +73,6 @@ class UserWidget extends StatelessWidget {
                 "${NumberFormat.decimalPattern().format(data.numRequested)} images generated",
                 style: const TextStyle(fontSize: 18),
               ),
-              const SizedBox(height: 8),
               Text(
                 "${NumberFormat.decimalPattern().format(data.numInferences)} images contributed",
                 style: const TextStyle(fontSize: 18),
