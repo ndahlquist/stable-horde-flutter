@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
+import 'package:stable_horde_flutter/blocs/stable_horde_user_bloc.dart';
 import 'package:stable_horde_flutter/colors.dart';
 import 'package:stable_horde_flutter/utils/legal_links.dart';
 
-class SettingsPage extends StatelessWidget {
+class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
 
+  @override
+  State<SettingsPage> createState() => _SettingsPageState();
+}
+
+class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,5 +84,16 @@ class SettingsPage extends StatelessWidget {
         },
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    sharedPrefsBloc.getApiKey().then((value) {
+      if (value != null) {
+        stableHordeUserBloc.lookupUser(value);
+      }
+    });
   }
 }
