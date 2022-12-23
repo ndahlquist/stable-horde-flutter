@@ -28,6 +28,41 @@ class SettingsPage extends StatelessWidget {
                 bottom: 16,
               ),
               child: Text(
+                'Learn More',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.left,
+              ),
+            ),
+            ListTile(
+              title: const Text('stablehorde.net'),
+              onTap: () {
+                launchUrlInExternalApp('https://stablehorde.net');
+              },
+            ),
+
+            ListTile(
+              title: const Text('FAQ'),
+              onTap: () {
+                launchUrlInExternalApp('https://github.com/db0/AI-Horde/blob/main/FAQ.md');
+              },
+            ),
+            ListTile(
+              title: const Text('Discord'),
+              onTap: () {
+                launchUrlInExternalApp('https://discord.gg/3DxrhksKzn');
+              },
+            ),
+
+            const Padding(
+              padding: EdgeInsets.only(
+                top: 64.0,
+                left: 16.0,
+                bottom: 16,
+              ),
+              child: Text(
                 'Legal',
                 style: TextStyle(
                   fontSize: 20,
