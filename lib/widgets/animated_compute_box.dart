@@ -1,4 +1,3 @@
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -12,8 +11,6 @@ class AnimatedComputeBox extends StatefulWidget {
 }
 
 class _AnimatedComputeBoxState extends State<AnimatedComputeBox> {
-
-
   late Timer _timer;
 
   @override
@@ -33,15 +30,24 @@ class _AnimatedComputeBoxState extends State<AnimatedComputeBox> {
 
   @override
   Widget build(BuildContext context) {
-    final animationProgress = _timer.tick % 1000 / 1000;
+    var animationProgress = _timer.tick % 1000 / 1000;
+    animationProgress = animationProgress * 3 - 1;
 
     return ShaderMask(
       shaderCallback: (bounds) {
         return LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomCenter,
-          colors: [Colors.white, Colors.lightBlue, Colors.white],
-          stops: [animationProgress+.2, animationProgress + .5, animationProgress + .8],
+          colors: const [
+            Colors.white,
+            Colors.lightBlue,
+            Colors.white,
+          ],
+          stops: [
+            animationProgress + .2,
+            animationProgress + .5,
+            animationProgress + .8,
+          ],
         ).createShader(bounds);
       },
       blendMode: BlendMode.srcATop,
