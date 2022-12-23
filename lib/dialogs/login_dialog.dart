@@ -1,8 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
+import 'package:stable_horde_flutter/blocs/stable_horde_user_bloc.dart';
 import 'package:stable_horde_flutter/utils/legal_links.dart';
 
-class LoginDialog extends StatelessWidget {
+class LoginDialog extends StatefulWidget {
+  const LoginDialog({super.key});
+
+  @override
+  State<LoginDialog> createState() => _LoginDialogState();
+}
+
+class _LoginDialogState extends State<LoginDialog> {
+  bool _validating = false;
+  String _apiKey = "";
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -38,15 +49,36 @@ class LoginDialog extends StatelessWidget {
               ),
             ),
             onChanged: (value) async {
-              await sharedPrefsBloc.setApiKey(value);
+              _apiKey = value;
             },
           ),
         ],
       ),
       actions: [
         TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
+          onPressed: ()async {
+            setState(() {
+              _validating = true;
+            });
+
+            try {
+              final user = await stableHordeUserBloc.lookupUser(_apiKey);
+
+              if (user == null) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Invalid API key'),
+                  ),
+                );
+              } else {
+                await sharedPrefsBloc.setApiKey(_apiKey);
+                Navigator.of(context).pop();
+              }
+            } finally {
+              setState(() {
+                _validating = false;
+              });
+            }
           },
           child: const Text('Validate'),
         ),
