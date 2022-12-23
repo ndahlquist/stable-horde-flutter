@@ -91,7 +91,7 @@ class _TaskProgressIndicatorState extends State<TaskProgressIndicator> {
                 const TextSpan(text: 'For faster image generations, '),
                 TextSpan(
                   text: 'create an account',
-                  style: const TextStyle(fontWeight: FontWeight.bold),
+                  style: const TextStyle(decoration: TextDecoration.underline),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () {
                       Navigator.push(
@@ -116,7 +116,7 @@ class _TaskProgressIndicatorState extends State<TaskProgressIndicator> {
               children: [
                 TextSpan(
                   text: 'running a worker',
-                  style: const TextStyle(fontWeight: FontWeight.bold),
+                  style: const TextStyle(decoration: TextDecoration.underline),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () {
                       launchUrlInExternalApp(
@@ -127,7 +127,7 @@ class _TaskProgressIndicatorState extends State<TaskProgressIndicator> {
                 const TextSpan(text: ' or '),
                 TextSpan(
                   text: 'supporting us on Patreon',
-                  style: const TextStyle(fontWeight: FontWeight.bold),
+                  style: const TextStyle(decoration: TextDecoration.underline),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () {
                       launchUrlInExternalApp(

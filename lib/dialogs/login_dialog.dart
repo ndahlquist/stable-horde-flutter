@@ -33,7 +33,7 @@ class _LoginDialogState extends State<LoginDialog> {
                 children: const <TextSpan>[
                   TextSpan(
                     text: 'https://stablehorde.net/register',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: TextStyle(decoration: TextDecoration.underline),
                   ),
                   TextSpan(text: '.'),
                 ],
