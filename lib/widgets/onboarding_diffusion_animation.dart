@@ -7,18 +7,39 @@ class OnboardingDiffusionAnimation extends StatefulWidget {
   const OnboardingDiffusionAnimation({super.key});
 
   static const Map<String, String> _prompts = {
-    'A Renaissance portrait of a cat wearing glasses. Highly detailed.': 'assets/images/cat.jpg',
-    'iOS icon app. Nature. Highly detailed, trending on artstation, IconsMi': 'assets/images/ios_icon.jpg',
-    'knollingcase, isometric render, a Greek underwater city with volcano, isometric display case, knolling teardown, transparent data visualization infographic': 'assets/images/knollingcase.jpg',
+    'A Renaissance portrait of a cat wearing glasses. Highly detailed.':
+        'assets/images/cat.jpg',
+    'iOS icon app. Nature. Highly detailed, trending on artstation, IconsMi':
+        'assets/images/ios_icon.jpg',
+    'knollingcase, isometric render, a Greek underwater city with volcano, isometric display case, knolling teardown, transparent data visualization infographic':
+        'assets/images/knollingcase.jpg',
   };
 
   @override
-  State<OnboardingDiffusionAnimation> createState() => _OnboardingDiffusionAnimationState();
+  State<OnboardingDiffusionAnimation> createState() =>
+      _OnboardingDiffusionAnimationState();
 }
 
-class _OnboardingDiffusionAnimationState extends State<OnboardingDiffusionAnimation> {
+class _OnboardingDiffusionAnimationState
+    extends State<OnboardingDiffusionAnimation> {
+  late Timer _timer;
 
 
+  @override
+  void initState() {
+    super.initState();
+
+    _timer = Timer.periodic(const Duration(milliseconds: 1), (_) {
+      setState(() {});
+    });
+  }
+
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +90,8 @@ class _OnboardingDiffusionAnimationState extends State<OnboardingDiffusionAnimat
                         color: Colors.black.withOpacity(0.55),
                         spreadRadius: 0,
                         blurRadius: 8,
-                        offset: const Offset(0, 4), // changes position of shadow
+                        offset:
+                            const Offset(0, 4), // changes position of shadow
                       ),
                     ],
                   ),
@@ -95,14 +117,4 @@ class _OnboardingDiffusionAnimationState extends State<OnboardingDiffusionAnimat
     );
   }
 
-  @override
-  void initState() {
-    super.initState();
-
-    // Run setstate() periodically, every millisecond
-    Timer.periodic(const Duration(milliseconds: 1), (_) {
-      setState(() {});
-    });
-
-  }
 }
