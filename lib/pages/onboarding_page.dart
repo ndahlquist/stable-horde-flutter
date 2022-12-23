@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:stable_horde_flutter/colors.dart';
 
@@ -35,6 +34,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
               child: PageView(
                 controller: _pageController,
                 children: [
+                  _pageOne(),
                   _buildPage(
                     'Feedback Needed',
                     'Stable Diffusion is software that generates images from text-- almost like magic!',
@@ -98,6 +98,40 @@ class _OnboardingPageState extends State<OnboardingPage> {
           SizedBox(height: 16),*/
           Text(
             body,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _pageOne() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('test'),
+          RichText(
+            textScaleFactor: MediaQuery.of(context).textScaleFactor,
+            text: TextSpan(
+              text: '',
+              style: DefaultTextStyle.of(context).style.copyWith(
+                    fontSize: 12,
+                    color: Colors.white,
+                  ),
+              children: const [
+                TextSpan(
+                  text: 'Stable Diffusion',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                TextSpan(text: ' is software that '),
+                TextSpan(
+                  text: 'generates images from text',
+                  style: TextStyle(fontStyle: FontStyle.italic),
+                ),
+                TextSpan(text: '-- almost like magic!'),
+              ],
+            ),
           ),
         ],
       ),
