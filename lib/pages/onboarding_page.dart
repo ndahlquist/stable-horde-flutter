@@ -87,38 +87,41 @@ class _OnboardingPageState extends State<OnboardingPage> {
   Widget _pageOne() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 16),
-          RichText(
-            textScaleFactor: MediaQuery.of(context).textScaleFactor,
-            text: const TextSpan(
-              text: '',
-              children: [
-                TextSpan(
-                  text: 'Stable Diffusion',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                TextSpan(text: ' is software that '),
-                TextSpan(
-                  text: 'generates images from text',
-                  style: TextStyle(fontStyle: FontStyle.italic),
-                ),
-                TextSpan(text: '-- almost like magic!'),
-              ],
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 16),
+            RichText(
+              textScaleFactor: MediaQuery.of(context).textScaleFactor,
+              text: const TextSpan(
+                text: '',
+                children: [
+                  TextSpan(
+                    text: 'Stable Diffusion',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  TextSpan(text: ' is software that '),
+                  TextSpan(
+                    text: 'generates images from text',
+                    style: TextStyle(fontStyle: FontStyle.italic),
+                  ),
+                  TextSpan(text: '-- almost like magic!'),
+                ],
+              ),
             ),
-          ),
-          const SizedBox(height: 16),
-          const Expanded(
-            child: OnboardingDiffusionAnimation(showHorde: false),
-          ),
-          const SizedBox(height: 16),
-          const Text(
-              'On a PC with a powerful GPU, each image takes a few seconds to generate.'),
-          const SizedBox(height: 16),
-          const Text("...But what if you don't have a powerful PC?"),
-        ],
+            const SizedBox(height: 16),
+            const SizedBox(
+              height: 400,
+              child: OnboardingDiffusionAnimation(showHorde: false),
+            ),
+            const SizedBox(height: 16),
+            const Text(
+                'On a PC with a powerful GPU, each image takes a few seconds to generate.'),
+            const SizedBox(height: 16),
+            const Text("...But what if you don't have a powerful PC?"),
+          ],
+        ),
       ),
     );
   }
@@ -126,52 +129,56 @@ class _OnboardingPageState extends State<OnboardingPage> {
   Widget _pageTwo() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 16),
-          RichText(
-            textScaleFactor: MediaQuery.of(context).textScaleFactor,
-            text: const TextSpan(
-              text: 'The ',
-              children: [
-                TextSpan(
-                  text: 'Stable Horde',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                TextSpan(
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 16),
+            RichText(
+              textScaleFactor: MediaQuery.of(context).textScaleFactor,
+              text: const TextSpan(
+                text: 'The ',
+                children: [
+                  TextSpan(
+                    text: 'Stable Horde',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  TextSpan(
                     text:
-                        " is a network of volunteers who pool their computing power. When you request an image, it gets assigned to a volunteer's machine to generate it."),
-              ],
+                        " is a network of volunteers who pool their computing power. When you request an image, it gets assigned to a volunteer's machine to generate it.",
+                  ),
+                ],
+              ),
             ),
-          ),
-          const SizedBox(height: 16),
-          const Expanded(
-            child: OnboardingDiffusionAnimation(showHorde: true),
-          ),
-          const SizedBox(height: 16),
-          RichText(
-            textScaleFactor: MediaQuery.of(context).textScaleFactor,
-            text: const TextSpan(
-              text: 'Since this is ',
-              children: [
-                TextSpan(
-                  text: 'free and community-driven',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                TextSpan(text: ", please:"),
-              ],
+            const SizedBox(height: 16),
+            const SizedBox(
+              height: 400,
+              child: OnboardingDiffusionAnimation(showHorde: true),
             ),
-          ),
-          const SizedBox(height: 4),
-          const Text(" - Be patient while your image is being generated."),
-          const SizedBox(height: 4),
-          const Text(" - Try not to request more images than you need."),
-          const SizedBox(height: 4),
-          const Text(
-            " - Consider contributing back to the community by running your own worker!",
-          ),
-        ],
+            const SizedBox(height: 16),
+            RichText(
+              textScaleFactor: MediaQuery.of(context).textScaleFactor,
+              text: const TextSpan(
+                text: 'Since this is ',
+                children: [
+                  TextSpan(
+                    text: 'free and community-driven',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  TextSpan(text: ", please:"),
+                ],
+              ),
+            ),
+            const SizedBox(height: 4),
+            const Text(" - Be patient while your image is being generated."),
+            const SizedBox(height: 4),
+            const Text(" - Try not to request more images than you need."),
+            const SizedBox(height: 4),
+            const Text(
+              " - Consider contributing back to the community by running your own worker!",
+            ),
+          ],
+        ),
       ),
     );
   }
