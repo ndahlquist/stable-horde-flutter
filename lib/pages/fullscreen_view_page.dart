@@ -95,7 +95,7 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
       onPressed: () async {
         final outputFile = await imageTranscodeBloc.transcodeImageToJpg(task);
 
-        Share.shareXFiles([XFile(outputFile.path)]);
+        await Share.shareXFiles([XFile(outputFile.path)]);
       },
     );
   }
