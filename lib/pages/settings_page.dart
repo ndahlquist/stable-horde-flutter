@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/colors.dart';
 import 'package:stable_horde_flutter/utils/legal_links.dart';
 import 'package:stable_horde_flutter/widgets/user_widget.dart';
@@ -20,8 +19,8 @@ class SettingsPage extends StatelessWidget {
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            UserWidget(),
+          children:  [
+            const UserWidget(),
             const Padding(
               padding: EdgeInsets.only(
                 top: 64.0,
@@ -45,37 +44,16 @@ class SettingsPage extends StatelessWidget {
               title: Text('Terms of Service'),
               onTap: launchTermsOfService,
             ),
+
+            ListTile(
+              title: const Text('Third Party Software'),
+              onTap: () {
+                showLicensePage(context: context);
+              },
+            ),
           ],
         ),
       ),
     );
   }
-
-  /*Widget _apiKeyField() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      child: FutureBuilder<String?>(
-        future: sharedPrefsBloc.getApiKey(),
-        builder: (context, snapshot) {
-          final apiKey = snapshot.data ?? '';
-
-          return TextField(
-            controller: TextEditingController(text: apiKey),
-            decoration: const InputDecoration(
-              labelText: 'API Key',
-              enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.white),
-              ),
-              focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.white),
-              ),
-            ),
-            onChanged: (value) {
-              sharedPrefsBloc.setApiKey(value);
-            },
-          );
-        },
-      ),
-    );
-  }*/
 }
