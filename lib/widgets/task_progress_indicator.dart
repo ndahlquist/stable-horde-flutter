@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/model/stable_horde_task.dart';
 import 'package:stable_horde_flutter/pages/settings_page.dart';
+import 'package:stable_horde_flutter/utils/legal_links.dart';
 import 'package:stable_horde_flutter/widgets/timed_progress_indicator.dart';
 
 class TaskProgressIndicator extends StatefulWidget {
@@ -110,17 +111,29 @@ class _TaskProgressIndicatorState extends State<TaskProgressIndicator> {
           text:
               'Stable Horde is a volunteer project! For faster image generations, consider ',
           style: DefaultTextStyle.of(context).style,
-          children: const <TextSpan>[
+          children: [
             TextSpan(
               text: 'running a worker',
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: const TextStyle(fontWeight: FontWeight.bold),
+              recognizer: TapGestureRecognizer()
+                ..onTap = () {
+                  launchUrlInExternalApp(
+                    'https://github.com/db0/AI-Horde/blob/main/README_StableHorde.md',
+                  );
+                },
             ),
-            TextSpan(text: ' or '),
+            const TextSpan(text: ' or '),
             TextSpan(
-              text: 'contributing to our Patreon',
-              style: TextStyle(fontWeight: FontWeight.bold),
+              text: 'supporting us on Patreon',
+              style: const TextStyle(fontWeight: FontWeight.bold),
+              recognizer: TapGestureRecognizer()
+                ..onTap = () {
+                  launchUrlInExternalApp(
+                    'https://www.patreon.com/db0',
+                  );
+                },
             ),
-            TextSpan(
+            const TextSpan(
               text: '.',
             ),
           ],
