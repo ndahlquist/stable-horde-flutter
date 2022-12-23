@@ -53,6 +53,31 @@ class _UserWidgetState extends State<UserWidget> {
                   onPressed: () async {
                     //await sharedPrefsBloc.setApiKey(null);
                     //setState(() {});
+
+                    // Open a dialog that allows entering a text field
+
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: const Text('API Key'),
+                          content: TextField(
+                            onChanged: (value) async {
+                              await sharedPrefsBloc.setApiKey(value);
+                            },
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                setState(() {});
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text('Continue'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
                   },
                   child: const Text('Login'),
                 ),
