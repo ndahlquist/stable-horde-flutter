@@ -32,8 +32,9 @@ class _LoginDialogState extends State<LoginDialog> {
                 style: DefaultTextStyle.of(context).style,
                 children: const <TextSpan>[
                   TextSpan(
-                      text: 'https://stablehorde.net/register',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
+                    text: 'https://stablehorde.net/register',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                   TextSpan(text: '.'),
                 ],
               ),

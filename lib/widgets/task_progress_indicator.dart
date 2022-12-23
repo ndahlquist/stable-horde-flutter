@@ -84,9 +84,12 @@ class _TaskProgressIndicatorState extends State<TaskProgressIndicator> {
           text: 'ETA: ${difference.inSeconds}s\n',
           style: DefaultTextStyle.of(context).style,
           children: const <TextSpan>[
+            TextSpan(text: 'You are currently anonymous.\n'),
+            TextSpan(text: 'For faster image generations, '),
             TextSpan(
-                text: 'https://stablehorde.net/register',
-                style: TextStyle(fontWeight: FontWeight.bold)),
+              text: 'login or create an account',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
             TextSpan(text: '.'),
           ],
         ),
