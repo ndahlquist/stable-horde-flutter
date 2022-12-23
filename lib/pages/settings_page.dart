@@ -3,6 +3,7 @@ import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/blocs/stable_horde_user_bloc.dart';
 import 'package:stable_horde_flutter/colors.dart';
 import 'package:stable_horde_flutter/utils/legal_links.dart';
+import 'package:stable_horde_flutter/widgets/user_widget.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -24,7 +25,9 @@ class _SettingsPageState extends State<SettingsPage> {
       body: SingleChildScrollView(
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            UserWidget(),
             _apiKeyField(),
             const Padding(
               padding: EdgeInsets.only(
@@ -32,16 +35,13 @@ class _SettingsPageState extends State<SettingsPage> {
                 left: 16.0,
                 bottom: 16,
               ),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Legal',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.left,
+              child: Text(
+                'Legal',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
                 ),
+                textAlign: TextAlign.left,
               ),
             ),
             const ListTile(
