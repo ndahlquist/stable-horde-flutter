@@ -55,33 +55,39 @@ class _LoginDialogState extends State<LoginDialog> {
         ],
       ),
       actions: [
-        TextButton(
-          onPressed: ()async {
-            setState(() {
-              _validating = true;
-            });
-
-            try {
-              final user = await stableHordeUserBloc.lookupUser(_apiKey);
-
-              if (user == null) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Invalid API key'),
-                  ),
-                );
-              } else {
-                await sharedPrefsBloc.setApiKey(_apiKey);
-                Navigator.of(context).pop();
-              }
-            } finally {
+        if (_validating)
+          const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: CircularProgressIndicator(),
+          ),
+        if (!_validating)
+          TextButton(
+            onPressed: () async {
               setState(() {
-                _validating = false;
+                _validating = true;
               });
-            }
-          },
-          child: const Text('Validate'),
-        ),
+
+              try {
+                final user = await stableHordeUserBloc.lookupUser(_apiKey);
+
+                if (user == null) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Invalid API key'),
+                    ),
+                  );
+                } else {
+                  await sharedPrefsBloc.setApiKey(_apiKey);
+                  Navigator.of(context).pop();
+                }
+              } finally {
+                setState(() {
+                  _validating = false;
+                });
+              }
+            },
+            child: const Text('Validate'),
+          ),
       ],
     );
   }
