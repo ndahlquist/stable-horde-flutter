@@ -25,7 +25,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: Text("Stable Horde"),
+        title: const Text("Stable Horde"),
         automaticallyImplyLeading: false,
       ),
       body: SafeArea(
@@ -37,7 +37,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 children: [
                   _buildPage(
                     'Feedback Needed',
-                    'If you see something confusing, or if you have a suggestion, please let us know.\n\nYou can shake the phone to open up a feedback menu. Try it now if you like :)',
+                    'Stable Diffusion is software that generates images from text-- almost like magic!',
                   ),
                   _buildPage(
                     'Sharing is Cool',
@@ -91,11 +91,11 @@ class _OnboardingPageState extends State<OnboardingPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          /*Text(
             title,
             style: TextStyle(fontSize: 32),
           ),
-          SizedBox(height: 16),
+          SizedBox(height: 16),*/
           Text(
             body,
           ),
