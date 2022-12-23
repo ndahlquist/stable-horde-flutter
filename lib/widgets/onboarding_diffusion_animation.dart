@@ -30,7 +30,7 @@ class _OnboardingDiffusionAnimationState
   void initState() {
     super.initState();
 
-    _timer = Timer.periodic(const Duration(milliseconds: 1000), (_) {
+    _timer = Timer.periodic(const Duration(milliseconds: 5000), (_) {
       setState(() {
         _index = (_index + 1) % _prompts.length;
       });
@@ -55,7 +55,7 @@ class _OnboardingDiffusionAnimationState
         child: FractionallySizedBox(
           widthFactor: 1,
           child: Padding(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(18),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
