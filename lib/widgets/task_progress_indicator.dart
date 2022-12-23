@@ -71,30 +71,57 @@ class _TaskProgressIndicatorState extends State<TaskProgressIndicator> {
       final difference = widget.task.estimatedCompletionTime!.difference(
         DateTime.now(),
       );
-      String loadingMessage = 'ETA: ${difference.inSeconds}s\n';
 
+      final Widget callToAction;
       if (sharedPrefsBloc.getApiKey() == null) {
-        loadingMessage += 'You are currently anonymous.\n';
-        loadingMessage += 'For faster image generations, create an account.';
+        callToAction = RichText(
+          textScaleFactor: MediaQuery.of(context).textScaleFactor,
+          text: TextSpan(
+            text: 'You are currently anonymous.\n',
+            style: DefaultTextStyle.of(context).style,
+            children: const <TextSpan>[
+              TextSpan(text: 'For faster image generations, '),
+              TextSpan(
+                text: 'create an account',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              TextSpan(text: '.'),
+            ],
+          ),
+        );
+      } else {
+        callToAction = RichText(
+          textScaleFactor: MediaQuery.of(context).textScaleFactor,
+          text: TextSpan(
+            text: 'Stable Horde is a volunteer project! For faster image generations, consider ',
+            style: DefaultTextStyle.of(context).style,
+            children: const <TextSpan>[
+              TextSpan(
+                text: 'running a worker',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              TextSpan(text: ' or '),
+              TextSpan(
+                text: 'contributing to our Patreon',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              TextSpan(
+                text: '.',
+              ),
+            ],
+          ),
+        );
       }
 
-      loadingMessageWidget = RichText(
-        textScaleFactor: MediaQuery.of(context).textScaleFactor,
-        text: TextSpan(
-          text: 'ETA: ${difference.inSeconds}s\n',
-          style: DefaultTextStyle.of(context).style,
-          children: const <TextSpan>[
-            TextSpan(text: 'You are currently anonymous.\n'),
-            TextSpan(text: 'For faster image generations, '),
-            TextSpan(
-              text: 'create an account',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            TextSpan(text: '.'),
-          ],
-        ),
+      loadingMessageWidget = Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Spacer(),
+          Text('ETA: ${difference.inSeconds}s'),
+          const SizedBox(height: 8),
+          callToAction,
+        ],
       );
-
     }
 
     return Stack(
