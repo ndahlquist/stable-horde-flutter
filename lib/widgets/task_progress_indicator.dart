@@ -74,72 +74,76 @@ class _TaskProgressIndicatorState extends State<TaskProgressIndicator> {
       final difference = widget.task.estimatedCompletionTime!.difference(
         DateTime.now(),
       );
-
       loadingMessageWidget = Text('ETA: ${difference.inSeconds}s');
     }
 
-    final Widget callToAction;
-    if (sharedPrefsBloc.getApiKey() == null) {
-      callToAction = RichText(
-        textScaleFactor: MediaQuery.of(context).textScaleFactor,
-        text: TextSpan(
-          text: 'You are currently anonymous.\n',
-          style: DefaultTextStyle.of(context).style,
-          children: [
-            const TextSpan(text: 'For faster image generations, '),
-            TextSpan(
-              text: 'create an account',
-              style: const TextStyle(fontWeight: FontWeight.bold),
-              recognizer: TapGestureRecognizer()
-                ..onTap = () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (c) => const SettingsPage(),
-                    ),
-                  );
-                },
+    final Widget callToAction = FutureBuilder<String?>(
+      future: sharedPrefsBloc.getApiKey(),
+      builder: (context, snapshot) {
+        final apiKey = snapshot.data;
+        if (apiKey == null) {
+          return RichText(
+            textScaleFactor: MediaQuery.of(context).textScaleFactor,
+            text: TextSpan(
+              text: 'You are currently anonymous.\n',
+              style: DefaultTextStyle.of(context).style,
+              children: [
+                const TextSpan(text: 'For faster image generations, '),
+                TextSpan(
+                  text: 'create an account',
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (c) => const SettingsPage(),
+                        ),
+                      );
+                    },
+                ),
+                const TextSpan(text: '.'),
+              ],
             ),
-            const TextSpan(text: '.'),
-          ],
-        ),
-      );
-    } else {
-      callToAction = RichText(
-        textScaleFactor: MediaQuery.of(context).textScaleFactor,
-        text: TextSpan(
-          text:
-              'Stable Horde is a volunteer project! For faster image generations, consider ',
-          style: DefaultTextStyle.of(context).style,
-          children: [
-            TextSpan(
-              text: 'running a worker',
-              style: const TextStyle(fontWeight: FontWeight.bold),
-              recognizer: TapGestureRecognizer()
-                ..onTap = () {
-                  launchUrlInExternalApp(
-                    'https://github.com/db0/AI-Horde/blob/main/README_StableHorde.md',
-                  );
-                },
+          );
+        } else {
+          return RichText(
+            textScaleFactor: MediaQuery.of(context).textScaleFactor,
+            text: TextSpan(
+              text:
+                  'Stable Horde is a volunteer project! For faster image generations, consider ',
+              style: DefaultTextStyle.of(context).style,
+              children: [
+                TextSpan(
+                  text: 'running a worker',
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () {
+                      launchUrlInExternalApp(
+                        'https://github.com/db0/AI-Horde/blob/main/README_StableHorde.md',
+                      );
+                    },
+                ),
+                const TextSpan(text: ' or '),
+                TextSpan(
+                  text: 'supporting us on Patreon',
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () {
+                      launchUrlInExternalApp(
+                        'https://www.patreon.com/db0',
+                      );
+                    },
+                ),
+                const TextSpan(
+                  text: '.',
+                ),
+              ],
             ),
-            const TextSpan(text: ' or '),
-            TextSpan(
-              text: 'supporting us on Patreon',
-              style: const TextStyle(fontWeight: FontWeight.bold),
-              recognizer: TapGestureRecognizer()
-                ..onTap = () {
-                  launchUrlInExternalApp(
-                    'https://www.patreon.com/db0',
-                  );
-                },
-            ),
-            const TextSpan(
-              text: '.',
-            ),
-          ],
-        ),
-      );
-    }
+          );
+        }
+      },
+    );
 
     return Stack(
       children: [

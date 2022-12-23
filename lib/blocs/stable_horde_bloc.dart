@@ -24,7 +24,7 @@ class _StableHordeBloc {
     final task = await isar.stableHordeTasks.get(dbId);
     task!;
 
-    var apiKey = sharedPrefsBloc.getApiKey();
+    var apiKey = await sharedPrefsBloc.getApiKey();
     apiKey ??= "0000000000"; // Anonymous API key.
 
     final headers = {
