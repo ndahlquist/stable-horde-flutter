@@ -2,7 +2,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 /// Provides access to shared preferences.
 class _SharedPrefsBloc {
-
   static const _apiKeyKey = 'API_KEY_KEY';
 
   static const _promptKey = 'PROMPT_KEY';
