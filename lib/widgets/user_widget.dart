@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stable_horde_flutter/blocs/stable_horde_user_bloc.dart';
 import 'package:stable_horde_flutter/model/stable_horde_user.dart';
 
@@ -14,6 +15,10 @@ class UserWidget extends StatelessWidget {
         if (snapshot.hasError) {
           print(snapshot.error);
           print(snapshot.stackTrace);
+          Sentry.captureException(
+            snapshot.error,
+            stackTrace: snapshot.stackTrace,
+          );
         }
 
         var data = snapshot.data;
