@@ -41,6 +41,8 @@ dependencies:
 
   share_plus: ^6.3.0
 
+  flutter_svg: ^1.0.0
+
 
 
 dev_dependencies:
@@ -57,3 +59,6 @@ dev_dependencies:
 flutter:
 
   uses-material-design: true
+
+  assets:
+    - assets/vector_drawables/box.svg
