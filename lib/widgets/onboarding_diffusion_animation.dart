@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:stable_horde_flutter/widgets/animated_compute_box.dart';
 
 class OnboardingDiffusionAnimation extends StatefulWidget {
   final bool showHorde;
@@ -89,23 +90,8 @@ class _OnboardingDiffusionAnimationState
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    if (widget.showHorde)
-                      SvgPicture.asset(
-                        'assets/vector_drawables/box.svg',
-                        width: 64,
-                        height: 64,
-                      ),
-                    if (widget.showHorde)
-                      SvgPicture.asset(
-                        'assets/vector_drawables/box.svg',
-                        width: 64,
-                        height: 64,
-                      ),
-                    SvgPicture.asset(
-                      'assets/vector_drawables/box.svg',
-                      width: 64,
-                      height: 64,
-                    ),
+                    for (int i = 0; i < (widget.showHorde ? 3 : 1); i++)
+                      const AnimatedComputeBox(),
                   ],
                 ),
                 const Spacer(),
