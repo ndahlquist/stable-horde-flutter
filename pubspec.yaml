@@ -41,6 +41,8 @@ dependencies:
 
   share_plus: ^6.3.0
 
+  http: ^0.13.5
+
 
 
 dev_dependencies:

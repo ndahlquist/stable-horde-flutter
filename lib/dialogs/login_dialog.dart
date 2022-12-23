@@ -72,6 +72,8 @@ class _LoginDialogState extends State<LoginDialog> {
               try {
                 final user = await stableHordeUserBloc.lookupUser(_apiKey);
 
+                if (!mounted) return;
+
                 if (user == null) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
@@ -80,6 +82,7 @@ class _LoginDialogState extends State<LoginDialog> {
                   );
                 } else {
                   await sharedPrefsBloc.setApiKey(_apiKey);
+                  if (!mounted) return;
                   Navigator.of(context).pop();
                 }
               } finally {
