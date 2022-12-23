@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/colors.dart';
+import 'package:stable_horde_flutter/pages/home_page.dart';
 import 'package:stable_horde_flutter/widgets/onboarding_diffusion_animation.dart';
 
 class OnboardingPage extends StatefulWidget {
@@ -58,7 +60,12 @@ class _OnboardingPageState extends State<OnboardingPage> {
                           curve: Curves.easeInOut,
                         );
                       } else {
-                        Navigator.of(context).pop();
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (c) => const HomePage(),
+                          ),
+                        );
+                        sharedPrefsBloc.setHasSeenOnboarding();
                       }
                     },
                     child: const Text(
