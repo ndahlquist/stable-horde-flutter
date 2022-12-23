@@ -35,19 +35,11 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 controller: _pageController,
                 children: [
                   _pageOne(),
-                  _buildPage(
-                    'Feedback Needed',
-                    'Stable Diffusion is software that generates images from text-- almost like magic!',
-                  ),
-                  _buildPage(
-                    'Sharing is Cool',
-                    "Please be encouraged to share your creations and the app (no need for secrecy).\n\nThanks for testing!",
-                  ),
+                  _pageTwo(),
                 ],
               ),
             ),
 
-            // A button to skip the onboarding.
             Align(
               alignment: Alignment.bottomCenter,
               child: FractionallySizedBox(
@@ -85,25 +77,6 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
   bool _onFirstPage() => _pageController.page == 0;
 
-  Widget _buildPage(String title, String body) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          /*Text(
-            title,
-            style: TextStyle(fontSize: 32),
-          ),
-          SizedBox(height: 16),*/
-          Text(
-            body,
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _pageOne() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -135,6 +108,54 @@ class _OnboardingPageState extends State<OnboardingPage> {
           const Text('On a PC with a powerful GPU, each image takes a few seconds to generate.'),
           const SizedBox(height: 16),
           const Text("...But what if you don't have a powerful PC?"),
+          const SizedBox(height: 16),
+        ],
+      ),
+    );
+  }
+
+  Widget _pageTwo() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 16),
+          RichText(
+            textScaleFactor: MediaQuery.of(context).textScaleFactor,
+            text: const TextSpan(
+              text: 'The ',
+              children: [
+                TextSpan(
+                  text: 'Stable Horde',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                TextSpan(text: " is a network of volunteers who pool their computing power. When you request an image, it gets assigned to a volunteer's machine to generate it."),
+
+              ],
+            ),
+          ),
+
+          const Spacer(),
+
+          RichText(
+            textScaleFactor: MediaQuery.of(context).textScaleFactor,
+            text: const TextSpan(
+              text: 'Since this is ',
+              children: [
+                TextSpan(
+                  text: 'free and community-driven',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                TextSpan(text: ", please:"),
+
+              ],
+            ),
+          ),
+
+          const Text(" - Be patient while your image is being generated."),
+          const Text(" - Try not to request more images than you need."),
+          const Text(" - Consider contributing back to the community by running your own worker!"),
           const SizedBox(height: 16),
         ],
       ),
