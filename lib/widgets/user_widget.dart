@@ -52,17 +52,15 @@ class _UserWidgetState extends State<UserWidget> {
                 const SizedBox(height: 8),
                 ElevatedButton(
                   onPressed: () async {
-                    //await sharedPrefsBloc.setApiKey(null);
-                    //setState(() {});
-
-                    // Open a dialog that allows entering a text field
-
-                    showDialog(
+                    await showDialog(
                       context: context,
                       builder: (context) {
-                        return LoginDialog();
+                        return const LoginDialog();
                       },
                     );
+
+                    // Refresh user UI.
+                    setState(() {});
                   },
                   child: const Text('Login'),
                 ),
