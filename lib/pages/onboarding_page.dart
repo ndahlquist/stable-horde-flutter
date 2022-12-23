@@ -62,14 +62,14 @@ class _OnboardingPageState extends State<OnboardingPage> {
                       if (_onFirstPage()) {
                         _pageController.animateToPage(
                           1,
-                          duration: Duration(milliseconds: 500),
+                          duration: const Duration(milliseconds: 500),
                           curve: Curves.easeInOut,
                         );
                       } else {
                         Navigator.of(context).pop();
                       }
                     },
-                    child: Text(
+                    child: const Text(
                       "Continue",
                       style: TextStyle(color: Colors.black87),
                     ),
@@ -110,7 +110,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           RichText(
             textScaleFactor: MediaQuery.of(context).textScaleFactor,
             text: const TextSpan(
@@ -130,9 +130,12 @@ class _OnboardingPageState extends State<OnboardingPage> {
             ),
           ),
 
-          Spacer(),
+          const Spacer(),
 
-          Text('On a PC with a powerful GPU, each image takes a few seconds to generate.'),
+          const Text('On a PC with a powerful GPU, each image takes a few seconds to generate.'),
+          const SizedBox(height: 16),
+          const Text("...But what if you don't have a powerful PC?"),
+          const SizedBox(height: 16),
         ],
       ),
     );
