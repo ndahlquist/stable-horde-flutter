@@ -10,7 +10,6 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stable_horde_flutter/blocs/stable_horde_bloc.dart';
 import 'package:stable_horde_flutter/firebase_options.dart';
 import 'package:stable_horde_flutter/model/stable_horde_task.dart';
-import 'package:stable_horde_flutter/pages/home_page.dart';
 import 'package:stable_horde_flutter/pages/onboarding_page.dart';
 import 'package:stable_horde_flutter/pages/version_deprecated_page.dart';
 
