@@ -92,7 +92,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
     sharedPrefsBloc.getApiKey().then((value) {
       if (value != null) {
-        stableHordeUserBloc.lookupUser(value);
+        stableHordeUserBloc.lookupUser(value).then((value) => print);
       }
     });
   }

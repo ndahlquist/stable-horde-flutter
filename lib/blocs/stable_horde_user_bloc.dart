@@ -6,9 +6,7 @@ import 'package:stable_horde_flutter/model/stable_horde_user.dart';
 import 'package:http/http.dart' as http;
 
 class _StableHordeUserBloc {
-
-  Future<StableHordeUser?> lookupUser(String apiKey) async  {
-
+  Future<StableHordeUser?> lookupUser(String apiKey) async {
     final headers = {
       'Accept': '* / *',
       'Accept-Language': 'en-US,en;q=0.9',
@@ -27,7 +25,7 @@ class _StableHordeUserBloc {
     if (response.statusCode != 200) {
       final exception = Exception(
         'Failed to get user: '
-            '${response.statusCode} ${response.body}',
+        '${response.statusCode} ${response.body}',
       );
       print(exception);
       Sentry.captureException(exception, stackTrace: StackTrace.current);
@@ -36,6 +34,13 @@ class _StableHordeUserBloc {
 
     final jsonResponse = jsonDecode(response.body);
     print(jsonResponse);
+
+    return StableHordeUser(
+      jsonResponse['username'],
+      (jsonResponse['kudos'] as num).toInt(),
+      jsonResponse['usage']['requests'],
+      jsonResponse['contributions']['fulfillments'],
+    );
   }
 }
 
