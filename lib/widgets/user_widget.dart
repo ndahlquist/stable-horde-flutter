@@ -38,13 +38,25 @@ class _UserWidgetState extends State<UserWidget> {
         var user = snapshot.data;
         if (user == null) {
           return Padding(
-            padding: const EdgeInsets.only(top: 16),
-            child: ElevatedButton(
-              onPressed: () async {
-                await sharedPrefsBloc.setApiKey(null);
-                setState(() {});
-              },
-              child: const Text('Login'),
+            padding: const EdgeInsets.only(
+              left: 12,
+              right: 12,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "You are currently anonymous. For faster image generation, login to a Stable Horde account.",
+                ),
+                const SizedBox(height: 8),
+                ElevatedButton(
+                  onPressed: () async {
+                    //await sharedPrefsBloc.setApiKey(null);
+                    //setState(() {});
+                  },
+                  child: const Text('Login'),
+                ),
+              ],
             ),
           );
         }
