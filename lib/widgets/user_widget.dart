@@ -62,7 +62,10 @@ class _UserWidgetState extends State<UserWidget> {
                     // Refresh user UI.
                     setState(() {});
                   },
-                  child: const Text('Login'),
+                  child: const Text(
+                    'Login',
+                    style: TextStyle(color: Colors.black87),
+                  ),
                 ),
               ],
             ),
@@ -85,7 +88,10 @@ class _UserWidgetState extends State<UserWidget> {
                     await sharedPrefsBloc.setApiKey(null);
                     setState(() {});
                   },
-                  child: const Text('Logout'),
+                  child: const Text(
+                    'Logout',
+                    style: TextStyle(color: Colors.black87),
+                  ),
                 ),
               ),
             ],
