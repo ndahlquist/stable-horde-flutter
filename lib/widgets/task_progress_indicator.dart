@@ -87,7 +87,7 @@ class _TaskProgressIndicatorState extends State<TaskProgressIndicator> {
             TextSpan(text: 'You are currently anonymous.\n'),
             TextSpan(text: 'For faster image generations, '),
             TextSpan(
-              text: 'login or create an account',
+              text: 'create an account',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             TextSpan(text: '.'),
@@ -95,7 +95,6 @@ class _TaskProgressIndicatorState extends State<TaskProgressIndicator> {
         ),
       );
 
-      loadingMessageWidget = Text(loadingMessage);
     }
 
     return Stack(
