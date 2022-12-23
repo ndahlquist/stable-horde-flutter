@@ -72,7 +72,8 @@ class _OnboardingDiffusionAnimationState
                   child: Center(
                     child: Text(
                       _prompts.keys.elementAt(_index),
-                      style: const TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
+                      style: const TextStyle(
+                          fontSize: 12, fontStyle: FontStyle.italic),
                       textAlign: TextAlign.center,
                     ),
                   ),
