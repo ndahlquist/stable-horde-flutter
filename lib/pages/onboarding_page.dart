@@ -102,7 +102,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
               ],
             ),
           ),
-          Expanded(
+          const Expanded(
             child: OnboardingDiffusionAnimation(showHorde: false),
           ),
           const Text(
@@ -137,7 +137,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
               ],
             ),
           ),
-          Expanded(
+          const Expanded(
             child: OnboardingDiffusionAnimation(showHorde: true),
           ),
           RichText(

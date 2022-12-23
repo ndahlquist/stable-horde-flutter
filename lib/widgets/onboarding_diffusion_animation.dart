@@ -6,7 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 class OnboardingDiffusionAnimation extends StatefulWidget {
   final bool showHorde;
 
-   OnboardingDiffusionAnimation({super.key, required this.showHorde});
+  const OnboardingDiffusionAnimation({super.key, required this.showHorde});
 
   @override
   State<OnboardingDiffusionAnimation> createState() =>
@@ -86,10 +86,27 @@ class _OnboardingDiffusionAnimationState
                   size: 32,
                 ),
                 const Spacer(),
-                SvgPicture.asset(
-                  'assets/vector_drawables/box.svg',
-                  width: 64,
-                  height: 64,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    if (widget.showHorde)
+                      SvgPicture.asset(
+                        'assets/vector_drawables/box.svg',
+                        width: 64,
+                        height: 64,
+                      ),
+                    if (widget.showHorde)
+                      SvgPicture.asset(
+                        'assets/vector_drawables/box.svg',
+                        width: 64,
+                        height: 64,
+                      ),
+                    SvgPicture.asset(
+                      'assets/vector_drawables/box.svg',
+                      width: 64,
+                      height: 64,
+                    ),
+                  ],
                 ),
                 const Spacer(),
                 const Icon(
