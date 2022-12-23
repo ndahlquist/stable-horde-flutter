@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:stable_horde_flutter/widgets/animated_compute_box.dart';
 
 class OnboardingDiffusionAnimation extends StatefulWidget {
