@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:stable_horde_flutter/colors.dart';
 
 class OnboardingPage extends StatefulWidget {
   const OnboardingPage({Key? key}) : super(key: key);
@@ -20,11 +21,11 @@ class _OnboardingPageState extends State<OnboardingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF230D49),
+      backgroundColor: stableHordePurple,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: Text("Beta Testing"),
+        title: Text("Stable Horde"),
         automaticallyImplyLeading: false,
       ),
       body: SafeArea(
@@ -70,7 +71,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                     },
                     child: Text(
                       "Continue",
-                      style: TextStyle(),
+                      style: TextStyle(color: Colors.black87),
                     ),
                   ),
                 ),
@@ -92,12 +93,11 @@ class _OnboardingPageState extends State<OnboardingPage> {
         children: [
           Text(
             title,
-            style: TextStyle(color: Colors.white, fontSize: 32),
+            style: TextStyle(fontSize: 32),
           ),
           SizedBox(height: 16),
           Text(
             body,
-            style: TextStyle(color: Colors.white),
           ),
         ],
       ),
