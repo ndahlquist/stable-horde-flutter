@@ -33,13 +33,15 @@ class _AnimatedComputeBoxState extends State<AnimatedComputeBox> {
 
   @override
   Widget build(BuildContext context) {
+    final animationProgress = _timer.tick % 1000 / 1000;
+
     return ShaderMask(
       shaderCallback: (bounds) {
         return LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomCenter,
-          colors: [Colors.blue, Colors.red],
-          stops: [(DateTime.now().millisecondsSinceEpoch % 1000) / 1000, (DateTime.now().millisecondsSinceEpoch % 1000) / 1000 + .5],
+          colors: [Colors.white, Colors.lightBlue, Colors.white],
+          stops: [animationProgress+.2, animationProgress + .5, animationProgress + .8],
         ).createShader(bounds);
       },
       blendMode: BlendMode.srcATop,
