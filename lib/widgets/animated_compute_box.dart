@@ -1,5 +1,5 @@
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class AnimatedComputeBox extends StatelessWidget {
@@ -7,10 +7,20 @@ class AnimatedComputeBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SvgPicture.asset(
-      'assets/vector_drawables/box.svg',
-      width: 64,
-      height: 64,
+    return ShaderMask(
+      shaderCallback: (bounds) {
+        return LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomCenter,
+          colors: [Colors.blue, Colors.red],
+        ).createShader(bounds);
+      },
+      blendMode: BlendMode.srcATop,
+      child: SvgPicture.asset(
+        'assets/vector_drawables/box.svg',
+        width: 64,
+        height: 64,
+      ),
     );
   }
   
