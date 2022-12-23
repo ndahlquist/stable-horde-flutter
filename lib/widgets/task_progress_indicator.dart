@@ -64,7 +64,7 @@ class _TaskProgressIndicatorState extends State<TaskProgressIndicator> {
       return progressIndicator;
     }
 
-     String loadingMessage;
+    String loadingMessage;
     if (widget.task.estimatedCompletionTime == null) {
       loadingMessage = 'Loading...';
     } else {
@@ -74,7 +74,7 @@ class _TaskProgressIndicatorState extends State<TaskProgressIndicator> {
       loadingMessage = 'ETA: ${difference.inSeconds}s\n';
 
       if (sharedPrefsBloc.getApiKey() == null) {
-        loadingMessage += 'You are currently anonymous.';
+        loadingMessage += 'You are currently anonymous.\n';
         loadingMessage += 'For faster image generations, create an account.';
       }
     }
