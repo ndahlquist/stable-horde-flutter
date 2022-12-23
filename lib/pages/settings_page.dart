@@ -19,7 +19,7 @@ class SettingsPage extends StatelessWidget {
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children:  [
+          children: [
             const UserWidget(),
             const Padding(
               padding: EdgeInsets.only(
@@ -44,7 +44,6 @@ class SettingsPage extends StatelessWidget {
               title: Text('Terms of Service'),
               onTap: launchTermsOfService,
             ),
-
             ListTile(
               title: const Text('Third Party Software'),
               onTap: () {
