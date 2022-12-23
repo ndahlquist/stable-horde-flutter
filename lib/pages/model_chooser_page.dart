@@ -5,9 +5,14 @@ import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/blocs/stable_horde_bloc.dart';
 import 'package:stable_horde_flutter/model/stable_horde_model.dart';
 
-class ModelChooserPage extends StatelessWidget {
+class ModelChooserPage extends StatefulWidget {
   const ModelChooserPage({super.key});
 
+  @override
+  State<ModelChooserPage> createState() => _ModelChooserPageState();
+}
+
+class _ModelChooserPageState extends State<ModelChooserPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,6 +47,8 @@ class ModelChooserPage extends StatelessWidget {
               return GestureDetector(
                 onTap: () async {
                   await sharedPrefsBloc.setModel(model.name);
+
+                  if (!mounted) return;
                   Navigator.of(context).pop();
                 },
                 child: Padding(
