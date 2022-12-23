@@ -102,7 +102,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
               ],
             ),
           ),
-          Expanded(
+          const Expanded(
             child: OnboardingDiffusionAnimation(),
           ),
           const Text(
@@ -137,7 +137,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
               ],
             ),
           ),
-          const Spacer(),
+          const Expanded(
+            child: OnboardingDiffusionAnimation(),
+          ),
           RichText(
             textScaleFactor: MediaQuery.of(context).textScaleFactor,
             text: const TextSpan(
