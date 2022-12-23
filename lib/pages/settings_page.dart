@@ -22,7 +22,6 @@ class SettingsPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             UserWidget(),
-            _apiKeyField(),
             const Padding(
               padding: EdgeInsets.only(
                 top: 64.0,
@@ -52,7 +51,7 @@ class SettingsPage extends StatelessWidget {
     );
   }
 
-  Widget _apiKeyField() {
+  /*Widget _apiKeyField() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12),
       child: FutureBuilder<String?>(
@@ -78,5 +77,5 @@ class SettingsPage extends StatelessWidget {
         },
       ),
     );
-  }
+  }*/
 }

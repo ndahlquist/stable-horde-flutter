@@ -28,23 +28,38 @@ class _UserWidgetState extends State<UserWidget> {
           );
         }
 
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Padding(
+            padding: EdgeInsets.only(left: 12),
+            child: CircularProgressIndicator(),
+          );
+        }
+
         var user = snapshot.data;
         if (user == null) {
-          return const SizedBox.shrink();
+          return Padding(
+            padding: const EdgeInsets.only(top: 16),
+            child: ElevatedButton(
+              onPressed: () async {
+                await sharedPrefsBloc.setApiKey(null);
+                setState(() {});
+              },
+              child: const Text('Login'),
+            ),
+          );
         }
 
         return Padding(
           padding: const EdgeInsets.only(
             left: 12,
             right: 12,
-            bottom: 64,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _loggedInUserWidget(user),
               Padding(
-                padding: const EdgeInsets.only(top: 16),
+                padding: const EdgeInsets.only(top: 8),
                 child: ElevatedButton(
                   onPressed: () async {
                     await sharedPrefsBloc.setApiKey(null);
