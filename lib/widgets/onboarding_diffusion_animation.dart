@@ -1,7 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class OnboardingDiffusionAnimation extends StatelessWidget {
+class OnboardingDiffusionAnimation extends StatefulWidget {
   const OnboardingDiffusionAnimation({super.key});
 
   static const Map<String, String> _prompts = {
@@ -9,6 +11,14 @@ class OnboardingDiffusionAnimation extends StatelessWidget {
     'iOS icon app. Nature. Highly detailed, trending on artstation, IconsMi': 'assets/images/ios_icon.jpg',
     'knollingcase, isometric render, a Greek underwater city with volcano, isometric display case, knolling teardown, transparent data visualization infographic': 'assets/images/knollingcase.jpg',
   };
+
+  @override
+  State<OnboardingDiffusionAnimation> createState() => _OnboardingDiffusionAnimationState();
+}
+
+class _OnboardingDiffusionAnimationState extends State<OnboardingDiffusionAnimation> {
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -83,5 +93,16 @@ class OnboardingDiffusionAnimation extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Run setstate() periodically, every millisecond
+    Timer.periodic(const Duration(milliseconds: 1), (_) {
+      setState(() {});
+    });
+
   }
 }
