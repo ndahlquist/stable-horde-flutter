@@ -119,6 +119,8 @@ class _DreamTabState extends State<DreamTab> {
   Future _attemptToGenerate() async {
     final prompt = await sharedPrefsBloc.getPrompt();
     if (prompt.isEmpty) {
+      if (!mounted) return;
+
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text("Please enter a prompt first."),

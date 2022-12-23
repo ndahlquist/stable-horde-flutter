@@ -36,7 +36,7 @@ class _StableHordeBloc {
     };
 
     final json = {
-      'prompt': prompt + " ### " + negativePrompt,
+      'prompt': "$prompt ### $negativePrompt",
       'params': {
         'steps': 30,
         'n': 1,
@@ -170,7 +170,7 @@ class _StableHordeBloc {
 
     final filename = '${DateTime.now().millisecondsSinceEpoch}.webp';
 
-    final path = directory.path + '/' + filename;
+    final path = '${directory.path}/$filename';
     final file = await File(path).create();
     await file.writeAsBytes(response.bodyBytes);
     return filename;

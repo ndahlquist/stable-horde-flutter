@@ -49,7 +49,7 @@ class TaskImage extends StatelessWidget {
             heightFactor: 1,
             key: ValueKey(filename),
             child: Image.file(
-              File(directory.path + '/' + filename),
+              File('${directory.path}/$filename'),
               fit: BoxFit.cover,
             ),
           );
