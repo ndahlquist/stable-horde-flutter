@@ -64,17 +64,18 @@ class _TaskProgressIndicatorState extends State<TaskProgressIndicator> {
       return progressIndicator;
     }
 
-    final String loadingMessage;
+     String loadingMessage;
     if (widget.task.estimatedCompletionTime == null) {
       loadingMessage = 'Loading...';
     } else {
       final difference = widget.task.estimatedCompletionTime!.difference(
         DateTime.now(),
       );
-      loadingMessage = 'ETA: ${difference.inSeconds}s';
+      loadingMessage = 'ETA: ${difference.inSeconds}s\n';
 
       if (sharedPrefsBloc.getApiKey() == null) {
-        loadingMessage += ' (API key not set)';
+        loadingMessage += 'You are currently anonymous.';
+        loadingMessage += 'For faster image generations, create an account.';
       }
     }
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/colors.dart';
 import 'package:stable_horde_flutter/utils/legal_links.dart';
+import 'package:stable_horde_flutter/widgets/user_widget.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -18,24 +18,22 @@ class SettingsPage extends StatelessWidget {
       body: SingleChildScrollView(
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _apiKeyField(),
+            const UserWidget(),
             const Padding(
               padding: EdgeInsets.only(
                 top: 64.0,
                 left: 16.0,
                 bottom: 16,
               ),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Legal',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.left,
+              child: Text(
+                'Legal',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
                 ),
+                textAlign: TextAlign.left,
               ),
             ),
             const ListTile(
@@ -46,38 +44,14 @@ class SettingsPage extends StatelessWidget {
               title: Text('Terms of Service'),
               onTap: launchTermsOfService,
             ),
+            ListTile(
+              title: const Text('Third Party Software'),
+              onTap: () {
+                showLicensePage(context: context);
+              },
+            ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _apiKeyField() {
-
-    final apiKey = sharedPrefsBloc.getApiKey();
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      child: FutureBuilder<String?>(
-        future: sharedPrefsBloc.getApiKey(),
-        builder: (context, snapshot) {
-          final apiKey = snapshot.data ?? '';
-
-          return TextField(
-            controller: TextEditingController(text: apiKey),
-            decoration: const InputDecoration(
-              labelText: 'API Key',
-              enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.white),
-              ),
-              focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.white),
-              ),
-            ),
-            onChanged: (value) {
-              sharedPrefsBloc.setApiKey(value);
-            },
-          );
-        },
       ),
     );
   }
