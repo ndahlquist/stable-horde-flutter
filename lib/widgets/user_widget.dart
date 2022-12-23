@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/blocs/stable_horde_user_bloc.dart';
 import 'package:stable_horde_flutter/model/stable_horde_user.dart';
 import 'package:stable_horde_flutter/utils/legal_links.dart';
 
-class UserWidget extends StatelessWidget {
+class UserWidget extends StatefulWidget {
   const UserWidget({super.key});
 
+  @override
+  State<UserWidget> createState() => _UserWidgetState();
+}
+
+class _UserWidgetState extends State<UserWidget> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<StableHordeUser?>(
@@ -33,7 +39,23 @@ class UserWidget extends StatelessWidget {
             right: 12,
             bottom: 64,
           ),
-          child: _loggedInUserWidget(user),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _loggedInUserWidget(user),
+              // Logout button
+              Padding(
+                padding: const EdgeInsets.only(top: 16),
+                child: ElevatedButton(
+                  onPressed: () async {
+                    await sharedPrefsBloc.setApiKey(null);
+                    setState(() {});
+                  },
+                  child: const Text('Logout'),
+                ),
+              ),
+            ],
+          ),
         );
       },
     );
