@@ -47,93 +47,90 @@ class _OnboardingDiffusionAnimationState
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white12,
-          borderRadius: BorderRadius.circular(4),
-        ),
-        child: FractionallySizedBox(
-          widthFactor: 1,
-          child: Padding(
-            padding: const EdgeInsets.all(18),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const Spacer(
-                  flex: 3,
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white12,
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: FractionallySizedBox(
+        widthFactor: 1,
+        child: Padding(
+          padding: const EdgeInsets.all(18),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Spacer(
+                flex: 3,
+              ),
+              AnimatedSwitcher(
+                duration: const Duration(milliseconds: 1000),
+                switchInCurve: Curves.easeInOut,
+                switchOutCurve: Curves.easeInOut,
+                child: SizedBox(
+                  key: ValueKey(_index),
+                  height: 76,
+                  child: Center(
+                    child: Text(
+                      _prompts.keys.elementAt(_index),
+                      style: const TextStyle(fontSize: 16),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
                 ),
-                AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 1000),
-                  switchInCurve: Curves.easeInOut,
-                  switchOutCurve: Curves.easeInOut,
-                  child: SizedBox(
-                    key: ValueKey(_index),
-                    height: 76,
-                    child: Center(
-                      child: Text(
-                        _prompts.keys.elementAt(_index),
-                        style: const TextStyle(fontSize: 16),
-                        textAlign: TextAlign.center,
+              ),
+              const Spacer(),
+              const Icon(
+                Icons.arrow_downward_rounded,
+                size: 32,
+              ),
+              const Spacer(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  for (int i = 0; i < (widget.showHorde ? 4 : 1); i++)
+                     AnimatedComputeBox(animationOffset: 1 - i / 4),
+                ],
+              ),
+              const Spacer(),
+              const Icon(
+                Icons.arrow_downward_rounded,
+                size: 32,
+              ),
+              const Spacer(),
+              AnimatedSwitcher(
+                duration: const Duration(milliseconds: 1000),
+                switchInCurve: Curves.easeInOut,
+                switchOutCurve: Curves.easeInOut,
+                child: Container(
+                  key: ValueKey(_index),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(4),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.55),
+                        spreadRadius: 0,
+                        blurRadius: 8,
+                        offset:
+                            const Offset(0, 4), // changes position of shadow
+                      ),
+                    ],
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(4),
+                    child: SizedBox(
+                      height: 128,
+                      width: 128,
+                      child: Image.asset(
+                        _prompts.values.elementAt(_index),
                       ),
                     ),
                   ),
                 ),
-                const Spacer(),
-                const Icon(
-                  Icons.arrow_downward_rounded,
-                  size: 32,
-                ),
-                const Spacer(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    for (int i = 0; i < (widget.showHorde ? 4 : 1); i++)
-                       AnimatedComputeBox(animationOffset: 1 - i / 4),
-                  ],
-                ),
-                const Spacer(),
-                const Icon(
-                  Icons.arrow_downward_rounded,
-                  size: 32,
-                ),
-                const Spacer(),
-                AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 1000),
-                  switchInCurve: Curves.easeInOut,
-                  switchOutCurve: Curves.easeInOut,
-                  child: Container(
-                    key: ValueKey(_index),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(4),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.55),
-                          spreadRadius: 0,
-                          blurRadius: 8,
-                          offset:
-                              const Offset(0, 4), // changes position of shadow
-                        ),
-                      ],
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(4),
-                      child: SizedBox(
-                        height: 128,
-                        width: 128,
-                        child: Image.asset(
-                          _prompts.values.elementAt(_index),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                const Spacer(
-                  flex: 3,
-                ),
-              ],
-            ),
+              ),
+              const Spacer(
+                flex: 3,
+              ),
+            ],
           ),
         ),
       ),

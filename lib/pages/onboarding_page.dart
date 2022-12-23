@@ -102,14 +102,15 @@ class _OnboardingPageState extends State<OnboardingPage> {
               ],
             ),
           ),
+          const SizedBox(height: 16),
           const Expanded(
             child: OnboardingDiffusionAnimation(showHorde: false),
           ),
+          const SizedBox(height: 16),
           const Text(
               'On a PC with a powerful GPU, each image takes a few seconds to generate.'),
           const SizedBox(height: 16),
           const Text("...But what if you don't have a powerful PC?"),
-          const SizedBox(height: 16),
         ],
       ),
     );
@@ -137,9 +138,11 @@ class _OnboardingPageState extends State<OnboardingPage> {
               ],
             ),
           ),
+          const SizedBox(height: 16),
           const Expanded(
             child: OnboardingDiffusionAnimation(showHorde: true),
           ),
+          const SizedBox(height: 16),
           RichText(
             textScaleFactor: MediaQuery.of(context).textScaleFactor,
             text: const TextSpan(
@@ -153,11 +156,14 @@ class _OnboardingPageState extends State<OnboardingPage> {
               ],
             ),
           ),
+          const SizedBox(height: 4),
           const Text(" - Be patient while your image is being generated."),
+          const SizedBox(height: 4),
           const Text(" - Try not to request more images than you need."),
+          const SizedBox(height: 4),
           const Text(
-              " - Consider contributing back to the community by running your own worker!"),
-          const SizedBox(height: 16),
+            " - Consider contributing back to the community by running your own worker!",
+          ),
         ],
       ),
     );
