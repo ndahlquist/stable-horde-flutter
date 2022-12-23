@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/model/stable_horde_task.dart';
 import 'package:stable_horde_flutter/widgets/timed_progress_indicator.dart';
 
@@ -71,6 +72,10 @@ class _TaskProgressIndicatorState extends State<TaskProgressIndicator> {
         DateTime.now(),
       );
       loadingMessage = 'ETA: ${difference.inSeconds}s';
+
+      if (sharedPrefsBloc.getApiKey() == null) {
+        loadingMessage += ' (API key not set)';
+      }
     }
 
     return Stack(
