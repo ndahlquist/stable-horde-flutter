@@ -66,17 +66,14 @@ class _OnboardingDiffusionAnimationState
                 duration: const Duration(milliseconds: 1000),
                 switchInCurve: Curves.easeInOut,
                 switchOutCurve: Curves.easeInOut,
-                child: SizedBox(
-                  key: ValueKey(_index),
-                  height: 40,
-                  child: Center(
-                    child: Text(
-                      _prompts.keys.elementAt(_index),
-                      style: const TextStyle(
-                          fontSize: 12, fontStyle: FontStyle.italic),
-                      textAlign: TextAlign.center,
-                    ),
+                child: Text(
+                  '${_prompts.keys.elementAt(_index)}\n\n',
+                  maxLines: 3,
+                  style: const TextStyle(
+                    fontSize: 12,
+                    fontStyle: FontStyle.italic,
                   ),
+                  textAlign: TextAlign.center,
                 ),
               ),
               const Spacer(),
