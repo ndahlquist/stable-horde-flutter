@@ -3,9 +3,10 @@ import 'package:intl/intl.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stable_horde_flutter/blocs/stable_horde_user_bloc.dart';
 import 'package:stable_horde_flutter/model/stable_horde_user.dart';
+import 'package:stable_horde_flutter/utils/legal_links.dart';
 
 class UserWidget extends StatelessWidget {
-  //final StableHordeUser user;
+  const UserWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -43,9 +44,29 @@ class UserWidget extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
-              Text(
-                "${NumberFormat.decimalPattern().format(data.kudos)} kudos",
-                style: const TextStyle(fontSize: 18),
+              GestureDetector(
+                onTap: () {
+                  launchUrlInExternalApp(
+                    'https://dbzer0.com/blog/the-kudos-based-economy-for-the-koboldai-horde/',
+                  );
+                },
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "${NumberFormat.decimalPattern().format(data.kudos)} kudos",
+                      style: const TextStyle(fontSize: 18),
+                    ),
+                    const Text(
+                      "Kudos represent your contributions to the Stable Horde community. Kudos increase your request priority, speeding up your image generations. Kudos are consumed when generating images, and created by running an worker.",
+                    ),
+                    const SizedBox(height: 4),
+                    const Text(
+                      "LEARN MORE",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
               ),
               const SizedBox(height: 16),
               Text(
