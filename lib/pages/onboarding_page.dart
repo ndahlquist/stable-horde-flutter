@@ -110,16 +110,12 @@ class _OnboardingPageState extends State<OnboardingPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('test'),
+          SizedBox(height: 16),
           RichText(
             textScaleFactor: MediaQuery.of(context).textScaleFactor,
-            text: TextSpan(
+            text: const TextSpan(
               text: '',
-              style: DefaultTextStyle.of(context).style.copyWith(
-                    fontSize: 12,
-                    color: Colors.white,
-                  ),
-              children: const [
+              children: [
                 TextSpan(
                   text: 'Stable Diffusion',
                   style: TextStyle(fontWeight: FontWeight.bold),
@@ -133,6 +129,10 @@ class _OnboardingPageState extends State<OnboardingPage> {
               ],
             ),
           ),
+
+          Spacer(),
+
+          Text('On a PC with a powerful GPU, each image takes a few seconds to generate.'),
         ],
       ),
     );
