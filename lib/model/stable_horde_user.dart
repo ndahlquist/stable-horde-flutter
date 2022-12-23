@@ -8,7 +8,7 @@ class StableHordeUser {
   StableHordeUser(
     this.username,
     this.kudos,
-      this.numRequested,
+    this.numRequested,
     this.numInferences,
   );
 }
