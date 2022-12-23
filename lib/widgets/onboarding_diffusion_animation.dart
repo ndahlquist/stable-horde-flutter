@@ -14,11 +14,11 @@ class OnboardingDiffusionAnimation extends StatefulWidget {
 class _OnboardingDiffusionAnimationState
     extends State<OnboardingDiffusionAnimation> {
   static const Map<String, String> _prompts = {
-    'A Renaissance portrait of a cat wearing glasses. Highly detailed.':
+    '"A Renaissance portrait of a cat wearing glasses. Highly detailed."':
         'assets/images/cat.jpg',
-    'iOS icon app. Nature. Highly detailed, trending on artstation, IconsMi':
+    '"iOS icon app. Nature. Highly detailed, trending on artstation, IconsMi"':
         'assets/images/ios_icon.jpg',
-    'knollingcase, isometric render, a Greek underwater city with volcano, isometric display case, knolling teardown, transparent data visualization infographic':
+    '"knollingcase, isometric render, a Greek underwater city with volcano, isometric display case, knolling teardown, transparent data visualization infographic"':
         'assets/images/knollingcase.jpg',
   };
 
@@ -62,13 +62,19 @@ class _OnboardingDiffusionAnimationState
                 const Spacer(
                   flex: 3,
                 ),
-                SizedBox(
-                  height: 76,
-                  child: Center(
-                    child: Text(
-                      _prompts.keys.elementAt(_index),
-                      style: TextStyle(fontSize: 16),
-                      textAlign: TextAlign.center,
+                AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 1000),
+                  switchInCurve: Curves.easeInOut,
+                  switchOutCurve: Curves.easeInOut,
+                  child: SizedBox(
+                    key: ValueKey(_index),
+                    height: 76,
+                    child: Center(
+                      child: Text(
+                        _prompts.keys.elementAt(_index),
+                        style: const TextStyle(fontSize: 16),
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                   ),
                 ),
@@ -89,26 +95,32 @@ class _OnboardingDiffusionAnimationState
                   size: 32,
                 ),
                 const Spacer(),
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.55),
-                        spreadRadius: 0,
-                        blurRadius: 8,
-                        offset:
-                            const Offset(0, 4), // changes position of shadow
-                      ),
-                    ],
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(4),
-                    child: SizedBox(
-                      height: 128,
-                      width: 128,
-                      child: Image.asset(
-                        'assets/images/ios_icon.jpg',
+                AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 1000),
+                  switchInCurve: Curves.easeInOut,
+                  switchOutCurve: Curves.easeInOut,
+                  child: Container(
+                    key: ValueKey(_index),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.55),
+                          spreadRadius: 0,
+                          blurRadius: 8,
+                          offset:
+                              const Offset(0, 4), // changes position of shadow
+                        ),
+                      ],
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(4),
+                      child: SizedBox(
+                        height: 128,
+                        width: 128,
+                        child: Image.asset(
+                          _prompts.values.elementAt(_index),
+                        ),
                       ),
                     ),
                   ),
