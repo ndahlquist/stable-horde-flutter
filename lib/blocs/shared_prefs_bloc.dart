@@ -11,6 +11,7 @@ class _SharedPrefsBloc {
   static const _modelKey = 'MODEL_KEY';
 
   Future<bool> hasSeenOnboarding() async {
+    return false;
     final prefs = await SharedPreferences.getInstance();
     return prefs.getBool(_onboardingKey) ?? false;
   }

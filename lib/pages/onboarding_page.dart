@@ -31,6 +31,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
         automaticallyImplyLeading: false,
       ),
       body: SafeArea(
+        minimum: const EdgeInsets.only(bottom: 12),
         child: Column(
           children: [
             Expanded(
