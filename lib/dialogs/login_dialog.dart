@@ -25,14 +25,16 @@ class _LoginDialogState extends State<LoginDialog> {
               launchUrlInExternalApp('https://stablehorde.net/register');
             },
             child: RichText(
+              textScaleFactor: MediaQuery.of(context).textScaleFactor,
               text: TextSpan(
                 text:
                     'Enter your Stable Horde API key to login. You can get one at\n',
                 style: DefaultTextStyle.of(context).style,
                 children: const <TextSpan>[
                   TextSpan(
-                      text: 'https://stablehorde.net/register',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
+                    text: 'https://stablehorde.net/register',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                   TextSpan(text: '.'),
                 ],
               ),

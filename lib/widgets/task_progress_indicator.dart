@@ -1,7 +1,11 @@
 import 'dart:async';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/model/stable_horde_task.dart';
+import 'package:stable_horde_flutter/pages/settings_page.dart';
+import 'package:stable_horde_flutter/utils/legal_links.dart';
 import 'package:stable_horde_flutter/widgets/timed_progress_indicator.dart';
 
 class TaskProgressIndicator extends StatefulWidget {
@@ -63,24 +67,97 @@ class _TaskProgressIndicatorState extends State<TaskProgressIndicator> {
       return progressIndicator;
     }
 
-    final String loadingMessage;
+    Widget loadingMessageWidget;
     if (widget.task.estimatedCompletionTime == null) {
-      loadingMessage = 'Loading...';
+      loadingMessageWidget = const Text('Loading...');
     } else {
       final difference = widget.task.estimatedCompletionTime!.difference(
         DateTime.now(),
       );
-      loadingMessage = 'ETA: ${difference.inSeconds}s';
+      loadingMessageWidget = Text('ETA: ${difference.inSeconds}s');
     }
+
+    final Widget callToAction = FutureBuilder<String?>(
+      future: sharedPrefsBloc.getApiKey(),
+      builder: (context, snapshot) {
+        final apiKey = snapshot.data;
+        if (apiKey == null) {
+          return RichText(
+            textScaleFactor: MediaQuery.of(context).textScaleFactor,
+            text: TextSpan(
+              text: 'You are currently anonymous.\n',
+              style: DefaultTextStyle.of(context).style,
+              children: [
+                const TextSpan(text: 'For faster image generations, '),
+                TextSpan(
+                  text: 'create an account',
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (c) => const SettingsPage(),
+                        ),
+                      );
+                    },
+                ),
+                const TextSpan(text: '.'),
+              ],
+            ),
+          );
+        } else {
+          return RichText(
+            textScaleFactor: MediaQuery.of(context).textScaleFactor,
+            text: TextSpan(
+              text:
+                  'Stable Horde is a volunteer project! For faster image generations, consider ',
+              style: DefaultTextStyle.of(context).style,
+              children: [
+                TextSpan(
+                  text: 'running a worker',
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () {
+                      launchUrlInExternalApp(
+                        'https://github.com/db0/AI-Horde/blob/main/README_StableHorde.md',
+                      );
+                    },
+                ),
+                const TextSpan(text: ' or '),
+                TextSpan(
+                  text: 'supporting us on Patreon',
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () {
+                      launchUrlInExternalApp(
+                        'https://www.patreon.com/db0',
+                      );
+                    },
+                ),
+                const TextSpan(
+                  text: '.',
+                ),
+              ],
+            ),
+          );
+        }
+      },
+    );
 
     return Stack(
       children: [
         progressIndicator,
         Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Align(
-            alignment: Alignment.bottomLeft,
-            child: Text(loadingMessage),
+          padding: const EdgeInsets.all(8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Spacer(),
+              loadingMessageWidget,
+              const SizedBox(height: 8),
+              callToAction,
+            ],
           ),
         ),
       ],
