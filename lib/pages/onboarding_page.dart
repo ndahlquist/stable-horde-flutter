@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stable_horde_flutter/colors.dart';
+import 'package:stable_horde_flutter/widgets/onboarding_diffusion_animation.dart';
 
 class OnboardingPage extends StatefulWidget {
   const OnboardingPage({Key? key}) : super(key: key);
@@ -101,7 +102,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
               ],
             ),
           ),
-          const Spacer(),
+          Expanded(
+            child: OnboardingDiffusionAnimation(),
+          ),
           const Text(
               'On a PC with a powerful GPU, each image takes a few seconds to generate.'),
           const SizedBox(height: 16),
