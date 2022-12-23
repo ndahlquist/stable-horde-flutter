@@ -22,8 +22,8 @@ class UserWidget extends StatelessWidget {
           );
         }
 
-        var data = snapshot.data;
-        if (data == null) {
+        var user = snapshot.data;
+        if (user == null) {
           return const SizedBox.shrink();
         }
 
@@ -33,77 +33,81 @@ class UserWidget extends StatelessWidget {
             right: 12,
             bottom: 64,
           ),
-          child: Container(
-            decoration: BoxDecoration(
-              color: Color(0xFF333738),
-              borderRadius: const BorderRadius.all(
-                Radius.circular(4),
+          child: _loggedInUserWidget(user),
+        );
+      },
+    );
+  }
+
+  Widget _loggedInUserWidget(StableHordeUser user) {
+    return Container(
+      decoration: BoxDecoration(
+        color: const Color(0xFF333738),
+        borderRadius: const BorderRadius.all(
+          Radius.circular(4),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(.3),
+            blurRadius: 4,
+            offset: const Offset(0, 4),
+          ),
+          BoxShadow(
+            color: Colors.black.withOpacity(.1),
+            blurRadius: 2,
+            offset: const Offset(0, -1),
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              user.username,
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
               ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(.3),
-                  blurRadius: 4,
-                  offset: const Offset(0, 4),
-                ),
-                BoxShadow(
-                  color: Colors.black.withOpacity(.1),
-                  blurRadius: 2,
-                  offset: const Offset(0, -1),
-                ),
-              ],
             ),
-            child: Padding(
-              padding: const EdgeInsets.all(8),
+            const SizedBox(height: 16),
+            GestureDetector(
+              onTap: () {
+                launchUrlInExternalApp(
+                  'https://dbzer0.com/blog/the-kudos-based-economy-for-the-koboldai-horde/',
+                );
+              },
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    data.username,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  GestureDetector(
-                    onTap: () {
-                      launchUrlInExternalApp(
-                        'https://dbzer0.com/blog/the-kudos-based-economy-for-the-koboldai-horde/',
-                      );
-                    },
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "${NumberFormat.decimalPattern().format(data.kudos)} kudos",
-                          style: const TextStyle(fontSize: 18),
-                        ),
-                        const Text(
-                          "Kudos represent your contributions to the Stable Horde community. Kudos increase your request priority, speeding up your image generations. Kudos are consumed when generating images, and created by running an worker.",
-                        ),
-                        const SizedBox(height: 4),
-                        const Text(
-                          "LEARN MORE",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    "${NumberFormat.decimalPattern().format(data.numRequested)} images generated",
+                    "${NumberFormat.decimalPattern().format(user.kudos)} kudos",
                     style: const TextStyle(fontSize: 18),
                   ),
-                  Text(
-                    "${NumberFormat.decimalPattern().format(data.numInferences)} images contributed",
-                    style: const TextStyle(fontSize: 18),
+                  const Text(
+                    "Kudos represent your contributions to the Stable Horde community. Kudos increase your request priority, speeding up your image generations. Kudos are consumed when generating images, and created by running an worker.",
+                  ),
+                  const SizedBox(height: 4),
+                  const Text(
+                    "LEARN MORE",
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
             ),
-          ),
-        );
-      },
+            const SizedBox(height: 16),
+            Text(
+              "${NumberFormat.decimalPattern().format(user.numRequested)} images generated",
+              style: const TextStyle(fontSize: 18),
+            ),
+            Text(
+              "${NumberFormat.decimalPattern().format(user.numInferences)} images contributed",
+              style: const TextStyle(fontSize: 18),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
