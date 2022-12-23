@@ -48,7 +48,10 @@ class _DreamTabState extends State<DreamTab> {
               widthFactor: 1,
               child: ElevatedButton(
                 onPressed: _attemptToGenerate,
-                child: const Text("Generate"),
+                child: const Text(
+                  "Generate",
+                  style: TextStyle(color: Colors.black87),
+                ),
               ),
             ),
           ],

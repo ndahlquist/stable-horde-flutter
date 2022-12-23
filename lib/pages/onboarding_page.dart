@@ -50,9 +50,6 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 child: Padding(
                   padding: const EdgeInsets.only(left: 16, right: 16),
                   child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                    ),
                     onPressed: () {
                       if (_onFirstPage()) {
                         _pageController.animateToPage(

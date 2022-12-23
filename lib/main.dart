@@ -89,6 +89,14 @@ class _MyAppState extends State<MyApp> {
         textTheme: GoogleFonts.ubuntuTextTheme(
           ThemeData(brightness: Brightness.dark).textTheme,
         ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.white,
+            textStyle: const TextStyle(
+              color: Colors.black87,
+            ),
+          ),
+        ),
       ),
       home: FutureBuilder(
         future: FirebaseRemoteConfig.instance.fetchAndActivate(),
