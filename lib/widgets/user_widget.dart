@@ -35,7 +35,7 @@ class UserWidget extends StatelessWidget {
           ),
           child: Container(
             decoration: BoxDecoration(
-              color: Color(0xFF383333),
+              color: Color(0xFF333738),
               borderRadius: const BorderRadius.all(
                 Radius.circular(4),
               ),
