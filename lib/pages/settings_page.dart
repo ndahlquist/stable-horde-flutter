@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stable_horde_flutter/colors.dart';
+import 'package:stable_horde_flutter/pages/onboarding_page.dart';
 import 'package:stable_horde_flutter/utils/legal_links.dart';
 import 'package:stable_horde_flutter/widgets/user_widget.dart';
 
@@ -54,6 +55,17 @@ class SettingsPage extends StatelessWidget {
               title: const Text('Discord'),
               onTap: () {
                 launchUrlInExternalApp('https://discord.gg/3DxrhksKzn');
+              },
+            ),
+            ListTile(
+              title: const Text('Restart Tutorial'),
+              onTap: () {
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                    builder: (_) => const OnboardingPage(),
+                  ),
+                  (route) => false,
+                );
               },
             ),
             const Padding(
