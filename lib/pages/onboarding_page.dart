@@ -39,7 +39,6 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 ],
               ),
             ),
-
             Align(
               alignment: Alignment.bottomCenter,
               child: FractionallySizedBox(
@@ -102,10 +101,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
               ],
             ),
           ),
-
           const Spacer(),
-
-          const Text('On a PC with a powerful GPU, each image takes a few seconds to generate.'),
+          const Text(
+              'On a PC with a powerful GPU, each image takes a few seconds to generate.'),
           const SizedBox(height: 16),
           const Text("...But what if you don't have a powerful PC?"),
           const SizedBox(height: 16),
@@ -130,14 +128,13 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   text: 'Stable Horde',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                TextSpan(text: " is a network of volunteers who pool their computing power. When you request an image, it gets assigned to a volunteer's machine to generate it."),
-
+                TextSpan(
+                    text:
+                        " is a network of volunteers who pool their computing power. When you request an image, it gets assigned to a volunteer's machine to generate it."),
               ],
             ),
           ),
-
           const Spacer(),
-
           RichText(
             textScaleFactor: MediaQuery.of(context).textScaleFactor,
             text: const TextSpan(
@@ -148,14 +145,13 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 TextSpan(text: ", please:"),
-
               ],
             ),
           ),
-
           const Text(" - Be patient while your image is being generated."),
           const Text(" - Try not to request more images than you need."),
-          const Text(" - Consider contributing back to the community by running your own worker!"),
+          const Text(
+              " - Consider contributing back to the community by running your own worker!"),
           const SizedBox(height: 16),
         ],
       ),
