@@ -53,6 +53,8 @@ class SettingsPage extends StatelessWidget {
   }
 
   Widget _apiKeyField() {
+
+    final apiKey = sharedPrefsBloc.getApiKey();
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12),
       child: FutureBuilder<String?>(

@@ -2,14 +2,20 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 /// Provides access to shared preferences.
 class _SharedPrefsBloc {
+
+  late SharedPreferences prefs;
+
+  _SharedPrefsBloc() {
+    SharedPreferences.getInstance().then((value) => prefs = value);
+  }
+
   static const _apiKeyKey = 'API_KEY_KEY';
 
   static const _promptKey = 'PROMPT_KEY';
   static const _negativePromptKey = 'NEGATIVE_PROMPT_KEY';
   static const _modelKey = 'MODEL_KEY';
 
-  Future<String?> getApiKey() async {
-    final prefs = await SharedPreferences.getInstance();
+  String? getApiKey() {
     return prefs.getString(_apiKeyKey);
   }
 
