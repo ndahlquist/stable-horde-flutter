@@ -41,8 +41,10 @@ dependencies:
 
   share_plus: ^6.3.0
 
+
   http: ^0.13.5
 
+  flutter_svg: ^1.1.6
 
 
 dev_dependencies:
@@ -59,3 +61,10 @@ dev_dependencies:
 flutter:
 
   uses-material-design: true
+
+  assets:
+    - assets/images/cat.jpg
+    - assets/images/ios_icon.jpg
+    - assets/images/knollingcase.jpg
+
+    - assets/vector_drawables/box.svg

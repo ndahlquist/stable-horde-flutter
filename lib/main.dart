@@ -7,10 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:isar/isar.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/blocs/stable_horde_bloc.dart';
 import 'package:stable_horde_flutter/firebase_options.dart';
 import 'package:stable_horde_flutter/model/stable_horde_task.dart';
 import 'package:stable_horde_flutter/pages/home_page.dart';
+import 'package:stable_horde_flutter/pages/onboarding_page.dart';
 import 'package:stable_horde_flutter/pages/version_deprecated_page.dart';
 
 Future main() async {
@@ -97,7 +99,20 @@ class _MyAppState extends State<MyApp> {
             return const VersionDeprecatedPage();
           }
 
-          return const HomePage();
+          return FutureBuilder<bool>(
+            future: sharedPrefsBloc.hasSeenOnboarding(),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return const SizedBox.shrink();
+              }
+              final hasSeenOnboarding = snapshot.data!;
+              if (hasSeenOnboarding) {
+                return const HomePage();
+              } else {
+                return const OnboardingPage();
+              }
+            },
+          );
         },
       ),
     );
