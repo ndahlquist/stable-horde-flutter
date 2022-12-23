@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class AnimatedComputeBox extends StatefulWidget {
-  const AnimatedComputeBox({super.key});
+  final num animationOffset;
+
+  const AnimatedComputeBox({super.key, required this.animationOffset});
 
   @override
   State<AnimatedComputeBox> createState() => _AnimatedComputeBoxState();
@@ -30,7 +32,8 @@ class _AnimatedComputeBoxState extends State<AnimatedComputeBox> {
 
   @override
   Widget build(BuildContext context) {
-    var animationProgress = _timer.tick % 2000 / 2000;
+    var animationProgress = (_timer.tick / 2000) + widget.animationOffset;
+    animationProgress = animationProgress % 1;
     animationProgress = animationProgress * 3 - 1;
 
     return ShaderMask(
@@ -38,7 +41,7 @@ class _AnimatedComputeBoxState extends State<AnimatedComputeBox> {
         return LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors:  [
+          colors: const [
             Color(0xFFD9D9D9),
             Colors.lightBlue,
             Color(0xFFD9D9D9),
