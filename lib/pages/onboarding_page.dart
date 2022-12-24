@@ -4,6 +4,7 @@ import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/colors.dart';
 import 'package:stable_horde_flutter/pages/home_page.dart';
 import 'package:stable_horde_flutter/utils/legal_links.dart';
+import 'package:stable_horde_flutter/widgets/glassmorphic_background.dart';
 import 'package:stable_horde_flutter/widgets/onboarding_diffusion_animation.dart';
 
 class OnboardingPage extends StatefulWidget {
@@ -24,61 +25,66 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: stableHordePurple,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: const Text("Stable Horde"),
-        automaticallyImplyLeading: false,
-      ),
-      body: SafeArea(
-        minimum: const EdgeInsets.only(bottom: 12),
-        child: Column(
-          children: [
-            Expanded(
-              child: PageView(
-                controller: _pageController,
-                children: [
-                  _pageOne(),
-                  _pageTwo(),
-                ],
-              ),
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: FractionallySizedBox(
-                widthFactor: 1,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 16, right: 16),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if (_onFirstPage()) {
-                        _pageController.animateToPage(
-                          1,
-                          duration: const Duration(milliseconds: 500),
-                          curve: Curves.easeInOut,
-                        );
-                      } else {
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                            builder: (c) => const HomePage(),
-                          ),
-                        );
-                        sharedPrefsBloc.setHasSeenOnboarding();
-                      }
-                    },
-                    child: const Text(
-                      "Continue",
-                      style: TextStyle(color: Colors.black87),
+    return Stack(
+      children: [
+        GlassmorphicBackground(),
+        Scaffold(
+          backgroundColor: Colors.transparent,
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            title: const Text("Stable Horde"),
+            automaticallyImplyLeading: false,
+          ),
+          body: SafeArea(
+            minimum: const EdgeInsets.only(bottom: 12),
+            child: Column(
+              children: [
+                Expanded(
+                  child: PageView(
+                    controller: _pageController,
+                    children: [
+                      _pageOne(),
+                      _pageTwo(),
+                    ],
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: FractionallySizedBox(
+                    widthFactor: 1,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 16, right: 16),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          if (_onFirstPage()) {
+                            _pageController.animateToPage(
+                              1,
+                              duration: const Duration(milliseconds: 500),
+                              curve: Curves.easeInOut,
+                            );
+                          } else {
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                builder: (c) => const HomePage(),
+                              ),
+                            );
+                            sharedPrefsBloc.setHasSeenOnboarding();
+                          }
+                        },
+                        child: const Text(
+                          "Continue",
+                          style: TextStyle(color: Colors.black87),
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
+              ],
             ),
-          ],
+          ),
         ),
-      ),
+      ],
     );
   }
 
