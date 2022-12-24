@@ -4,6 +4,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
+// A colored glassmorphic background with subtle animation.
 class GlassmorphicBackground extends StatefulWidget {
   const GlassmorphicBackground({super.key});
 
@@ -12,18 +13,15 @@ class GlassmorphicBackground extends StatefulWidget {
 }
 
 class _GlassmorphicBackgroundState extends State<GlassmorphicBackground> {
-
   late Timer _timer;
-
 
   @override
   void initState() {
     super.initState();
-    _timer = Timer.periodic( const Duration(milliseconds: 32), (timer) {
+    _timer = Timer.periodic(const Duration(milliseconds: 32), (timer) {
       setState(() {});
     });
   }
-
 
   @override
   void dispose() {
@@ -61,7 +59,7 @@ class _GlassmorphicBackgroundState extends State<GlassmorphicBackground> {
           Positioned(
             bottom: 100 + sin(_timer.tick / 100.0) * 50,
             right: 100 + sin(_timer.tick / 121.0) * 50,
-            child: _circle(const Color(0xFFA63802 ), 200),
+            child: _circle(const Color(0xFFA63802), 200),
           ),
         ],
       ),
