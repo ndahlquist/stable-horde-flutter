@@ -26,7 +26,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        GlassmorphicBackground(),
+        const GlassmorphicBackground(),
         Scaffold(
           backgroundColor: Colors.transparent,
           appBar: AppBar(
