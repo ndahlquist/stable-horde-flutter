@@ -40,7 +40,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        GlassmorphicBackground(),
+        const GlassmorphicBackground(),
         Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.transparent,
@@ -63,7 +63,7 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: Colors.transparent,
           body: _body(),
           bottomNavigationBar: BottomNavigationBar(
-            backgroundColor: stableHordeGrey,
+            backgroundColor:  const Color(0x9454545B),
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
                 icon: Icon(Icons.draw),
