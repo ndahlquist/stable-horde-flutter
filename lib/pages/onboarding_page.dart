@@ -1,7 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
-import 'package:stable_horde_flutter/colors.dart';
 import 'package:stable_horde_flutter/pages/home_page.dart';
 import 'package:stable_horde_flutter/utils/legal_links.dart';
 import 'package:stable_horde_flutter/widgets/glassmorphic_background.dart';

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:stable_horde_flutter/colors.dart';
 import 'package:stable_horde_flutter/pages/home/dream_tab.dart';
 import 'package:stable_horde_flutter/pages/home/my_art_tab.dart';
 import 'package:stable_horde_flutter/pages/settings_page.dart';
