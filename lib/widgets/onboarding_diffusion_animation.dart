@@ -67,6 +67,7 @@ class _OnboardingDiffusionAnimationState
                 switchInCurve: Curves.easeInOut,
                 switchOutCurve: Curves.easeInOut,
                 child: Text(
+                  key: ValueKey(_index),
                   '${_prompts.keys.elementAt(_index)}\n\n',
                   maxLines: 3,
                   style: const TextStyle(
