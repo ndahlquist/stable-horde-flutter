@@ -29,7 +29,7 @@ class _StableHordeUserBloc {
       headers: headers,
     );
 
-    if (response.statusCode == 404) {
+    if (response.statusCode == 401) {
       sharedPrefsBloc.setApiKey(null);
       return null;
     }
