@@ -61,7 +61,7 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: Colors.transparent,
           body: _body(),
           bottomNavigationBar: BottomNavigationBar(
-            backgroundColor:  const Color(0x9454545B),
+            backgroundColor: const Color(0x9454545B),
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
                 icon: Icon(Icons.draw),
