@@ -120,6 +120,42 @@ class _TasksBloc {
     return jsonResponse['done'];
   }
 
+  Future _retrieveTaskResult(StableHordeTask task) async {
+    final response = await http.get(
+      Uri.parse(
+        'https://stablehorde.net/api/v2/generate/status/${task.stableHordeId!}',
+      ),
+    );
+
+    if (response.statusCode != 200) {
+      final exception = Exception(
+        'Failed to get task status: '
+            '${response.statusCode} ${response.body}',
+      );
+      print(exception);
+      Sentry.captureException(exception, stackTrace: StackTrace.current);
+      return;
+    }
+
+    final jsonResponse = jsonDecode(response.body);
+    print(jsonResponse);
+
+    final generations = jsonResponse['generations'] as List;
+
+    if (generations.length != 1) {
+      throw Exception(
+        "Unexpected number of generations: ${generations.length}",
+      );
+    }
+
+    final generation = generations.first;
+    final imageUrl = generation['img'];
+    task.imageFilename = await _downloadImageFromUrl(imageUrl);
+    await isar.writeTxn(() async {
+      isar.stableHordeTasks.put(task);
+    });
+  }
+
   Future _waitOnTask(StableHordeTask task) async {
     for (int i = 0; i < 10000; i++) {
       await Future.delayed(const Duration(seconds: 2));
@@ -127,44 +163,7 @@ class _TasksBloc {
       bool complete = await _checkTaskCompletion(task);
       if (!complete) continue;
 
-      final response = await http.get(
-        Uri.parse(
-          'https://stablehorde.net/api/v2/generate/status/${task.stableHordeId!}',
-        ),
-      );
-      if (response.statusCode == 429) {
-        print('Rate limit exceeded');
-        await Future.delayed(const Duration(seconds: 10));
-        return;
-      }
-
-      if (response.statusCode != 200) {
-        final exception = Exception(
-          'Failed to get task status: '
-          '${response.statusCode} ${response.body}',
-        );
-        print(exception);
-        Sentry.captureException(exception, stackTrace: StackTrace.current);
-        continue;
-      }
-
-      final jsonResponse = jsonDecode(response.body);
-      print(jsonResponse);
-
-      final generations = jsonResponse['generations'] as List;
-
-      if (generations.length != 1) {
-        throw Exception(
-          "Unexpected number of generations: ${generations.length}",
-        );
-      }
-
-      final generation = generations.first;
-      final imageUrl = generation['img'];
-      task.imageFilename = await _downloadImageFromUrl(imageUrl);
-      await isar.writeTxn(() async {
-        isar.stableHordeTasks.put(task);
-      });
+      await _retrieveTaskResult(task);
 
       return;
     }
