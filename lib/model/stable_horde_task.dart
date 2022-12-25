@@ -6,8 +6,6 @@ part 'stable_horde_task.g.dart';
 class StableHordeTask {
   Id dbId = Isar.autoIncrement;
 
-  DateTime createdAt = DateTime.now();
-
   String prompt;
   String model;
   String negativePrompt;
