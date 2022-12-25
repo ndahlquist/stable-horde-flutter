@@ -1,6 +1,5 @@
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
-import 'package:stable_horde_flutter/blocs/models_bloc.dart';
 import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/blocs/tasks_bloc.dart';
 import 'package:stable_horde_flutter/pages/home_page.dart';
