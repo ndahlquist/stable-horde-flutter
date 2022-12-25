@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/blocs/stable_horde_bloc.dart';
 import 'package:stable_horde_flutter/pages/home_page.dart';
+import 'package:stable_horde_flutter/pages/prompt_edit_page.dart';
 import 'package:stable_horde_flutter/widgets/model_button.dart';
 
 class DreamTab extends StatefulWidget {
@@ -87,34 +88,43 @@ class _DreamTabState extends State<DreamTab> {
   }
 
   Widget _promptWidget() {
-    return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white12,
-        borderRadius: BorderRadius.all(
-          Radius.circular(4),
-        ),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Row(
-          children: [
-            Expanded(
-              child: FutureBuilder<String>(
-                future: sharedPrefsBloc.getPrompt(),
-                builder: (context, snapshot) {
-                  final prompt = snapshot.data ?? "";
+    return FutureBuilder<String>(
+      future: sharedPrefsBloc.getPrompt(),
+      builder: (context, snapshot) {
+        final prompt = snapshot.data ?? "";
 
-                  return Text(
-                    prompt,
-                    style: const TextStyle(fontStyle: FontStyle.italic),
-                  );
-                },
+        return GestureDetector(
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => PromptEditPage(prompt),
+              ),
+            );
+          },
+          child: Container(
+            decoration: const BoxDecoration(
+              color: Colors.white12,
+              borderRadius: BorderRadius.all(
+                Radius.circular(4),
               ),
             ),
-            const Icon(Icons.edit_outlined),
-          ],
-        ),
-      ),
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      prompt,
+                      style: const TextStyle(fontStyle: FontStyle.italic),
+                    ),
+                  ),
+                  const Icon(Icons.edit_outlined),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 
