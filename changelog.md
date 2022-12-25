@@ -1,3 +1,12 @@
+#1.0.0+4
+- Add option for face-fixing (CodeFormers).
+- Add option for upres (RealESRGAN_x4plus).
+- Add option to specify seed.
+- Use /generate/check endpoint to improve performance and reliability.
+- Improve prompt entry UX.
+- Add glassmorphic styling.
+- Link to instructions on how to join the horde from the tutorial.
+
 #1.0.0+3
 - Implement a simple onboarding splash.
 - Validate API key when signing in, and show user stats. 
