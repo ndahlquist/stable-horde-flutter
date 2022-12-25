@@ -23,14 +23,6 @@ class _PromptEditPageState extends State<PromptEditPage> {
   }
 
   @override
-  void dispose() {
-    sharedPrefsBloc.setPrompt(_controller.text);
-    _controller.dispose();
-
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
@@ -58,10 +50,12 @@ class _PromptEditPageState extends State<PromptEditPage> {
                       decoration: const InputDecoration(
                         border: InputBorder.none,
                       ),
+
+                      onChanged: (value) {
+                        sharedPrefsBloc
+                            .setPrompt(value.trim());
+                      },
                       onEditingComplete: () async {
-                        /*await sharedPrefsBloc
-                            .setPrompt(_controller.text.trim());
-                        if (!mounted) return;*/
 
                         Navigator.of(context).pop();
                       },
