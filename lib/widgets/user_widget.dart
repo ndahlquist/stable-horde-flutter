@@ -103,9 +103,9 @@ class _UserWidgetState extends State<UserWidget> {
 
   Widget _loggedInUserWidget(StableHordeUser user) {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Colors.white12,
-        borderRadius: const BorderRadius.all(
+        borderRadius: BorderRadius.all(
           Radius.circular(4),
         ),
       ),
