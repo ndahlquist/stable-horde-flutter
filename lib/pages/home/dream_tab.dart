@@ -16,7 +16,6 @@ class DreamTab extends StatefulWidget {
 }
 
 class _DreamTabState extends State<DreamTab> {
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -75,24 +74,27 @@ class _DreamTabState extends State<DreamTab> {
       builder: (context, snapshot) {
         final prompt = snapshot.data ?? "";
 
-        return GestureDetector(
-          onTap: () async {
-            final newPrompt = await Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (_) => PromptEditPage("Prompt", prompt),
+        return FractionallySizedBox(
+          widthFactor: 1,
+          child: GestureDetector(
+            onTap: () async {
+              final newPrompt = await Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => PromptEditPage("Prompt", prompt),
+                ),
+              );
+
+              if (newPrompt == null) return;
+              await sharedPrefsBloc.setPrompt(newPrompt);
+
+              // Rebuild to update the prompt.
+              setState(() {});
+            },
+            child: SectionFrame(
+              child: Text(
+                '"$prompt"',
+                style: const TextStyle(fontStyle: FontStyle.italic),
               ),
-            );
-
-            if (newPrompt == null) return;
-            await sharedPrefsBloc.setPrompt(newPrompt);
-
-            // Rebuild to update the prompt.
-            setState(() {});
-          },
-          child: SectionFrame(
-            child: Text(
-              '"$prompt"',
-              style: const TextStyle(fontStyle: FontStyle.italic),
             ),
           ),
         );
@@ -106,33 +108,36 @@ class _DreamTabState extends State<DreamTab> {
       builder: (context, snapshot) {
         final prompt = snapshot.data ?? "";
 
-        return GestureDetector(
-          onTap: () async {
-            final newPrompt = await Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (_) => PromptEditPage("Negative Prompt", prompt),
-              ),
-            );
+        return FractionallySizedBox(
+          widthFactor: 1,
+          child: GestureDetector(
+            onTap: () async {
+              final newPrompt = await Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => PromptEditPage("Negative Prompt", prompt),
+                ),
+              );
 
-            if (newPrompt == null) return;
-            await sharedPrefsBloc.setNegativePrompt(newPrompt);
+              if (newPrompt == null) return;
+              await sharedPrefsBloc.setNegativePrompt(newPrompt);
 
-            // Rebuild to update the prompt.
-            setState(() {});
-          },
-          child: SectionFrame(
-            child: RichText(
-              textScaleFactor: MediaQuery.of(context).textScaleFactor,
-              text: TextSpan(
-                children: [
-                  const TextSpan(
-                    text: "Negative Prompt: ",
-                  ),
-                  TextSpan(
-                    text: '"$prompt"',
-                    style: const TextStyle(fontStyle: FontStyle.italic),
-                  ),
-                ],
+              // Rebuild to update the prompt.
+              setState(() {});
+            },
+            child: SectionFrame(
+              child: RichText(
+                textScaleFactor: MediaQuery.of(context).textScaleFactor,
+                text: TextSpan(
+                  children: [
+                    const TextSpan(
+                      text: "Negative Prompt: ",
+                    ),
+                    TextSpan(
+                      text: '"$prompt"',
+                      style: const TextStyle(fontStyle: FontStyle.italic),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -147,31 +152,24 @@ class _DreamTabState extends State<DreamTab> {
       builder: (context, snapshot) {
         final seed = snapshot.data;
 
-        return GestureDetector(
-          onTap: () async {
-            final int? newSeed = await Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (_) => SeedEditPage(seed),
-              ),
-            );
+        return FractionallySizedBox(
+          widthFactor: 1,
+          child: GestureDetector(
+            onTap: () async {
+              final int? newSeed = await Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => SeedEditPage(seed),
+                ),
+              );
 
-            await sharedPrefsBloc.setSeed(newSeed);
+              await sharedPrefsBloc.setSeed(newSeed);
 
-            // Rebuild to update the prompt.
-            setState(() {});
-          },
-          child: SectionFrame(
-            child: RichText(
-              textScaleFactor: MediaQuery.of(context).textScaleFactor,
-              text: TextSpan(
-                children: [
-                  const TextSpan(
-                    text: "Seed: ",
-                  ),
-                  TextSpan(
-                    text: seed == null ? "random" : seed.toString(),
-                  ),
-                ],
+              // Rebuild to update the prompt.
+              setState(() {});
+            },
+            child: SectionFrame(
+              child: Text(
+                "Seed: ${seed ?? "random"}",
               ),
             ),
           ),
