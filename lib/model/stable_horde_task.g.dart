@@ -47,8 +47,13 @@ const StableHordeTaskSchema = CollectionSchema(
       name: r'prompt',
       type: IsarType.string,
     ),
-    r'stableHordeId': PropertySchema(
+    r'seed': PropertySchema(
       id: 6,
+      name: r'seed',
+      type: IsarType.long,
+    ),
+    r'stableHordeId': PropertySchema(
+      id: 7,
       name: r'stableHordeId',
       type: IsarType.string,
     )
@@ -103,7 +108,8 @@ void _stableHordeTaskSerialize(
   writer.writeString(offsets[3], object.model);
   writer.writeString(offsets[4], object.negativePrompt);
   writer.writeString(offsets[5], object.prompt);
-  writer.writeString(offsets[6], object.stableHordeId);
+  writer.writeLong(offsets[6], object.seed);
+  writer.writeString(offsets[7], object.stableHordeId);
 }
 
 StableHordeTask _stableHordeTaskDeserialize(
@@ -121,7 +127,8 @@ StableHordeTask _stableHordeTaskDeserialize(
   object.estimatedCompletionTime = reader.readDateTimeOrNull(offsets[0]);
   object.firstShowProgressIndicatorTime = reader.readDateTimeOrNull(offsets[1]);
   object.imageFilename = reader.readStringOrNull(offsets[2]);
-  object.stableHordeId = reader.readStringOrNull(offsets[6]);
+  object.seed = reader.readLongOrNull(offsets[6]);
+  object.stableHordeId = reader.readStringOrNull(offsets[7]);
   return object;
 }
 
@@ -145,6 +152,8 @@ P _stableHordeTaskDeserializeProp<P>(
     case 5:
       return (reader.readString(offset)) as P;
     case 6:
+      return (reader.readLongOrNull(offset)) as P;
+    case 7:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -1012,6 +1021,80 @@ extension StableHordeTaskQueryFilter
   }
 
   QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      seedIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'seed',
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      seedIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'seed',
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      seedEqualTo(int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'seed',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      seedGreaterThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'seed',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      seedLessThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'seed',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      seedBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'seed',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
       stableHordeIdIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -1256,6 +1339,19 @@ extension StableHordeTaskQuerySortBy
     });
   }
 
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy> sortBySeed() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'seed', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy>
+      sortBySeedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'seed', Sort.desc);
+    });
+  }
+
   QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy>
       sortByStableHordeId() {
     return QueryBuilder.apply(this, (query) {
@@ -1368,6 +1464,19 @@ extension StableHordeTaskQuerySortThenBy
     });
   }
 
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy> thenBySeed() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'seed', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy>
+      thenBySeedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'seed', Sort.desc);
+    });
+  }
+
   QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy>
       thenByStableHordeId() {
     return QueryBuilder.apply(this, (query) {
@@ -1429,6 +1538,12 @@ extension StableHordeTaskQueryWhereDistinct
     });
   }
 
+  QueryBuilder<StableHordeTask, StableHordeTask, QDistinct> distinctBySeed() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'seed');
+    });
+  }
+
   QueryBuilder<StableHordeTask, StableHordeTask, QDistinct>
       distinctByStableHordeId({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1483,6 +1598,12 @@ extension StableHordeTaskQueryProperty
   QueryBuilder<StableHordeTask, String, QQueryOperations> promptProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'prompt');
+    });
+  }
+
+  QueryBuilder<StableHordeTask, int?, QQueryOperations> seedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'seed');
     });
   }
 

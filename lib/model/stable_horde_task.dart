@@ -13,6 +13,8 @@ class StableHordeTask {
   // Id used to reference this task via the stable horde API.
   String? stableHordeId;
 
+  int? seed;
+
   String? imageFilename;
 
   DateTime? firstShowProgressIndicatorTime;
