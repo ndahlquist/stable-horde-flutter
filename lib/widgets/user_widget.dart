@@ -6,6 +6,7 @@ import 'package:stable_horde_flutter/blocs/stable_horde_user_bloc.dart';
 import 'package:stable_horde_flutter/dialogs/login_dialog.dart';
 import 'package:stable_horde_flutter/model/stable_horde_user.dart';
 import 'package:stable_horde_flutter/utils/legal_links.dart';
+import 'package:stable_horde_flutter/widgets/section_frame.dart';
 
 class UserWidget extends StatefulWidget {
   const UserWidget({super.key});
@@ -102,61 +103,52 @@ class _UserWidgetState extends State<UserWidget> {
   }
 
   Widget _loggedInUserWidget(StableHordeUser user) {
-    return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white12,
-        borderRadius: BorderRadius.all(
-          Radius.circular(4),
-        ),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(8),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              user.username,
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
+    return SectionFrame(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            user.username,
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
             ),
-            const SizedBox(height: 16),
-            GestureDetector(
-              onTap: () {
-                launchUrlInExternalApp(
-                  'https://dbzer0.com/blog/the-kudos-based-economy-for-the-koboldai-horde/',
-                );
-              },
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "${NumberFormat.decimalPattern().format(user.kudos)} kudos",
-                    style: const TextStyle(fontSize: 18),
-                  ),
-                  const Text(
-                    "Kudos represent your contributions to the Stable Horde community. Kudos increase your request priority, speeding up your image generations. Kudos are consumed when generating images, and created by running an worker.",
-                  ),
-                  const SizedBox(height: 4),
-                  const Text(
-                    "LEARN MORE",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
+          ),
+          const SizedBox(height: 16),
+          GestureDetector(
+            onTap: () {
+              launchUrlInExternalApp(
+                'https://dbzer0.com/blog/the-kudos-based-economy-for-the-koboldai-horde/',
+              );
+            },
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "${NumberFormat.decimalPattern().format(user.kudos)} kudos",
+                  style: const TextStyle(fontSize: 18),
+                ),
+                const Text(
+                  "Kudos represent your contributions to the Stable Horde community. Kudos increase your request priority, speeding up your image generations. Kudos are consumed when generating images, and created by running an worker.",
+                ),
+                const SizedBox(height: 4),
+                const Text(
+                  "LEARN MORE",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ],
             ),
-            const SizedBox(height: 16),
-            Text(
-              "${NumberFormat.decimalPattern().format(user.numRequested)} images generated",
-              style: const TextStyle(fontSize: 18),
-            ),
-            Text(
-              "${NumberFormat.decimalPattern().format(user.numInferences)} images contributed",
-              style: const TextStyle(fontSize: 18),
-            ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 16),
+          Text(
+            "${NumberFormat.decimalPattern().format(user.numRequested)} images generated",
+            style: const TextStyle(fontSize: 18),
+          ),
+          Text(
+            "${NumberFormat.decimalPattern().format(user.numInferences)} images contributed",
+            style: const TextStyle(fontSize: 18),
+          ),
+        ],
       ),
     );
   }
