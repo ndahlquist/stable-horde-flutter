@@ -87,23 +87,34 @@ class _DreamTabState extends State<DreamTab> {
   }
 
   Widget _promptWidget() {
-    return FutureBuilder<String>(
-      future: sharedPrefsBloc.getPrompt(),
-      builder: (context, snapshot) {
-        final prompt = snapshot.data ?? "";
+    return Container(
+      decoration: const BoxDecoration(
+        color: Colors.white12,
+        borderRadius: BorderRadius.all(
+          Radius.circular(4),
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Row(
+          children: [
+            Expanded(
+              child: FutureBuilder<String>(
+                future: sharedPrefsBloc.getPrompt(),
+                builder: (context, snapshot) {
+                  final prompt = snapshot.data ?? "";
 
-        return TextField(
-          controller: TextEditingController(text: prompt),
-          decoration: _inputDecoration('Prompt'),
-          keyboardType: TextInputType.multiline,
-          maxLines: 5,
-          autofocus: true,
-          textCapitalization: TextCapitalization.sentences,
-          onChanged: (prompt) {
-            sharedPrefsBloc.setPrompt(prompt.trim());
-          },
-        );
-      },
+                  return Text(
+                    prompt,
+                    style: const TextStyle(fontStyle: FontStyle.italic),
+                  );
+                },
+              ),
+            ),
+            const Icon(Icons.edit_outlined),
+          ],
+        ),
+      ),
     );
   }
 
