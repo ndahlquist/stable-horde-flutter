@@ -17,13 +17,6 @@ class DreamTab extends StatefulWidget {
 }
 
 class _DreamTabState extends State<DreamTab> {
-  @override
-  void initState() {
-    super.initState();
-
-    // Run this proactively to avoid loading on the model page.
-    modelsBloc.getModels();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +62,7 @@ class _DreamTabState extends State<DreamTab> {
       children: [
         _negativePromptWidget(),
         const SizedBox(height: 16),
-        const FractionallySizedBox(widthFactor: 1, child: ModelButton()),
+        const ModelButton(),
         const SizedBox(height: 16),
         _seedWidget(),
         const SizedBox(height: 16),

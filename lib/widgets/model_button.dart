@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:stable_horde_flutter/blocs/models_bloc.dart';
 import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
+import 'package:stable_horde_flutter/model/stable_horde_model.dart';
 import 'package:stable_horde_flutter/pages/model_chooser_page.dart';
 import 'package:stable_horde_flutter/widgets/section_frame.dart';
 
@@ -25,23 +27,34 @@ class _ModelButtonState extends State<ModelButton> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () async {
-        await Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => const ModelChooserPage(),
-          ),
-        );
+    return FractionallySizedBox(
+      widthFactor: 1,
+      child: GestureDetector(
+        onTap: () async {
+          await Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => const ModelChooserPage(),
+            ),
+          );
 
-        sharedPrefsBloc.getModel().then((model) {
-          setState(() {
-            currentModel = model;
+          sharedPrefsBloc.getModel().then((model) {
+            setState(() {
+              currentModel = model;
+            });
           });
-        });
-      },
-      child: SectionFrame(
-        child: Text(
-          "Model: $currentModel",
+        },
+        child: SectionFrame(
+          child: SizedBox(
+            height: 64,
+            child: FutureBuilder<List<StableHordeBaseModel>>(
+              future: modelsBloc.getModels(),
+              builder: (context, snapshot) {
+                return Text(
+                  "Model: $currentModel",
+                );
+              }
+            ),
+          ),
         ),
       ),
     );
