@@ -66,6 +66,8 @@ class _DreamTabState extends State<DreamTab> {
       children: [
         _negativePromptWidget(),
         const SizedBox(height: 16),
+        _seedWidget(),
+        const SizedBox(height: 16),
         const FractionallySizedBox(widthFactor: 1, child: ModelButton()),
       ],
     );
@@ -160,6 +162,67 @@ class _DreamTabState extends State<DreamTab> {
                           TextSpan(
                             text: '"$prompt"',
                             style: const TextStyle(fontStyle: FontStyle.italic),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const Icon(Icons.edit_outlined),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _seedWidget() {
+    return FutureBuilder<int?>(
+      future: sharedPrefsBloc.getSeed(),
+      builder: (context, snapshot) {
+        final seed = snapshot.data;
+
+        return GestureDetector(
+          onTap: () async {
+            final String? newSeedStr = await Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => PromptEditPage(
+                  "Seed",
+                  seed == null ? "" : seed.toString(),
+                ),
+              ),
+            );
+
+            if (newSeedStr == null) return;
+            final newSeed = int.tryParse(newSeedStr);
+
+            await sharedPrefsBloc.setSeed(newSeed);
+
+            // Rebuild to update the prompt.
+            setState(() {});
+          },
+          child: Container(
+            decoration: const BoxDecoration(
+              color: Colors.white12,
+              borderRadius: BorderRadius.all(
+                Radius.circular(4),
+              ),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: RichText(
+                      textScaleFactor: MediaQuery.of(context).textScaleFactor,
+                      text: TextSpan(
+                        children: [
+                          const TextSpan(
+                            text: "Seed: ",
+                          ),
+                          TextSpan(
+                            text: seed == null ? "random" : seed.toString(),
                           ),
                         ],
                       ),
