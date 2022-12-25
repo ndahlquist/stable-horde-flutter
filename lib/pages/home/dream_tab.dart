@@ -188,8 +188,7 @@ class _DreamTabState extends State<DreamTab> {
           onTap: () async {
             final int? newSeed = await Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (_) => SeedEditPage(seed
-                ),
+                builder: (_) => SeedEditPage(seed),
               ),
             );
 

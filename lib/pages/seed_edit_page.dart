@@ -46,7 +46,7 @@ class _SeedEditPageState extends State<SeedEditPage> {
           Scaffold(
             backgroundColor: Colors.transparent,
             appBar: AppBar(
-              title: Text("Seed"),
+              title: const Text("Seed"),
               backgroundColor: Colors.transparent,
               elevation: 0,
             ),

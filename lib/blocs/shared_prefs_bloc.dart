@@ -67,7 +67,7 @@ class _SharedPrefsBloc {
     return prefs.getInt(_seedKey);
   }
 
-  Future setSeed(int ? seed) async {
+  Future setSeed(int? seed) async {
     final prefs = await SharedPreferences.getInstance();
     if (seed == null) {
       await prefs.remove(_seedKey);
