@@ -15,6 +15,7 @@ class _StableHordeBloc {
     final prompt = await sharedPrefsBloc.getPrompt();
     final negativePrompt = await sharedPrefsBloc.getNegativePrompt();
     final model = await sharedPrefsBloc.getModel();
+    final seed = await sharedPrefsBloc.getSeed();
 
     // Add new task to db.
     final dbId = await isar.writeTxn(() async {
@@ -45,7 +46,7 @@ class _StableHordeBloc {
         'height': 512,
         'cfg_scale': 7,
         'seed_variation': 1000,
-        'seed': '',
+        'seed': seed == null ? '' : '$seed',
         'karras': true,
         //'denoising_strength': mutationRate,
         'post_processing': [],
