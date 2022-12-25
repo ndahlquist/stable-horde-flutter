@@ -50,7 +50,7 @@ class _DreamTabState extends State<DreamTab> {
               child: ElevatedButton(
                 onPressed: _attemptToGenerate,
                 child: const Text(
-                  "Generate",
+                  "Dream",
                   style: TextStyle(color: Colors.black87),
                 ),
               ),
@@ -95,11 +95,15 @@ class _DreamTabState extends State<DreamTab> {
 
         return GestureDetector(
           onTap: () async {
-            await Navigator.of(context).push(
+            final newPrompt = await Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (_) => PromptEditPage(prompt),
               ),
             );
+
+            if (newPrompt != null) {
+              await sharedPrefsBloc.setPrompt(newPrompt);
+            }
 
             // Rebuild to update the prompt.
             setState(() {});

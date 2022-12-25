@@ -23,48 +23,49 @@ class _PromptEditPageState extends State<PromptEditPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        const GlassmorphicBackground(),
-        Scaffold(
-          backgroundColor: Colors.transparent,
-          appBar: AppBar(
-            title: const Text('Prompt'),
+    return WillPopScope(
+      onWillPop: () {
+        Navigator.pop(context, _controller.text);
+        return Future.value(false);
+      },
+      child: Stack(
+        children: [
+          const GlassmorphicBackground(),
+          Scaffold(
             backgroundColor: Colors.transparent,
-            elevation: 0,
-          ),
-          body: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: Column(
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    child: TextField(
-                      controller: _controller,
-                      autofocus: true,
-                      maxLines: null,
-                      textInputAction: TextInputAction.done,
-                      textCapitalization: TextCapitalization.sentences,
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
+            appBar: AppBar(
+              title: const Text('Prompt'),
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+            ),
+            body: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: Column(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: TextField(
+                        controller: _controller,
+                        autofocus: true,
+                        maxLines: null,
+                        textInputAction: TextInputAction.done,
+                        textCapitalization: TextCapitalization.sentences,
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                        ),
+                        onEditingComplete: () async {
+                          Navigator.of(context).pop();
+                        },
                       ),
-                      onChanged: (value) {
-                        sharedPrefsBloc.setPrompt(
-                          value.trim(),
-                        );
-                      },
-                      onEditingComplete: () async {
-                        Navigator.of(context).pop();
-                      },
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
