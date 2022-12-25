@@ -4,6 +4,7 @@ import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/blocs/stable_horde_bloc.dart';
 import 'package:stable_horde_flutter/pages/home_page.dart';
 import 'package:stable_horde_flutter/pages/prompt_edit_page.dart';
+import 'package:stable_horde_flutter/pages/seed_edit_page.dart';
 import 'package:stable_horde_flutter/widgets/model_button.dart';
 
 class DreamTab extends StatefulWidget {
@@ -185,18 +186,13 @@ class _DreamTabState extends State<DreamTab> {
 
         return GestureDetector(
           onTap: () async {
-            final String? newSeedStr = await Navigator.of(context).push(
+            final int? newSeed = await Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (_) => PromptEditPage(
-                  "Seed",
-                  seed == null ? "" : seed.toString(),
+                builder: (_) => SeedEditPage(seed
                 ),
               ),
             );
-
-            if (newSeedStr == null) return;
-            final newSeed = int.tryParse(newSeedStr);
-
+            
             await sharedPrefsBloc.setSeed(newSeed);
 
             // Rebuild to update the prompt.
