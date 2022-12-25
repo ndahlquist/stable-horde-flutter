@@ -181,43 +181,51 @@ class _DreamTabState extends State<DreamTab> {
   }
 
   Widget _upresWidget() {
-    return FutureBuilder<bool>(
-      future: sharedPrefsBloc.getUpresEnabled(),
-      builder: (context, snapshot) {
-        return FractionallySizedBox(
-          widthFactor: 1,
-          child: SectionFrame(
-            child: Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text("Upscale (RealESRGAN_x4plus)"),
-                      SizedBox(height: 4),
-                      Text(
-                        "A post-processor to upscale your image by a factor of 4. This increases processing time and kudos cost; it's best to experiment with this off, and then activate this only for your final image.",
-                        style: TextStyle(
-                          fontSize: 10,
-                          fontStyle: FontStyle.italic,
-                        ),
-                      ),
-                    ],
+    return FractionallySizedBox(
+      widthFactor: 1,
+      child: SectionFrame(
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text("Upscale (RealESRGAN_x4plus)"),
+                  SizedBox(height: 4),
+                  Text(
+                    "A post-processor to upscale your image by a factor of 4.",
+                    style: TextStyle(
+                      fontSize: 10,
+                      fontStyle: FontStyle.italic,
+                    ),
                   ),
-                ),
-                const SizedBox(width: 4),
-                Switch.adaptive(
+                  SizedBox(height: 4),
+                  Text(
+                    "This increases processing time and kudos cost; it's best to experiment with this off, and then activate this only for your final image.",
+                    style: TextStyle(
+                      fontSize: 10,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 4),
+            FutureBuilder<bool>(
+              future: sharedPrefsBloc.getUpresEnabled(),
+              builder: (context, snapshot) {
+                return Switch.adaptive(
                   value: snapshot.data ?? false,
                   onChanged: (v) async {
                     await sharedPrefsBloc.setUpresEnabled(v);
                     setState(() {});
                   },
-                ),
-              ],
+                );
+              },
             ),
-          ),
-        );
-      },
+          ],
+        ),
+      ),
     );
   }
 
