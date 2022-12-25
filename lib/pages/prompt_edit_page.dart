@@ -35,31 +35,28 @@ class _PromptEditPageState extends State<PromptEditPage> {
             elevation: 0,
           ),
           body: Padding(
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.symmetric(horizontal: 12),
             child: Column(
               children: [
                 Expanded(
-                  child: TextField(
-                    controller: _controller,
-                    autofocus: true,
-                    maxLines: null,
-                   /* decoration: const InputDecoration(
-                      border: InputBorder.none,
-                    ),*/
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: TextField(
+                      controller: _controller,
+                      autofocus: true,
+                      maxLines: null,
+                      textInputAction: TextInputAction.done,
+                      textCapitalization: TextCapitalization.sentences,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                      ),
+                      onEditingComplete: () async {
+                        await sharedPrefsBloc
+                            .setPrompt(_controller.text.trim());
+                        if (!mounted) return;
 
-                  ),
-                ),
-                FractionallySizedBox(
-                  widthFactor: 1,
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      await sharedPrefsBloc.setPrompt(_controller.text.trim());
-                      if (!mounted) return;
-                      Navigator.pop(context);
-                    },
-                    child: const Text(
-                      'Save',
-                      style: TextStyle(color: Colors.black87),
+                        Navigator.of(context).pop();
+                      },
                     ),
                   ),
                 ),
