@@ -175,18 +175,6 @@ class _DreamTabState extends State<DreamTab> {
     );
   }
 
-  InputDecoration _inputDecoration(String label) {
-    return InputDecoration(
-      labelText: label,
-      enabledBorder: const UnderlineInputBorder(
-        borderSide: BorderSide(color: Colors.white),
-      ),
-      focusedBorder: const UnderlineInputBorder(
-        borderSide: BorderSide(color: Colors.white),
-      ),
-    );
-  }
-
   Future _attemptToGenerate() async {
     final prompt = await sharedPrefsBloc.getPrompt();
     if (prompt.isEmpty) {
