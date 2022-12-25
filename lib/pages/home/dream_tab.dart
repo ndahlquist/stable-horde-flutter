@@ -69,9 +69,10 @@ class _DreamTabState extends State<DreamTab> {
       children: [
         _negativePromptWidget(),
         const SizedBox(height: 16),
+        const FractionallySizedBox(widthFactor: 1, child: ModelButton()),
+        const SizedBox(height: 16),
         _seedWidget(),
         const SizedBox(height: 16),
-        const FractionallySizedBox(widthFactor: 1, child: ModelButton()),
       ],
     );
   }

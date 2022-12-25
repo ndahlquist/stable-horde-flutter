@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/pages/model_chooser_page.dart';
+import 'package:stable_horde_flutter/widgets/section_frame.dart';
 
 class ModelButton extends StatefulWidget {
   const ModelButton({super.key});
@@ -24,8 +25,8 @@ class _ModelButtonState extends State<ModelButton> {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () async {
+    return GestureDetector(
+      onTap: () async {
         await Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => const ModelChooserPage(),
@@ -38,9 +39,10 @@ class _ModelButtonState extends State<ModelButton> {
           });
         });
       },
-      child: Text(
-        "Model: $currentModel",
-        style: const TextStyle(color: Colors.black87),
+      child: SectionFrame(
+        child: Text(
+          "Model: $currentModel",
+        ),
       ),
     );
   }
