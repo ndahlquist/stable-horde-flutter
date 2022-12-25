@@ -8,7 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:isar/isar.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
-import 'package:stable_horde_flutter/blocs/stable_horde_bloc.dart';
+import 'package:stable_horde_flutter/blocs/tasks_bloc.dart';
 import 'package:stable_horde_flutter/firebase_options.dart';
 import 'package:stable_horde_flutter/model/stable_horde_task.dart';
 import 'package:stable_horde_flutter/pages/home_page.dart';
@@ -75,7 +75,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
 
-    stableHordeBloc.resumeIncompleteTasks();
+    tasksBloc.resumeIncompleteTasks();
   }
 
   @override
