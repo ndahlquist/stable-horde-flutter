@@ -173,13 +173,13 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
                     style: const TextStyle(fontSize: 12),
                   ),
                   if (task.seed != null)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 12),
-                    child: Text(
-                      "Seed: ${task.seed}",
-                      style: const TextStyle(fontSize: 12),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 12),
+                      child: Text(
+                        "Seed: ${task.seed}",
+                        style: const TextStyle(fontSize: 12),
+                      ),
                     ),
-                  ),
                   const Spacer(),
                   _shareButton(task),
                 ],
