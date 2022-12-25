@@ -22,7 +22,6 @@ class _PromptEditPageState extends State<PromptEditPage> {
     _controller = TextEditingController(text: widget.originalPrompt);
   }
 
-
   @override
   void dispose() {
     _controller.dispose();
