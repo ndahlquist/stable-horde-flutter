@@ -31,12 +31,7 @@ class _GlassmorphicBackgroundState extends State<GlassmorphicBackground> {
 
   @override
   Widget build(BuildContext context) {
-    return ImageFiltered(
-      imageFilter: ImageFilter.blur(
-        sigmaX: 97,
-        sigmaY: 97,
-        tileMode: TileMode.clamp,
-      ),
+    return ClipRect(
       child: Stack(
         children: [
           Container(
@@ -52,14 +47,14 @@ class _GlassmorphicBackgroundState extends State<GlassmorphicBackground> {
             ),
           ),
           Positioned(
-            top: 100 + sin(_timer.tick / 198.0) * 50,
-            left: 100 + sin(_timer.tick / 211.0) * 50,
-            child: _circle(const Color(0xFF240050), 400),
-          ),
-          Positioned(
             bottom: 100 + sin(_timer.tick / 100.0) * 50,
             right: 100 + sin(_timer.tick / 121.0) * 50,
-            child: _circle(const Color(0xFFA63802), 200),
+            child: _circle(const Color(0xFFA63802), 400),
+          ),
+          Positioned(
+            top: 100 + sin(_timer.tick / 198.0) * 50,
+            left: 100 + sin(_timer.tick / 211.0) * 50,
+            child: _circle(const Color(0xFF240050), 800),
           ),
         ],
       ),
@@ -75,7 +70,27 @@ class _GlassmorphicBackgroundState extends State<GlassmorphicBackground> {
           borderRadius: BorderRadius.all(
             Radius.circular(radius),
           ),
-          color: color,
+          gradient: RadialGradient(
+            // This is roughly a gaussian kernel.
+            // (The goal here is to approximate a Gaussian blur,
+            // but without actually performing an expensive blur).
+            colors: [
+              color.withOpacity(0.199 * 5),
+              color.withOpacity(0.175 * 5),
+              color.withOpacity(0.122 * 5),
+              color.withOpacity(0.066 * 5),
+              color.withOpacity(0.028 * 5),
+              color.withOpacity(0.00),
+            ],
+            stops: const [
+              0.0,
+              .2,
+              .4,
+              .6,
+              .8,
+              1.0,
+            ],
+          ),
         ),
       ),
     );
