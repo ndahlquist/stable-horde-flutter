@@ -4,7 +4,7 @@ class SectionFrame extends StatelessWidget {
   final Widget child;
   final double padding;
 
-  const SectionFrame({super.key, required this.child, this.padding=12});
+  const SectionFrame({super.key, required this.child, this.padding = 12});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class SectionFrame extends StatelessWidget {
         ),
       ),
       child: Padding(
-        padding:  EdgeInsets.all(padding),
+        padding: EdgeInsets.all(padding),
         child: child,
       ),
     );
