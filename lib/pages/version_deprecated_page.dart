@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:stable_horde_flutter/colors.dart';
+import 'package:stable_horde_flutter/widgets/glassmorphic_background.dart';
 
 class VersionDeprecatedPage extends StatefulWidget {
   const VersionDeprecatedPage({super.key});
@@ -11,23 +11,12 @@ class VersionDeprecatedPage extends StatefulWidget {
 class _DeprecatedPageState extends State<VersionDeprecatedPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: stableHordePurple,
-      body: Stack(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  stableHordePurple.withOpacity(.8),
-                  stableHordePurple,
-                ],
-              ),
-            ),
-          ),
-          Padding(
+    return Column(
+      children: [
+        const GlassmorphicBackground(),
+        Scaffold(
+          backgroundColor: Colors.transparent,
+          body: Padding(
             padding: const EdgeInsets.all(24),
             child: Column(
               children: const [
@@ -41,8 +30,8 @@ class _DeprecatedPageState extends State<VersionDeprecatedPage> {
               ],
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
