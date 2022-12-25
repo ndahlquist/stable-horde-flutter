@@ -104,8 +104,7 @@ class _OnboardingDiffusionAnimationState
                       color: Colors.black.withOpacity(0.55),
                       spreadRadius: 0,
                       blurRadius: 8,
-                      offset:
-                          const Offset(0, 4), // changes position of shadow
+                      offset: const Offset(0, 4), // changes position of shadow
                     ),
                   ],
                 ),
