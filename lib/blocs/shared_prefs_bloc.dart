@@ -9,6 +9,7 @@ class _SharedPrefsBloc {
   static const _promptKey = 'PROMPT_KEY';
   static const _negativePromptKey = 'NEGATIVE_PROMPT_KEY';
   static const _modelKey = 'MODEL_KEY';
+  static const _seedKey = 'SEED_KEY';
 
   static const defaultPrompt =
       "Futuristic spaceship. Rainforest. A painting of a spaceship on a rainforest planet by Caravaggio. Trending on Artstation. chiaroscuro.";
@@ -59,6 +60,20 @@ class _SharedPrefsBloc {
   Future setNegativePrompt(String prompt) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_negativePromptKey, prompt);
+  }
+
+  Future<int?> getSeed() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getInt(_seedKey);
+  }
+
+  Future setSeed(int? seed) async {
+    final prefs = await SharedPreferences.getInstance();
+    if (seed == null) {
+      await prefs.remove(_seedKey);
+    } else {
+      await prefs.setInt(_seedKey, seed);
+    }
   }
 
   Future<String> getModel() async {
