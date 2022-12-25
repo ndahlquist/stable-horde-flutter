@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:stable_horde_flutter/blocs/models_bloc.dart';
 import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
-import 'package:stable_horde_flutter/blocs/stable_horde_bloc.dart';
 import 'package:stable_horde_flutter/model/stable_horde_model.dart';
 import 'package:stable_horde_flutter/widgets/glassmorphic_background.dart';
 
@@ -27,7 +27,7 @@ class _ModelChooserPageState extends State<ModelChooserPage> {
             title: const Text("Models"),
           ),
           body: FutureBuilder<List<StableHordeModel>>(
-            future: stableHordeBloc.getModels(),
+            future: modelsBloc.getModels(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());

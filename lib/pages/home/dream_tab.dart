@@ -1,7 +1,8 @@
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
+import 'package:stable_horde_flutter/blocs/models_bloc.dart';
 import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
-import 'package:stable_horde_flutter/blocs/stable_horde_bloc.dart';
+import 'package:stable_horde_flutter/blocs/tasks_bloc.dart';
 import 'package:stable_horde_flutter/pages/home_page.dart';
 import 'package:stable_horde_flutter/pages/prompt_edit_page.dart';
 import 'package:stable_horde_flutter/pages/seed_edit_page.dart';
@@ -20,7 +21,7 @@ class _DreamTabState extends State<DreamTab> {
     super.initState();
 
     // Run this proactively to avoid loading on the model page.
-    stableHordeBloc.getModels();
+    modelsBloc.getModels();
   }
 
   @override
@@ -246,7 +247,7 @@ class _DreamTabState extends State<DreamTab> {
       return;
     }
 
-    stableHordeBloc.requestDiffusion();
+    tasksBloc.requestDiffusion();
     homeController.animateToPage(1);
   }
 }

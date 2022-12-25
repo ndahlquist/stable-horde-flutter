@@ -10,7 +10,7 @@ import 'package:stable_horde_flutter/main.dart';
 import 'package:stable_horde_flutter/model/stable_horde_model.dart';
 import 'package:stable_horde_flutter/model/stable_horde_task.dart';
 
-class _StableHordeBloc {
+class _TasksBloc {
   Future requestDiffusion() async {
     final prompt = await sharedPrefsBloc.getPrompt();
     final negativePrompt = await sharedPrefsBloc.getNegativePrompt();
@@ -287,4 +287,4 @@ class _StableHordeBloc {
   }
 }
 
-final stableHordeBloc = _StableHordeBloc();
+final tasksBloc = _TasksBloc();

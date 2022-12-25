@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
-import 'package:stable_horde_flutter/blocs/stable_horde_bloc.dart';
+import 'package:stable_horde_flutter/blocs/tasks_bloc.dart';
 import 'package:stable_horde_flutter/model/stable_horde_task.dart';
 import 'package:stable_horde_flutter/pages/fullscreen_view_page.dart';
 import 'package:stable_horde_flutter/widgets/task_image.dart';
@@ -19,7 +19,7 @@ class _MyArtTabState extends State<MyArtTab>
   Widget build(BuildContext context) {
     super.build(context);
     return StreamBuilder<List<StableHordeTask>>(
-      stream: stableHordeBloc.getTasksStream(),
+      stream: tasksBloc.getTasksStream(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
