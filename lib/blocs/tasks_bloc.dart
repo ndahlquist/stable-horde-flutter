@@ -130,7 +130,7 @@ class _TasksBloc {
     return jsonResponse['done'];
   }
 
-  Future _retrieveTaskResult(StableHordeTask task) async {
+  Future<bool> _retrieveTaskResult(StableHordeTask task) async {
     final response = await http.get(
       Uri.parse(
         'https://stablehorde.net/api/v2/generate/status/${task.stableHordeId!}',
@@ -144,13 +144,16 @@ class _TasksBloc {
       );
       print(exception);
       Sentry.captureException(exception, stackTrace: StackTrace.current);
-      return;
+      return false;
     }
 
     final jsonResponse = jsonDecode(response.body);
     print(jsonResponse);
 
     final generations = jsonResponse['generations'] as List;
+    if (generations.isEmpty) {
+      return false;
+    }
 
     if (generations.length != 1) {
       throw Exception(
@@ -164,6 +167,8 @@ class _TasksBloc {
     await isar.writeTxn(() async {
       isar.stableHordeTasks.put(task);
     });
+
+    return true;
   }
 
   Future _waitOnTask(StableHordeTask task) async {
@@ -173,9 +178,9 @@ class _TasksBloc {
       bool complete = await _checkTaskCompletion(task);
       if (!complete) continue;
 
-      await _retrieveTaskResult(task);
+      bool success = await _retrieveTaskResult(task);
 
-      return;
+      if (success) return;
     }
 
     throw Exception('Failed to complete task');
