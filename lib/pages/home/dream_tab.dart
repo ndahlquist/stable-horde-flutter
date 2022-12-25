@@ -59,11 +59,15 @@ class _DreamTabState extends State<DreamTab> {
     return Column(
       children: [
         _negativePromptWidget(),
-        const SizedBox(height: 16),
+        const SizedBox(height: 8),
         const ModelButton(),
-        const SizedBox(height: 16),
+        const SizedBox(height: 8),
         _seedWidget(),
-        const SizedBox(height: 16),
+        const SizedBox(height: 8),
+        _upresWidget(),
+        const SizedBox(height: 8),
+        _fixFaceWidget(),
+        const SizedBox(height: 8),
       ],
     );
   }
@@ -175,6 +179,104 @@ class _DreamTabState extends State<DreamTab> {
           ),
         );
       },
+    );
+  }
+
+  Widget _upresWidget() {
+    return FractionallySizedBox(
+      widthFactor: 1,
+      child: SectionFrame(
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text("Upscale (RealESRGAN_x4plus)"),
+                  SizedBox(height: 4),
+                  Text(
+                    "A post-processor to upscale your image by a factor of 4.",
+                    style: TextStyle(
+                      fontSize: 10,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    "This increases processing time and kudos cost; it's best to experiment with this off, and then activate this only for your final image.",
+                    style: TextStyle(
+                      fontSize: 10,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 4),
+            FutureBuilder<bool>(
+              future: sharedPrefsBloc.getUpscaleEnabled(),
+              builder: (context, snapshot) {
+                return Switch.adaptive(
+                  value: snapshot.data ?? false,
+                  onChanged: (v) async {
+                    await sharedPrefsBloc.setUpscaleEnabled(v);
+                    setState(() {});
+                  },
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _fixFaceWidget() {
+    return FractionallySizedBox(
+      widthFactor: 1,
+      child: SectionFrame(
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text("Fix faces (CodeFormers)"),
+                  SizedBox(height: 4),
+                  Text(
+                    "A post-processor to fix deformed faces.",
+                    style: TextStyle(
+                      fontSize: 10,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    "This increases processing time and kudos cost; it's best to experiment with this off, and then activate this only for your final image.",
+                    style: TextStyle(
+                      fontSize: 10,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 4),
+            FutureBuilder<bool>(
+              future: sharedPrefsBloc.getCodeformersEnabled(),
+              builder: (context, snapshot) {
+                return Switch.adaptive(
+                  value: snapshot.data ?? false,
+                  onChanged: (v) async {
+                    await sharedPrefsBloc.setCodeformersEnabled(v);
+                    setState(() {});
+                  },
+                );
+              },
+            ),
+          ],
+        ),
+      ),
     );
   }
 

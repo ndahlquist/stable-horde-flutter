@@ -10,6 +10,8 @@ class _SharedPrefsBloc {
   static const _negativePromptKey = 'NEGATIVE_PROMPT_KEY';
   static const _modelKey = 'MODEL_KEY';
   static const _seedKey = 'SEED_KEY';
+  static const _upscaleKey = 'UPSCALE_KEY';
+  static const _codeformersKey = 'CODEFORMERS_KEY';
 
   static const defaultPrompt =
       "Futuristic spaceship. Rainforest. A painting of a spaceship on a rainforest planet by Caravaggio. Trending on Artstation. chiaroscuro.";
@@ -84,6 +86,26 @@ class _SharedPrefsBloc {
   Future setModel(String modelName) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_modelKey, modelName);
+  }
+
+  Future<bool> getUpscaleEnabled() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_upscaleKey) ?? false;
+  }
+
+  Future setUpscaleEnabled(bool enabled) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_upscaleKey, enabled);
+  }
+
+  Future<bool> getCodeformersEnabled() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_codeformersKey) ?? false;
+  }
+
+  Future setCodeformersEnabled(bool enabled) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_codeformersKey, enabled);
   }
 }
 
