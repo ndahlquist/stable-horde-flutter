@@ -94,12 +94,15 @@ class _DreamTabState extends State<DreamTab> {
         final prompt = snapshot.data ?? "";
 
         return GestureDetector(
-          onTap: () {
-            Navigator.of(context).push(
+          onTap: () async {
+            await Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (_) => PromptEditPage(prompt),
               ),
             );
+
+            // Rebuild to update the prompt.
+            setState(() {});
           },
           child: Container(
             decoration: const BoxDecoration(
