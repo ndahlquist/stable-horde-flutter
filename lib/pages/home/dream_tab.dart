@@ -6,6 +6,7 @@ import 'package:stable_horde_flutter/pages/home_page.dart';
 import 'package:stable_horde_flutter/pages/prompt_edit_page.dart';
 import 'package:stable_horde_flutter/pages/seed_edit_page.dart';
 import 'package:stable_horde_flutter/widgets/model_button.dart';
+import 'package:stable_horde_flutter/widgets/section_frame.dart';
 
 class DreamTab extends StatefulWidget {
   const DreamTab({super.key});
@@ -94,26 +95,17 @@ class _DreamTabState extends State<DreamTab> {
             // Rebuild to update the prompt.
             setState(() {});
           },
-          child: Container(
-            decoration: const BoxDecoration(
-              color: Colors.white12,
-              borderRadius: BorderRadius.all(
-                Radius.circular(4),
-              ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(12),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      '"$prompt"',
-                      style: const TextStyle(fontStyle: FontStyle.italic),
-                    ),
+          child: SectionFrame(
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    '"$prompt"',
+                    style: const TextStyle(fontStyle: FontStyle.italic),
                   ),
-                  const Icon(Icons.edit_outlined),
-                ],
-              ),
+                ),
+                const Icon(Icons.edit_outlined),
+              ],
             ),
           ),
         );
@@ -141,36 +133,27 @@ class _DreamTabState extends State<DreamTab> {
             // Rebuild to update the prompt.
             setState(() {});
           },
-          child: Container(
-            decoration: const BoxDecoration(
-              color: Colors.white12,
-              borderRadius: BorderRadius.all(
-                Radius.circular(4),
-              ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(12),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: RichText(
-                      textScaleFactor: MediaQuery.of(context).textScaleFactor,
-                      text: TextSpan(
-                        children: [
-                          const TextSpan(
-                            text: "Negative Prompt: ",
-                          ),
-                          TextSpan(
-                            text: '"$prompt"',
-                            style: const TextStyle(fontStyle: FontStyle.italic),
-                          ),
-                        ],
-                      ),
+          child: SectionFrame(
+            child: Row(
+              children: [
+                Expanded(
+                  child: RichText(
+                    textScaleFactor: MediaQuery.of(context).textScaleFactor,
+                    text: TextSpan(
+                      children: [
+                        const TextSpan(
+                          text: "Negative Prompt: ",
+                        ),
+                        TextSpan(
+                          text: '"$prompt"',
+                          style: const TextStyle(fontStyle: FontStyle.italic),
+                        ),
+                      ],
                     ),
                   ),
-                  const Icon(Icons.edit_outlined),
-                ],
-              ),
+                ),
+                const Icon(Icons.edit_outlined),
+              ],
             ),
           ),
         );
@@ -197,35 +180,26 @@ class _DreamTabState extends State<DreamTab> {
             // Rebuild to update the prompt.
             setState(() {});
           },
-          child: Container(
-            decoration: const BoxDecoration(
-              color: Colors.white12,
-              borderRadius: BorderRadius.all(
-                Radius.circular(4),
-              ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(12),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: RichText(
-                      textScaleFactor: MediaQuery.of(context).textScaleFactor,
-                      text: TextSpan(
-                        children: [
-                          const TextSpan(
-                            text: "Seed: ",
-                          ),
-                          TextSpan(
-                            text: seed == null ? "random" : seed.toString(),
-                          ),
-                        ],
-                      ),
+          child: SectionFrame(
+            child: Row(
+              children: [
+                Expanded(
+                  child: RichText(
+                    textScaleFactor: MediaQuery.of(context).textScaleFactor,
+                    text: TextSpan(
+                      children: [
+                        const TextSpan(
+                          text: "Seed: ",
+                        ),
+                        TextSpan(
+                          text: seed == null ? "random" : seed.toString(),
+                        ),
+                      ],
                     ),
                   ),
-                  const Icon(Icons.edit_outlined),
-                ],
-              ),
+                ),
+                const Icon(Icons.edit_outlined),
+              ],
             ),
           ),
         );
