@@ -1,3 +1,6 @@
+#1.0.0+5
+- Fix prompt not getting saved.
+
 #1.0.0+4
 - Add option for face-fixing (CodeFormers).
 - Add option for upres (RealESRGAN_x4plus).
