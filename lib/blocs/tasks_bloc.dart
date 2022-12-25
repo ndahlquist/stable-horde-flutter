@@ -113,9 +113,6 @@ class _TasksBloc {
       const Duration(seconds: 2),
     );
 
-    // TODO
-    task.nextUpdateTime = DateTime.now().add(const Duration(seconds: 2));
-
     await isar.writeTxn(() async {
       isar.stableHordeTasks.put(task);
     });
