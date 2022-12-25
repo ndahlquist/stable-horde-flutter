@@ -64,23 +64,7 @@ class _DreamTabState extends State<DreamTab> {
   Widget _advancedOptions() {
     return Column(
       children: [
-        FutureBuilder<String>(
-          future: sharedPrefsBloc.getNegativePrompt(),
-          builder: (context, snapshot) {
-            final negativePrompt = snapshot.data ?? "";
-
-            return TextField(
-              controller: TextEditingController(text: negativePrompt),
-              decoration: _inputDecoration('Negative Prompt'),
-              keyboardType: TextInputType.multiline,
-              maxLines: 5,
-              textCapitalization: TextCapitalization.sentences,
-              onChanged: (negativePrompt) {
-                sharedPrefsBloc.setNegativePrompt(negativePrompt);
-              },
-            );
-          },
-        ),
+        _negativePromptWidget(),
         const SizedBox(height: 16),
         const FractionallySizedBox(widthFactor: 1, child: ModelButton()),
       ],
@@ -101,9 +85,56 @@ class _DreamTabState extends State<DreamTab> {
               ),
             );
 
-            if (newPrompt != null) {
+            if (newPrompt == null) return;
               await sharedPrefsBloc.setPrompt(newPrompt);
-            }
+
+            // Rebuild to update the prompt.
+            setState(() {});
+          },
+          child: Container(
+            decoration: const BoxDecoration(
+              color: Colors.white12,
+              borderRadius: BorderRadius.all(
+                Radius.circular(4),
+              ),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      '"$prompt"',
+                      style: const TextStyle(fontStyle: FontStyle.italic),
+                    ),
+                  ),
+                  const Icon(Icons.edit_outlined),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _negativePromptWidget() {
+    return FutureBuilder<String>(
+      future: sharedPrefsBloc.getNegativePrompt(),
+      builder: (context, snapshot) {
+        final prompt = snapshot.data ?? "";
+
+        return GestureDetector(
+          onTap: () async {
+            final newPrompt = await Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => PromptEditPage("Negative Prompt", prompt),
+              ),
+            );
+
+            if (newPrompt == null) return;
+              await sharedPrefsBloc.setNegativePrompt(newPrompt);
+
 
             // Rebuild to update the prompt.
             setState(() {});
