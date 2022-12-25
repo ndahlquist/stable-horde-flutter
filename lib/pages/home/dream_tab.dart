@@ -90,16 +90,9 @@ class _DreamTabState extends State<DreamTab> {
             setState(() {});
           },
           child: SectionFrame(
-            child: Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    '"$prompt"',
-                    style: const TextStyle(fontStyle: FontStyle.italic),
-                  ),
-                ),
-                const Icon(Icons.edit_outlined),
-              ],
+            child: Text(
+              '"$prompt"',
+              style: const TextStyle(fontStyle: FontStyle.italic),
             ),
           ),
         );
@@ -128,26 +121,19 @@ class _DreamTabState extends State<DreamTab> {
             setState(() {});
           },
           child: SectionFrame(
-            child: Row(
-              children: [
-                Expanded(
-                  child: RichText(
-                    textScaleFactor: MediaQuery.of(context).textScaleFactor,
-                    text: TextSpan(
-                      children: [
-                        const TextSpan(
-                          text: "Negative Prompt: ",
-                        ),
-                        TextSpan(
-                          text: '"$prompt"',
-                          style: const TextStyle(fontStyle: FontStyle.italic),
-                        ),
-                      ],
-                    ),
+            child: RichText(
+              textScaleFactor: MediaQuery.of(context).textScaleFactor,
+              text: TextSpan(
+                children: [
+                  const TextSpan(
+                    text: "Negative Prompt: ",
                   ),
-                ),
-                const Icon(Icons.edit_outlined),
-              ],
+                  TextSpan(
+                    text: '"$prompt"',
+                    style: const TextStyle(fontStyle: FontStyle.italic),
+                  ),
+                ],
+              ),
             ),
           ),
         );
@@ -175,25 +161,18 @@ class _DreamTabState extends State<DreamTab> {
             setState(() {});
           },
           child: SectionFrame(
-            child: Row(
-              children: [
-                Expanded(
-                  child: RichText(
-                    textScaleFactor: MediaQuery.of(context).textScaleFactor,
-                    text: TextSpan(
-                      children: [
-                        const TextSpan(
-                          text: "Seed: ",
-                        ),
-                        TextSpan(
-                          text: seed == null ? "random" : seed.toString(),
-                        ),
-                      ],
-                    ),
+            child: RichText(
+              textScaleFactor: MediaQuery.of(context).textScaleFactor,
+              text: TextSpan(
+                children: [
+                  const TextSpan(
+                    text: "Seed: ",
                   ),
-                ),
-                const Icon(Icons.edit_outlined),
-              ],
+                  TextSpan(
+                    text: seed == null ? "random" : seed.toString(),
+                  ),
+                ],
+              ),
             ),
           ),
         );
