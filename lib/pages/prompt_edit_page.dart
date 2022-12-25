@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stable_horde_flutter/widgets/glassmorphic_background.dart';
 
+// Page for fullscreen editing of prompt and negative prompts.
 class PromptEditPage extends StatefulWidget {
   final String title;
   final String originalPrompt;
