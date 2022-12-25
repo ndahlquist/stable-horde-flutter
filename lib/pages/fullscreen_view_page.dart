@@ -141,11 +141,32 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
                     ),
                   ),
                   const SizedBox(height: 12),
-                  Text(task.prompt),
+                  Text(
+                    '"${task.prompt}"',
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
                   const SizedBox(height: 12),
-                  if (task.negativePrompt.isNotEmpty) ...[
-                    Text("Negative prompt: ${task.negativePrompt}"),
-                  ],
+                  if (task.negativePrompt.isNotEmpty)
+                    RichText(
+                      textScaleFactor: MediaQuery.of(context).textScaleFactor,
+                      text: TextSpan(
+                        text: "Negative Prompt: ",
+                        style: const TextStyle(
+                          fontSize: 12,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: '"${task.negativePrompt}"',
+                            style: const TextStyle(
+                              fontStyle: FontStyle.italic,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   const SizedBox(height: 12),
                   Text(task.model),
                   const Spacer(),
