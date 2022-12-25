@@ -117,7 +117,7 @@ class _DreamTabState extends State<DreamTab> {
                 children: [
                   Expanded(
                     child: Text(
-                      prompt,
+                      '"$prompt"',
                       style: const TextStyle(fontStyle: FontStyle.italic),
                     ),
                   ),
