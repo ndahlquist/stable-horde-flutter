@@ -97,7 +97,7 @@ class _DreamTabState extends State<DreamTab> {
           onTap: () async {
             final newPrompt = await Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (_) => PromptEditPage(prompt),
+                builder: (_) => PromptEditPage("Prompt", prompt),
               ),
             );
 

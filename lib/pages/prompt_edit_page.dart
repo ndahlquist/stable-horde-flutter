@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/widgets/glassmorphic_background.dart';
 
 class PromptEditPage extends StatefulWidget {
-  final String prompt;
+  final String title;
+  final String originalPrompt;
 
-  const PromptEditPage(this.prompt, {super.key});
+  const PromptEditPage(this.title, this.originalPrompt, {super.key});
 
   @override
   State<PromptEditPage> createState() => _PromptEditPageState();
@@ -18,7 +18,15 @@ class _PromptEditPageState extends State<PromptEditPage> {
   void initState() {
     super.initState();
 
-    _controller = TextEditingController(text: widget.prompt);
+    _controller = TextEditingController(text: widget.originalPrompt);
+  }
+
+
+  @override
+  void dispose() {
+    _controller.dispose();
+
+    super.dispose();
   }
 
   @override
@@ -34,7 +42,7 @@ class _PromptEditPageState extends State<PromptEditPage> {
           Scaffold(
             backgroundColor: Colors.transparent,
             appBar: AppBar(
-              title: const Text('Prompt'),
+              title: Text(widget.title),
               backgroundColor: Colors.transparent,
               elevation: 0,
             ),
