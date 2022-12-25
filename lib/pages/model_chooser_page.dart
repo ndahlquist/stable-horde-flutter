@@ -64,15 +64,6 @@ class _ModelChooserPageState extends State<ModelChooserPage> {
                         height: 128,
                         child: Row(
                           children: [
-                            AspectRatio(
-                              aspectRatio: 1,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(4),
-                                child: CachedNetworkImage(
-                                  imageUrl: model.previewImageUrl,
-                                ),
-                              ),
-                            ),
                             Expanded(
                               child: Padding(
                                 padding:
@@ -104,6 +95,15 @@ class _ModelChooserPageState extends State<ModelChooserPage> {
                                       ),
                                     ),
                                   ],
+                                ),
+                              ),
+                            ),
+                            AspectRatio(
+                              aspectRatio: 1,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(4),
+                                child: CachedNetworkImage(
+                                  imageUrl: model.previewImageUrl,
                                 ),
                               ),
                             ),
