@@ -80,6 +80,7 @@ class _ModelButtonState extends State<ModelButton> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(currentModel),
+                            const SizedBox(height: 4),
                             Expanded(
                               child: Text(
                                 model?.description ?? "",
