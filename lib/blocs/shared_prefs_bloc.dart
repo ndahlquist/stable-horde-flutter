@@ -10,7 +10,8 @@ class _SharedPrefsBloc {
   static const _negativePromptKey = 'NEGATIVE_PROMPT_KEY';
   static const _modelKey = 'MODEL_KEY';
 
-  static const defaultPrompt = "Futuristic spaceship. Rainforest. A painting of a spaceship on a rainforest planet by Caravaggio. Trending on Artstation. chiaroscuro.";
+  static const defaultPrompt =
+      "Futuristic spaceship. Rainforest. A painting of a spaceship on a rainforest planet by Caravaggio. Trending on Artstation. chiaroscuro.";
   static const defaultNegativePrompt = "Cropped.";
 
   Future<bool> hasSeenOnboarding() async {
