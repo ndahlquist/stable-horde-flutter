@@ -49,7 +49,12 @@ class _GlassmorphicBackgroundState extends State<GlassmorphicBackground> {
           Positioned(
             bottom: 100 + sin(_timer.tick / 100.0) * 50,
             right: 100 + sin(_timer.tick / 121.0) * 50,
-            child: _circle(const Color(0xFFA63802), 400),
+            child: _circle(const Color(0xFF812B00), 400),
+          ),
+          Positioned(
+            top: 100 + sin(_timer.tick / 205.0) * 50,
+            left: 100 + sin(_timer.tick / 225.0) * 50,
+            child: _circle(const Color(0xFF812B00), 200),
           ),
           Positioned(
             top: 100 + sin(_timer.tick / 198.0) * 50,
