@@ -74,7 +74,9 @@ class _TaskProgressIndicatorState extends State<TaskProgressIndicator> {
       final difference = widget.task.estimatedCompletionTime!.difference(
         DateTime.now(),
       );
-      loadingMessageWidget = Text('ETA: ${difference.inSeconds}s');
+      var secondsLeft = difference.inSeconds;
+      if (secondsLeft < 0) secondsLeft = 0;
+      loadingMessageWidget = Text('ETA: ${secondsLeft}s');
     }
 
     final Widget callToAction = FutureBuilder<String?>(
