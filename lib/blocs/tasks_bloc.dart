@@ -17,6 +17,16 @@ class _TasksBloc {
     final model = await sharedPrefsBloc.getModel();
     final seed = await sharedPrefsBloc.getSeed();
 
+    final List<String> postProcessors = [];
+
+    if (await sharedPrefsBloc.getUpscaleEnabled()) {
+      postProcessors.add("RealESRGAN_x4plus");
+    }
+
+    if (await sharedPrefsBloc.getCodeformersEnabled()) {
+      postProcessors.add("CodeFormers");
+    }
+
     // Add new task to db.
     final dbId = await isar.writeTxn(() async {
       final task = StableHordeTask(prompt, negativePrompt, model);

@@ -10,7 +10,7 @@ class _SharedPrefsBloc {
   static const _negativePromptKey = 'NEGATIVE_PROMPT_KEY';
   static const _modelKey = 'MODEL_KEY';
   static const _seedKey = 'SEED_KEY';
-  static const _upresKey = 'UPRES_KEY';
+  static const _upscaleKey = 'UPSCALE_KEY';
   static const _codeformersKey = 'CODEFORMERS_KEY';
 
   static const defaultPrompt =
@@ -88,14 +88,14 @@ class _SharedPrefsBloc {
     await prefs.setString(_modelKey, modelName);
   }
 
-  Future<bool> getUpresEnabled() async {
+  Future<bool> getUpscaleEnabled() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getBool(_upresKey) ?? false;
+    return prefs.getBool(_upscaleKey) ?? false;
   }
 
-  Future setUpresEnabled(bool enabled) async {
+  Future setUpscaleEnabled(bool enabled) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(_upresKey, enabled);
+    await prefs.setBool(_upscaleKey, enabled);
   }
 
   Future<bool> getCodeformersEnabled() async {

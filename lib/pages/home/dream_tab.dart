@@ -214,12 +214,12 @@ class _DreamTabState extends State<DreamTab> {
             ),
             const SizedBox(width: 4),
             FutureBuilder<bool>(
-              future: sharedPrefsBloc.getUpresEnabled(),
+              future: sharedPrefsBloc.getUpscaleEnabled(),
               builder: (context, snapshot) {
                 return Switch.adaptive(
                   value: snapshot.data ?? false,
                   onChanged: (v) async {
-                    await sharedPrefsBloc.setUpresEnabled(v);
+                    await sharedPrefsBloc.setUpscaleEnabled(v);
                     setState(() {});
                   },
                 );
@@ -230,7 +230,6 @@ class _DreamTabState extends State<DreamTab> {
       ),
     );
   }
-
 
   Widget _fixFaceWidget() {
     return FractionallySizedBox(
