@@ -1,6 +1,5 @@
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
-import 'package:stable_horde_flutter/blocs/models_bloc.dart';
 import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/blocs/tasks_bloc.dart';
 import 'package:stable_horde_flutter/pages/home_page.dart';
@@ -17,14 +16,6 @@ class DreamTab extends StatefulWidget {
 }
 
 class _DreamTabState extends State<DreamTab> {
-  @override
-  void initState() {
-    super.initState();
-
-    // Run this proactively to avoid loading on the model page.
-    modelsBloc.getModels();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -69,9 +60,10 @@ class _DreamTabState extends State<DreamTab> {
       children: [
         _negativePromptWidget(),
         const SizedBox(height: 16),
+        const ModelButton(),
+        const SizedBox(height: 16),
         _seedWidget(),
         const SizedBox(height: 16),
-        const FractionallySizedBox(widthFactor: 1, child: ModelButton()),
       ],
     );
   }
@@ -82,31 +74,27 @@ class _DreamTabState extends State<DreamTab> {
       builder: (context, snapshot) {
         final prompt = snapshot.data ?? "";
 
-        return GestureDetector(
-          onTap: () async {
-            final newPrompt = await Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (_) => PromptEditPage("Prompt", prompt),
-              ),
-            );
-
-            if (newPrompt == null) return;
-            await sharedPrefsBloc.setPrompt(newPrompt);
-
-            // Rebuild to update the prompt.
-            setState(() {});
-          },
-          child: SectionFrame(
-            child: Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    '"$prompt"',
-                    style: const TextStyle(fontStyle: FontStyle.italic),
-                  ),
+        return FractionallySizedBox(
+          widthFactor: 1,
+          child: GestureDetector(
+            onTap: () async {
+              final newPrompt = await Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => PromptEditPage("Prompt", prompt),
                 ),
-                const Icon(Icons.edit_outlined),
-              ],
+              );
+
+              if (newPrompt == null) return;
+              await sharedPrefsBloc.setPrompt(newPrompt);
+
+              // Rebuild to update the prompt.
+              setState(() {});
+            },
+            child: SectionFrame(
+              child: Text(
+                '"$prompt"',
+                style: const TextStyle(fontStyle: FontStyle.italic),
+              ),
             ),
           ),
         );
@@ -120,41 +108,37 @@ class _DreamTabState extends State<DreamTab> {
       builder: (context, snapshot) {
         final prompt = snapshot.data ?? "";
 
-        return GestureDetector(
-          onTap: () async {
-            final newPrompt = await Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (_) => PromptEditPage("Negative Prompt", prompt),
-              ),
-            );
-
-            if (newPrompt == null) return;
-            await sharedPrefsBloc.setNegativePrompt(newPrompt);
-
-            // Rebuild to update the prompt.
-            setState(() {});
-          },
-          child: SectionFrame(
-            child: Row(
-              children: [
-                Expanded(
-                  child: RichText(
-                    textScaleFactor: MediaQuery.of(context).textScaleFactor,
-                    text: TextSpan(
-                      children: [
-                        const TextSpan(
-                          text: "Negative Prompt: ",
-                        ),
-                        TextSpan(
-                          text: '"$prompt"',
-                          style: const TextStyle(fontStyle: FontStyle.italic),
-                        ),
-                      ],
-                    ),
-                  ),
+        return FractionallySizedBox(
+          widthFactor: 1,
+          child: GestureDetector(
+            onTap: () async {
+              final newPrompt = await Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => PromptEditPage("Negative Prompt", prompt),
                 ),
-                const Icon(Icons.edit_outlined),
-              ],
+              );
+
+              if (newPrompt == null) return;
+              await sharedPrefsBloc.setNegativePrompt(newPrompt);
+
+              // Rebuild to update the prompt.
+              setState(() {});
+            },
+            child: SectionFrame(
+              child: RichText(
+                textScaleFactor: MediaQuery.of(context).textScaleFactor,
+                text: TextSpan(
+                  children: [
+                    const TextSpan(
+                      text: "Negative Prompt: ",
+                    ),
+                    TextSpan(
+                      text: '"$prompt"',
+                      style: const TextStyle(fontStyle: FontStyle.italic),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
         );
@@ -168,39 +152,25 @@ class _DreamTabState extends State<DreamTab> {
       builder: (context, snapshot) {
         final seed = snapshot.data;
 
-        return GestureDetector(
-          onTap: () async {
-            final int? newSeed = await Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (_) => SeedEditPage(seed),
-              ),
-            );
-
-            await sharedPrefsBloc.setSeed(newSeed);
-
-            // Rebuild to update the prompt.
-            setState(() {});
-          },
-          child: SectionFrame(
-            child: Row(
-              children: [
-                Expanded(
-                  child: RichText(
-                    textScaleFactor: MediaQuery.of(context).textScaleFactor,
-                    text: TextSpan(
-                      children: [
-                        const TextSpan(
-                          text: "Seed: ",
-                        ),
-                        TextSpan(
-                          text: seed == null ? "random" : seed.toString(),
-                        ),
-                      ],
-                    ),
-                  ),
+        return FractionallySizedBox(
+          widthFactor: 1,
+          child: GestureDetector(
+            onTap: () async {
+              final int? newSeed = await Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => SeedEditPage(seed),
                 ),
-                const Icon(Icons.edit_outlined),
-              ],
+              );
+
+              await sharedPrefsBloc.setSeed(newSeed);
+
+              // Rebuild to update the prompt.
+              setState(() {});
+            },
+            child: SectionFrame(
+              child: Text(
+                "Seed: ${seed ?? "random"}",
+              ),
             ),
           ),
         );

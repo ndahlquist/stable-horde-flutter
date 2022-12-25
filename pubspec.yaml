@@ -14,6 +14,8 @@ environment:
 dependencies:
   cached_network_image: ^3.2.3
 
+  collection: ^1.16.0
+
   expandable: ^5.0.1
 
   flutter:
