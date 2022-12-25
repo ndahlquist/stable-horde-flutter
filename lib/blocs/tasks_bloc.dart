@@ -59,7 +59,7 @@ class _TasksBloc {
         'seed': seed == null ? '' : '$seed',
         'karras': true,
         //'denoising_strength': mutationRate,
-        'post_processing': [],
+        'post_processing': postProcessors,
       },
       'nsfw': false,
       'censor_nsfw': false,
