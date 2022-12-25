@@ -82,15 +82,53 @@ class _TasksBloc {
     _waitOnTask(task);
   }
 
+  Future<bool> _checkTaskCompletion(StableHordeTask task) async {
+    final response = await http.get(
+      Uri.parse(
+        'https://stablehorde.net/api/v2/generate/check/${task.stableHordeId!}',
+      ),
+    );
+
+    if (response.statusCode != 200) {
+      final exception = Exception(
+        'Failed to get task status: '
+        '${response.statusCode} ${response.body}',
+      );
+      print(exception);
+      Sentry.captureException(exception, stackTrace: StackTrace.current);
+      return false;
+    }
+
+    final jsonResponse = jsonDecode(response.body);
+    print(jsonResponse);
+
+    final waitSeconds = jsonResponse['wait_time'];
+    final estimatedCompletionTime = DateTime.now().add(
+      Duration(seconds: waitSeconds),
+    );
+    print('Estimated completion time: $estimatedCompletionTime');
+
+    task.firstShowProgressIndicatorTime ??= DateTime.now();
+    task.estimatedCompletionTime = estimatedCompletionTime.add(
+      const Duration(seconds: 2),
+    );
+
+    // TODO
+    task.nextUpdateTime = DateTime.now().add(const Duration(seconds: 2));
+
+    await isar.writeTxn(() async {
+      isar.stableHordeTasks.put(task);
+    });
+
+    return jsonResponse['done'];
+  }
+
   Future _waitOnTask(StableHordeTask task) async {
     for (int i = 0; i < 10000; i++) {
       await Future.delayed(const Duration(seconds: 2));
       print('update $i');
-      if (task.nextUpdateTime != null) {
-        if (DateTime.now().isBefore(task.nextUpdateTime!)) {
-          continue;
-        }
-      }
+      bool complete = await _checkTaskCompletion(task);
+      if (!complete) continue;
 
       final response = await http.get(
         Uri.parse(
@@ -116,34 +154,13 @@ class _TasksBloc {
       final jsonResponse = jsonDecode(response.body);
       print(jsonResponse);
 
-      final waitSeconds = jsonResponse['wait_time'];
-      final estimatedCompletionTime = DateTime.now().add(
-        Duration(seconds: waitSeconds),
-      );
-      print('Estimated completion time: $estimatedCompletionTime');
-
-      task.firstShowProgressIndicatorTime ??= DateTime.now();
-      task.estimatedCompletionTime = estimatedCompletionTime.add(
-        const Duration(seconds: 2),
-      );
-
-      // Update at least every 15 seconds.
-      if (waitSeconds > 15) {
-        task.nextUpdateTime = DateTime.now().add(const Duration(seconds: 15));
-      } else {
-        task.nextUpdateTime = estimatedCompletionTime;
-      }
-
       final generations = jsonResponse['generations'] as List;
 
-      if (generations.isEmpty) {
-        await isar.writeTxn(() async {
-          isar.stableHordeTasks.put(task);
-        });
-        continue;
+      if (generations.length != 1) {
+        throw Exception(
+          "Unexpected number of generations: ${generations.length}",
+        );
       }
-
-      assert(generations.length == 1);
 
       final generation = generations.first;
       final imageUrl = generation['img'];
