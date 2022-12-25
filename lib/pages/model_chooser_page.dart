@@ -5,6 +5,7 @@ import 'package:stable_horde_flutter/blocs/models_bloc.dart';
 import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/model/stable_horde_model.dart';
 import 'package:stable_horde_flutter/widgets/glassmorphic_background.dart';
+import 'package:stable_horde_flutter/widgets/section_frame.dart';
 
 class ModelChooserPage extends StatefulWidget {
   const ModelChooserPage({super.key});
@@ -48,66 +49,71 @@ class _ModelChooserPageState extends State<ModelChooserPage> {
                 itemCount: models.length,
                 itemBuilder: (context, index) {
                   final model = models[index];
-                  return GestureDetector(
-                    onTap: () async {
-                      await sharedPrefsBloc.setModel(model.name);
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 6,
+                      horizontal: 12,
+                    ),
+                    child: GestureDetector(
+                      onTap: () async {
+                        await sharedPrefsBloc.setModel(model.name);
 
-                      if (!mounted) return;
-                      Navigator.of(context).pop();
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 6,
-                        horizontal: 12,
-                      ),
-                      child: SizedBox(
-                        height: 128,
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      model.name,
-                                      style: const TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
+                        if (!mounted) return;
+                        Navigator.of(context).pop();
+                      },
+                      child: SectionFrame(
+                        padding: 8,
+                        child: SizedBox(
+                          height: 128,
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 4,
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        model.name,
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
-                                    ),
-                                    const SizedBox(height: 2),
-                                    Text(
-                                      "${model.workerCount} worker${model.workerCount == 1 ? "" : "s"}",
-                                      style: const TextStyle(
-                                        fontSize: 12,
-                                        fontStyle: FontStyle.italic,
+                                      const SizedBox(height: 2),
+                                      Text(
+                                        "${model.workerCount} worker${model.workerCount == 1 ? "" : "s"}",
+                                        style: const TextStyle(
+                                          fontSize: 12,
+                                          fontStyle: FontStyle.italic,
+                                        ),
                                       ),
-                                    ),
-                                    const SizedBox(height: 2),
-                                    Expanded(
-                                      child: Text(
-                                        model.description,
-                                        style: const TextStyle(fontSize: 12),
-                                        softWrap: true,
+                                      const SizedBox(height: 2),
+                                      Expanded(
+                                        child: Text(
+                                          model.description,
+                                          style: const TextStyle(fontSize: 10),
+                                          softWrap: true,
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                            AspectRatio(
-                              aspectRatio: 1,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(4),
-                                child: CachedNetworkImage(
-                                  imageUrl: model.previewImageUrl,
+                              AspectRatio(
+                                aspectRatio: 1,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(4),
+                                  child: CachedNetworkImage(
+                                    imageUrl: model.previewImageUrl,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),
