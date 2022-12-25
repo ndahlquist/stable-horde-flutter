@@ -86,7 +86,7 @@ class _DreamTabState extends State<DreamTab> {
             );
 
             if (newPrompt == null) return;
-              await sharedPrefsBloc.setPrompt(newPrompt);
+            await sharedPrefsBloc.setPrompt(newPrompt);
 
             // Rebuild to update the prompt.
             setState(() {});
@@ -133,8 +133,7 @@ class _DreamTabState extends State<DreamTab> {
             );
 
             if (newPrompt == null) return;
-              await sharedPrefsBloc.setNegativePrompt(newPrompt);
-
+            await sharedPrefsBloc.setNegativePrompt(newPrompt);
 
             // Rebuild to update the prompt.
             setState(() {});
