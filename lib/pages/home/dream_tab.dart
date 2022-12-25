@@ -192,7 +192,7 @@ class _DreamTabState extends State<DreamTab> {
                 ),
               ),
             );
-            
+
             await sharedPrefsBloc.setSeed(newSeed);
 
             // Rebuild to update the prompt.
