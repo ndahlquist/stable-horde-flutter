@@ -1,10 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/widgets/glassmorphic_background.dart';
 
-class PromptEditPage extends StatelessWidget {
+class PromptEditPage extends StatefulWidget {
   final String prompt;
 
   const PromptEditPage(this.prompt, {super.key});
+
+  @override
+  State<PromptEditPage> createState() => _PromptEditPageState();
+}
+
+class _PromptEditPageState extends State<PromptEditPage> {
+  late TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = TextEditingController(text: widget.prompt);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,15 +38,30 @@ class PromptEditPage extends StatelessWidget {
             padding: const EdgeInsets.all(24),
             child: Column(
               children: [
-                TextField(
-                  controller: TextEditingController(text: prompt),
+                Expanded(
+                  child: TextField(
+                    controller: _controller,
+                    autofocus: true,
+                    maxLines: null,
+                   /* decoration: const InputDecoration(
+                      border: InputBorder.none,
+                    ),*/
+
+                  ),
                 ),
-                const Spacer(),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text('Save'),
+                FractionallySizedBox(
+                  widthFactor: 1,
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      await sharedPrefsBloc.setPrompt(_controller.text.trim());
+                      if (!mounted) return;
+                      Navigator.pop(context);
+                    },
+                    child: const Text(
+                      'Save',
+                      style: TextStyle(color: Colors.black87),
+                    ),
+                  ),
                 ),
               ],
             ),
