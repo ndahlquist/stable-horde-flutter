@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/widgets/glassmorphic_background.dart';
 
@@ -50,13 +49,12 @@ class _PromptEditPageState extends State<PromptEditPage> {
                       decoration: const InputDecoration(
                         border: InputBorder.none,
                       ),
-
                       onChanged: (value) {
-                        sharedPrefsBloc
-                            .setPrompt(value.trim());
+                        sharedPrefsBloc.setPrompt(
+                          value.trim(),
+                        );
                       },
                       onEditingComplete: () async {
-
                         Navigator.of(context).pop();
                       },
                     ),
