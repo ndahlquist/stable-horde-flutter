@@ -64,6 +64,8 @@ class _DreamTabState extends State<DreamTab> {
         const SizedBox(height: 16),
         _seedWidget(),
         const SizedBox(height: 16),
+        _upresWidget(),
+        const SizedBox(height: 16),
       ],
     );
   }
@@ -171,6 +173,47 @@ class _DreamTabState extends State<DreamTab> {
               child: Text(
                 "Seed: ${seed ?? "random"}",
               ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _upresWidget() {
+    return FutureBuilder<bool>(
+      future: sharedPrefsBloc.getUpresEnabled(),
+      builder: (context, snapshot) {
+        return FractionallySizedBox(
+          widthFactor: 1,
+          child: SectionFrame(
+            child: Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      Text("Upscale (RealESRGAN_x4plus)"),
+                      SizedBox(height: 4),
+                      Text(
+                        "A post-processor to upscale your image by a factor of 4. This increases processing time and kudos cost; it's best to experiment with this off, and then activate this only for your final image.",
+                        style: TextStyle(
+                          fontSize: 10,
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 4),
+                Switch.adaptive(
+                  value: snapshot.data ?? false,
+                  onChanged: (v) async {
+                    await sharedPrefsBloc.setUpresEnabled(v);
+                    setState(() {});
+                  },
+                ),
+              ],
             ),
           ),
         );
