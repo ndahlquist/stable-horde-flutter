@@ -10,6 +10,8 @@ class _SharedPrefsBloc {
   static const _negativePromptKey = 'NEGATIVE_PROMPT_KEY';
   static const _modelKey = 'MODEL_KEY';
 
+  static const defaultPrompt = "Futuristic spaceship. Rainforest. A painting of a spaceship on a rainforest planet by Caravaggio. Trending on Artstation. chiaroscuro.";
+
   Future<bool> hasSeenOnboarding() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getBool(_onboardingKey) ?? false;
@@ -39,7 +41,7 @@ class _SharedPrefsBloc {
 
   Future<String> getPrompt() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getString(_promptKey) ?? "";
+    return prefs.getString(_promptKey) ?? defaultPrompt;
   }
 
   Future setPrompt(String prompt) async {
@@ -49,7 +51,7 @@ class _SharedPrefsBloc {
 
   Future<String> getNegativePrompt() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getString(_negativePromptKey) ?? "";
+    return prefs.getString(_negativePromptKey) ?? "cropped";
   }
 
   Future setNegativePrompt(String prompt) async {
