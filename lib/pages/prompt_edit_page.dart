@@ -33,7 +33,7 @@ class _PromptEditPageState extends State<PromptEditPage> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
-        Navigator.pop(context, _controller.text);
+        Navigator.pop(context, _controller.text.trim());
         return Future.value(false);
       },
       child: Stack(
