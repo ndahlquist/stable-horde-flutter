@@ -17,38 +17,48 @@ const StableHordeTaskSchema = CollectionSchema(
   name: r'StableHordeTask',
   id: -7546272270601559721,
   properties: {
-    r'estimatedCompletionTime': PropertySchema(
+    r'createdAt': PropertySchema(
       id: 0,
+      name: r'createdAt',
+      type: IsarType.dateTime,
+    ),
+    r'estimatedCompletionTime': PropertySchema(
+      id: 1,
       name: r'estimatedCompletionTime',
       type: IsarType.dateTime,
     ),
     r'firstShowProgressIndicatorTime': PropertySchema(
-      id: 1,
+      id: 2,
       name: r'firstShowProgressIndicatorTime',
       type: IsarType.dateTime,
     ),
     r'imageFilename': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'imageFilename',
       type: IsarType.string,
     ),
     r'model': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'model',
       type: IsarType.string,
     ),
     r'negativePrompt': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'negativePrompt',
       type: IsarType.string,
     ),
     r'prompt': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'prompt',
       type: IsarType.string,
     ),
+    r'seed': PropertySchema(
+      id: 7,
+      name: r'seed',
+      type: IsarType.long,
+    ),
     r'stableHordeId': PropertySchema(
-      id: 6,
+      id: 8,
       name: r'stableHordeId',
       type: IsarType.string,
     )
@@ -97,13 +107,15 @@ void _stableHordeTaskSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeDateTime(offsets[0], object.estimatedCompletionTime);
-  writer.writeDateTime(offsets[1], object.firstShowProgressIndicatorTime);
-  writer.writeString(offsets[2], object.imageFilename);
-  writer.writeString(offsets[3], object.model);
-  writer.writeString(offsets[4], object.negativePrompt);
-  writer.writeString(offsets[5], object.prompt);
-  writer.writeString(offsets[6], object.stableHordeId);
+  writer.writeDateTime(offsets[0], object.createdAt);
+  writer.writeDateTime(offsets[1], object.estimatedCompletionTime);
+  writer.writeDateTime(offsets[2], object.firstShowProgressIndicatorTime);
+  writer.writeString(offsets[3], object.imageFilename);
+  writer.writeString(offsets[4], object.model);
+  writer.writeString(offsets[5], object.negativePrompt);
+  writer.writeString(offsets[6], object.prompt);
+  writer.writeLong(offsets[7], object.seed);
+  writer.writeString(offsets[8], object.stableHordeId);
 }
 
 StableHordeTask _stableHordeTaskDeserialize(
@@ -113,15 +125,17 @@ StableHordeTask _stableHordeTaskDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = StableHordeTask(
+    reader.readString(offsets[6]),
     reader.readString(offsets[5]),
     reader.readString(offsets[4]),
-    reader.readString(offsets[3]),
   );
+  object.createdAt = reader.readDateTime(offsets[0]);
   object.dbId = id;
-  object.estimatedCompletionTime = reader.readDateTimeOrNull(offsets[0]);
-  object.firstShowProgressIndicatorTime = reader.readDateTimeOrNull(offsets[1]);
-  object.imageFilename = reader.readStringOrNull(offsets[2]);
-  object.stableHordeId = reader.readStringOrNull(offsets[6]);
+  object.estimatedCompletionTime = reader.readDateTimeOrNull(offsets[1]);
+  object.firstShowProgressIndicatorTime = reader.readDateTimeOrNull(offsets[2]);
+  object.imageFilename = reader.readStringOrNull(offsets[3]);
+  object.seed = reader.readLongOrNull(offsets[7]);
+  object.stableHordeId = reader.readStringOrNull(offsets[8]);
   return object;
 }
 
@@ -133,18 +147,22 @@ P _stableHordeTaskDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readDateTimeOrNull(offset)) as P;
+      return (reader.readDateTime(offset)) as P;
     case 1:
       return (reader.readDateTimeOrNull(offset)) as P;
     case 2:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readDateTimeOrNull(offset)) as P;
     case 3:
-      return (reader.readString(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 4:
       return (reader.readString(offset)) as P;
     case 5:
       return (reader.readString(offset)) as P;
     case 6:
+      return (reader.readString(offset)) as P;
+    case 7:
+      return (reader.readLongOrNull(offset)) as P;
+    case 8:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -245,6 +263,62 @@ extension StableHordeTaskQueryWhere
 
 extension StableHordeTaskQueryFilter
     on QueryBuilder<StableHordeTask, StableHordeTask, QFilterCondition> {
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      createdAtEqualTo(DateTime value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'createdAt',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      createdAtGreaterThan(
+    DateTime value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'createdAt',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      createdAtLessThan(
+    DateTime value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'createdAt',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      createdAtBetween(
+    DateTime lower,
+    DateTime upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'createdAt',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
   QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
       dbIdEqualTo(Id value) {
     return QueryBuilder.apply(this, (query) {
@@ -1012,6 +1086,80 @@ extension StableHordeTaskQueryFilter
   }
 
   QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      seedIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'seed',
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      seedIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'seed',
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      seedEqualTo(int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'seed',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      seedGreaterThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'seed',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      seedLessThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'seed',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      seedBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'seed',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
       stableHordeIdIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -1175,6 +1323,20 @@ extension StableHordeTaskQueryLinks
 extension StableHordeTaskQuerySortBy
     on QueryBuilder<StableHordeTask, StableHordeTask, QSortBy> {
   QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy>
+      sortByCreatedAt() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'createdAt', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy>
+      sortByCreatedAtDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'createdAt', Sort.desc);
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy>
       sortByEstimatedCompletionTime() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'estimatedCompletionTime', Sort.asc);
@@ -1256,6 +1418,19 @@ extension StableHordeTaskQuerySortBy
     });
   }
 
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy> sortBySeed() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'seed', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy>
+      sortBySeedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'seed', Sort.desc);
+    });
+  }
+
   QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy>
       sortByStableHordeId() {
     return QueryBuilder.apply(this, (query) {
@@ -1273,6 +1448,20 @@ extension StableHordeTaskQuerySortBy
 
 extension StableHordeTaskQuerySortThenBy
     on QueryBuilder<StableHordeTask, StableHordeTask, QSortThenBy> {
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy>
+      thenByCreatedAt() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'createdAt', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy>
+      thenByCreatedAtDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'createdAt', Sort.desc);
+    });
+  }
+
   QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy> thenByDbId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'dbId', Sort.asc);
@@ -1368,6 +1557,19 @@ extension StableHordeTaskQuerySortThenBy
     });
   }
 
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy> thenBySeed() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'seed', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy>
+      thenBySeedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'seed', Sort.desc);
+    });
+  }
+
   QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy>
       thenByStableHordeId() {
     return QueryBuilder.apply(this, (query) {
@@ -1385,6 +1587,13 @@ extension StableHordeTaskQuerySortThenBy
 
 extension StableHordeTaskQueryWhereDistinct
     on QueryBuilder<StableHordeTask, StableHordeTask, QDistinct> {
+  QueryBuilder<StableHordeTask, StableHordeTask, QDistinct>
+      distinctByCreatedAt() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'createdAt');
+    });
+  }
+
   QueryBuilder<StableHordeTask, StableHordeTask, QDistinct>
       distinctByEstimatedCompletionTime() {
     return QueryBuilder.apply(this, (query) {
@@ -1429,6 +1638,12 @@ extension StableHordeTaskQueryWhereDistinct
     });
   }
 
+  QueryBuilder<StableHordeTask, StableHordeTask, QDistinct> distinctBySeed() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'seed');
+    });
+  }
+
   QueryBuilder<StableHordeTask, StableHordeTask, QDistinct>
       distinctByStableHordeId({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1443,6 +1658,13 @@ extension StableHordeTaskQueryProperty
   QueryBuilder<StableHordeTask, int, QQueryOperations> dbIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'dbId');
+    });
+  }
+
+  QueryBuilder<StableHordeTask, DateTime, QQueryOperations>
+      createdAtProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'createdAt');
     });
   }
 
@@ -1483,6 +1705,12 @@ extension StableHordeTaskQueryProperty
   QueryBuilder<StableHordeTask, String, QQueryOperations> promptProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'prompt');
+    });
+  }
+
+  QueryBuilder<StableHordeTask, int?, QQueryOperations> seedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'seed');
     });
   }
 

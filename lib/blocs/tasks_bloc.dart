@@ -30,6 +30,10 @@ class _TasksBloc {
     // Add new task to db.
     final dbId = await isar.writeTxn(() async {
       final task = StableHordeTask(prompt, negativePrompt, model);
+      if (seed != null) {
+        task.seed = seed;
+      }
+
       return isar.stableHordeTasks.put(task);
     });
     final task = await isar.stableHordeTasks.get(dbId);
@@ -164,6 +168,7 @@ class _TasksBloc {
     final generation = generations.first;
     final imageUrl = generation['img'];
     task.imageFilename = await _downloadImageFromUrl(imageUrl);
+    task.seed = generation['seed'];
     await isar.writeTxn(() async {
       isar.stableHordeTasks.put(task);
     });
