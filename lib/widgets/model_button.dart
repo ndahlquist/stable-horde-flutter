@@ -46,8 +46,9 @@ class _ModelButtonState extends State<ModelButton> {
           });
         },
         child: SectionFrame(
+          padding: 8,
           child: SizedBox(
-            height: 64,
+            height: 72,
             child: FutureBuilder<List<StableHordeModel>>(
               future: modelsBloc.getModels(),
               builder: (context, snapshot) {
@@ -68,8 +69,11 @@ class _ModelButtonState extends State<ModelButton> {
                 return Row(
                   children: [
                     Expanded(
-                      child: Text(
-                        "Model: $currentModel",
+                      child: Padding(
+                        padding: const EdgeInsets.all(4),
+                        child: Text(
+                          "Model: $currentModel",
+                        ),
                       ),
                     ),
                     ClipRRect(

@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 class SectionFrame extends StatelessWidget {
   final Widget child;
+  final double padding;
 
-  const SectionFrame({super.key, required this.child});
+  const SectionFrame({super.key, required this.child, this.padding=12});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +16,7 @@ class SectionFrame extends StatelessWidget {
         ),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(12),
+        padding:  EdgeInsets.all(padding),
         child: child,
       ),
     );
