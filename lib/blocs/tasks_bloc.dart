@@ -168,7 +168,7 @@ class _TasksBloc {
     final generation = generations.first;
     final imageUrl = generation['img'];
     task.imageFilename = await _downloadImageFromUrl(imageUrl);
-    task.seed = generation['seed'];
+    task.seed = int.tryParse(generation['seed']);
     await isar.writeTxn(() async {
       isar.stableHordeTasks.put(task);
     });
