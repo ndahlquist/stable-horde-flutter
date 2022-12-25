@@ -63,7 +63,7 @@ class _PromptEditPageState extends State<PromptEditPage> {
                           border: InputBorder.none,
                         ),
                         onEditingComplete: () async {
-                          Navigator.of(context).pop();
+                          Navigator.of(context).pop(_controller.text.trim());
                         },
                       ),
                     ),
