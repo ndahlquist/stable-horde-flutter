@@ -32,11 +32,11 @@ class _DreamTabState extends State<DreamTab> {
           children: [
             const SizedBox(height: 16),
             _promptWidget(),
-            const SizedBox(height: 16),
+            const SizedBox(height: 36),
             ExpandablePanel(
               header: const Text(
                 "Advanced Options",
-                style: TextStyle(fontSize: 24),
+                style: TextStyle(fontSize: 18),
               ),
               collapsed: const SizedBox.shrink(),
               expanded: _advancedOptions(),
