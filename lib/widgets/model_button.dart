@@ -70,9 +70,28 @@ class _ModelButtonState extends State<ModelButton> {
                   children: [
                     Expanded(
                       child: Padding(
-                        padding: const EdgeInsets.all(4),
-                        child: Text(
-                          "Model: $currentModel",
+                        padding: const EdgeInsets.only(
+                          left: 4,
+                          top: 4,
+                          bottom: 4,
+                          right: 8,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(currentModel),
+                            Expanded(
+                              child: Text(
+                                model?.description ?? "",
+                                maxLines: 3,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  fontSize: 10,
+                                  fontStyle: FontStyle.italic,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
