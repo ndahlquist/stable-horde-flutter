@@ -15,7 +15,6 @@ class _ModelsBloc {
 
     models.sort((a, b) => b.workerCount.compareTo(a.workerCount));
 
-    final styles = await _getStyles();
 
     _cachedModels = await _getModelDetails(models);
     return _cachedModels!;
@@ -104,6 +103,8 @@ class _ModelsBloc {
       );
     }
 
+    final styles = await _getStyles();
+
     final jsonResponse = jsonDecode(response.body) as Map<String, dynamic>;
 
     final List<StableHordeModel> modelsWithDetails = [];
@@ -121,6 +122,7 @@ class _ModelsBloc {
           model.workerCount,
           details['description'],
           showcases[0],
+          styles[model.name]!,
         ),
       );
     }

@@ -8,11 +8,13 @@ class StableHordeBaseModel {
 class StableHordeModel extends StableHordeBaseModel {
   final String description;
   final String previewImageUrl;
+  final String promptTemplate;
 
   StableHordeModel(
     name,
     workerCount,
     this.description,
     this.previewImageUrl,
+      this.promptTemplate,
   ) : super(name, workerCount);
 }
