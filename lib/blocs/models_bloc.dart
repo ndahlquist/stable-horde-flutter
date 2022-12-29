@@ -54,6 +54,11 @@ class _ModelsBloc {
     return _cachedModels!;
   }
 
+  Future<StableHordeModel> getModel(String modelName) async {
+    final models = await getModels();
+    return models.firstWhere((model) => model.name == modelName);
+  }
+
   Future<List<StableHordeBaseModel>> _getModels() async {
     final response = await http.get(
       Uri.parse(

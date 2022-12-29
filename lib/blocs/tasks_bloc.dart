@@ -13,7 +13,7 @@ class _TasksBloc {
   Future requestDiffusion() async {
     final prompt = await sharedPrefsBloc.getPrompt();
     final negativePrompt = await sharedPrefsBloc.getNegativePrompt();
-    final model = await sharedPrefsBloc.getModel();
+    final modelName = await sharedPrefsBloc.getModel();
     final seed = await sharedPrefsBloc.getSeed();
 
     final List<String> postProcessors = [];
@@ -28,7 +28,7 @@ class _TasksBloc {
 
     // Add new task to db.
     final dbId = await isar.writeTxn(() async {
-      final task = StableHordeTask(prompt, negativePrompt, model);
+      final task = StableHordeTask(prompt, negativePrompt, modelName);
       if (seed != null) {
         task.seed = seed;
       }
@@ -48,6 +48,9 @@ class _TasksBloc {
       "Content-Type": "application/json",
       "apikey": apiKey,
     };
+
+    //final model
+   // final formattedPrompt = model
 
     final json = {
       'prompt': "$prompt ### $negativePrompt",
@@ -69,7 +72,7 @@ class _TasksBloc {
       'trusted_workers': false,
       //'source_processing': 'img2img',
       //'source_image': base64.encode(sourceImage.buffer.asUint8List()),
-      'models': [model],
+      'models': [modelName],
       'r2': true,
     };
 

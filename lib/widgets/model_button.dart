@@ -6,7 +6,6 @@ import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/model/stable_horde_model.dart';
 import 'package:stable_horde_flutter/pages/model_chooser_page.dart';
 import 'package:stable_horde_flutter/widgets/section_frame.dart';
-import 'package:collection/collection.dart';
 
 class ModelButton extends StatefulWidget {
   const ModelButton({super.key});
@@ -50,8 +49,8 @@ class _ModelButtonState extends State<ModelButton> {
           padding: 8,
           child: SizedBox(
             height: 72,
-            child: FutureBuilder<List<StableHordeModel>>(
-              future: modelsBloc.getModels(),
+            child: FutureBuilder<StableHordeModel>(
+              future: modelsBloc.getModel(currentModel),
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
                   print(snapshot.error);
@@ -62,10 +61,7 @@ class _ModelButtonState extends State<ModelButton> {
                   );
                 }
 
-                final models = snapshot.data ?? [];
-                final model = models.firstWhereOrNull(
-                  (model) => model.name == currentModel,
-                );
+                final model = snapshot.data;
 
                 final Widget image;
                 if (model == null) {
