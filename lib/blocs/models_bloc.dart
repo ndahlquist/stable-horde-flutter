@@ -107,11 +107,16 @@ class _ModelsBloc {
     }
 
     final jsonResponse = jsonDecode(response.body) as Map;
+    print(jsonResponse);
 
     final Map<String, String> styles = {};
     for (final rawStyle in jsonResponse.values) {
       final modelName = rawStyle['model'];
-      final prompt = rawStyle['model'];
+      final prompt = rawStyle['prompt'] as String;
+      if (!prompt.contains('{p}') || !prompt.contains('{np}')) {
+        continue;
+      }
+
       if (!styles.containsKey(modelName)) {
         styles[modelName] = prompt;
       } else if (styles[modelName]!.length > prompt.length) {

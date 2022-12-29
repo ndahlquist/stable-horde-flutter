@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:stable_horde_flutter/blocs/models_bloc.dart';
 import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/main.dart';
 import 'package:stable_horde_flutter/model/stable_horde_task.dart';
@@ -49,11 +50,13 @@ class _TasksBloc {
       "apikey": apiKey,
     };
 
-    //final model
-   // final formattedPrompt = model
+    final model = await modelsBloc.getModel(modelName);
+    print("template: ${model.promptTemplate}");
+   final formattedPrompt = model.promptTemplate.replaceAll('{p}', prompt).replaceAll('{np}', ' ### $negativePrompt');
+   print(formattedPrompt);
 
     final json = {
-      'prompt': "$prompt ### $negativePrompt",
+      'prompt': formattedPrompt,
       'params': {
         'steps': 30,
         'n': 1,
