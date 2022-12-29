@@ -1,8 +1,6 @@
-
 import 'package:firebase_analytics/firebase_analytics.dart';
 
 class _ConversionsBloc {
-
   void tutorialBegin() {
     FirebaseAnalytics.instance.logTutorialBegin();
   }
@@ -27,7 +25,9 @@ class _ConversionsBloc {
     _printAndLogEvent(name: "logout");
   }
 
-
+  void viewLink(String url) {
+    _printAndLogEvent(name: "view_link", parameters: {"url": url});
+  }
 
   void _printAndLogEvent({
     required String name,
