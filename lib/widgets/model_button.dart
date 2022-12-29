@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stable_horde_flutter/blocs/models_bloc.dart';
 import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/model/stable_horde_model.dart';
@@ -52,6 +53,15 @@ class _ModelButtonState extends State<ModelButton> {
             child: FutureBuilder<List<StableHordeModel>>(
               future: modelsBloc.getModels(),
               builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  print(snapshot.error);
+                  print(snapshot.stackTrace);
+                  Sentry.captureException(
+                    snapshot.error,
+                    stackTrace: snapshot.stackTrace,
+                  );
+                }
+
                 final models = snapshot.data ?? [];
                 final model = models.firstWhereOrNull(
                   (model) => model.name == currentModel,
