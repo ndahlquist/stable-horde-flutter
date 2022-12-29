@@ -12,7 +12,34 @@ class _ConversionsBloc {
   }
 
   void generateImage() {
-    FirebaseAnalytics.instance.logEvent(name: "generate_image");
+    _printAndLogEvent(name: "generate_image");
+  }
+
+  void beginLogin() {
+    _printAndLogEvent(name: "login_begin");
+  }
+
+  void completeLogin() {
+    FirebaseAnalytics.instance.logLogin();
+  }
+
+  void logout() {
+    _printAndLogEvent(name: "logout");
+  }
+
+
+
+  void _printAndLogEvent({
+    required String name,
+    Map<String, Object?>? parameters,
+    AnalyticsCallOptions? callOptions,
+  }) {
+    print("Logging event: $name {$parameters}");
+    FirebaseAnalytics.instance.logEvent(
+      name: name,
+      parameters: parameters,
+      callOptions: callOptions,
+    );
   }
 }
 

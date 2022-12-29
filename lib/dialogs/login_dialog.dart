@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stable_horde_flutter/blocs/conversions_bloc.dart';
 import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/blocs/stable_horde_user_bloc.dart';
 import 'package:stable_horde_flutter/utils/legal_links.dart';
@@ -81,6 +82,7 @@ class _LoginDialogState extends State<LoginDialog> {
                     ),
                   );
                 } else {
+                  conversionsBloc.completeLogin();
                   await sharedPrefsBloc.setApiKey(_apiKey);
                   if (!mounted) return;
                   Navigator.of(context).pop();

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:stable_horde_flutter/blocs/conversions_bloc.dart';
 import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/blocs/stable_horde_user_bloc.dart';
 import 'package:stable_horde_flutter/dialogs/login_dialog.dart';
@@ -53,9 +54,11 @@ class _UserWidgetState extends State<UserWidget> {
                 const SizedBox(height: 8),
                 ElevatedButton(
                   onPressed: () async {
+                    conversionsBloc.beginLogin();
+
                     await showDialog(
                       context: context,
-                      builder: (context) {
+                      builder: (_) {
                         return const LoginDialog();
                       },
                     );
@@ -86,6 +89,7 @@ class _UserWidgetState extends State<UserWidget> {
                 padding: const EdgeInsets.only(top: 8),
                 child: ElevatedButton(
                   onPressed: () async {
+                    conversionsBloc.logout();
                     await sharedPrefsBloc.setApiKey(null);
                     setState(() {});
                   },
