@@ -11,6 +11,8 @@ class _ModelsBloc {
       return _cachedModels!;
     }
 
+    final start = DateTime.now();
+
     final models = await _getModels();
 
     models.sort((a, b) => b.workerCount.compareTo(a.workerCount));
@@ -18,11 +20,14 @@ class _ModelsBloc {
     final modelDetails = await _getModelDetails();
     final styles = await _getStyles();
 
+    final end = DateTime.now();
+
+    print("Models loaded in ${end.difference(start).inMilliseconds}ms");
+
     List<StableHordeModel> outputModels = [];
 
     for (final model in models) {
       final modelDetail = modelDetails[model.name];
-      final style = styles[model.name];
       if (modelDetail == null) {
         print('skipping model ${model.name} because it has no details');
         continue;
@@ -78,13 +83,11 @@ class _ModelsBloc {
   // Returns a mapping of model name to model style strings.
   // This is necessary to get the trigger keyword for each model.
   Future<Map<String, String>> _getStyles() async {
-    print('get styles');
     final response = await http.get(
       Uri.parse(
         'https://raw.githubusercontent.com/db0/Stable-Horde-Styles/main/styles.json',
       ),
     );
-    print('get styles');
 
     if (response.statusCode != 200) {
       throw Exception(
@@ -94,7 +97,6 @@ class _ModelsBloc {
     }
 
     final jsonResponse = jsonDecode(response.body) as Map;
-    print(jsonResponse);
 
     final Map<String, String> styles = {};
     for (final rawStyle in jsonResponse.values) {
@@ -107,7 +109,6 @@ class _ModelsBloc {
       }
     }
 
-    print('got styles');
     return styles;
   }
 
@@ -127,14 +128,13 @@ class _ModelsBloc {
     }
 
     final jsonResponse = jsonDecode(response.body) as Map<String, dynamic>;
-    print(jsonResponse);
 
     final Map<String, StableHordeModelDetails> modelDetails = {};
     for (final modelName in jsonResponse.keys) {
       final details = jsonResponse[modelName];
       final showcases = details['showcases'];
       if (showcases == null || showcases.isEmpty) {
-        print('Warning: skipping ${modelName} because it has no showcases');
+        print('Warning: skipping $modelName because it has no showcases');
         continue;
       }
 
