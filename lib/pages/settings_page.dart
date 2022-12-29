@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stable_horde_flutter/blocs/conversions_bloc.dart';
 import 'package:stable_horde_flutter/pages/onboarding_page.dart';
 import 'package:stable_horde_flutter/utils/legal_links.dart';
 import 'package:stable_horde_flutter/widgets/glassmorphic_background.dart';
@@ -65,7 +66,11 @@ class SettingsPage extends StatelessWidget {
                   onTap: () {
                     Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(
-                        builder: (_) => const OnboardingPage(),
+                        settings: const RouteSettings(name: "OnboardingPage"),
+                        builder: (_) {
+                          conversionsBloc.tutorialBegin();
+                          return const OnboardingPage();
+                        },
                       ),
                       (route) => false,
                     );

@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:isar/isar.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:stable_horde_flutter/blocs/conversions_bloc.dart';
 import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/blocs/tasks_bloc.dart';
 import 'package:stable_horde_flutter/firebase_options.dart';
@@ -117,6 +118,7 @@ class _MyAppState extends State<MyApp> {
               if (hasSeenOnboarding) {
                 return const HomePage();
               } else {
+                conversionsBloc.tutorialBegin();
                 return const OnboardingPage();
               }
             },

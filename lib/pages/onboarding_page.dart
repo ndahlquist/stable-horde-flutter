@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:stable_horde_flutter/blocs/conversions_bloc.dart';
 import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/pages/home_page.dart';
 import 'package:stable_horde_flutter/utils/legal_links.dart';
@@ -65,10 +66,12 @@ class _OnboardingPageState extends State<OnboardingPage> {
                           } else {
                             Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
+                                settings: const RouteSettings(name: "HomePage"),
                                 builder: (c) => const HomePage(),
                               ),
                             );
                             sharedPrefsBloc.setHasSeenOnboarding();
+                            conversionsBloc.tutorialComplete();
                           }
                         },
                         child: const Text(

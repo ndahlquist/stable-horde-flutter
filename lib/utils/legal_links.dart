@@ -1,3 +1,4 @@
+import 'package:stable_horde_flutter/blocs/conversions_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 Future launchPrivacyPolicy() async {
@@ -11,6 +12,8 @@ Future launchTermsOfService() async {
 }
 
 Future launchUrlInExternalApp(String url) async {
+  conversionsBloc.viewLink(url);
+
   final uri = Uri.parse(url);
 
   final successful = await launchUrl(

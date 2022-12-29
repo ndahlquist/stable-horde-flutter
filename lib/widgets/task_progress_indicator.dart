@@ -99,6 +99,7 @@ class _TaskProgressIndicatorState extends State<TaskProgressIndicator> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
+                          settings: const RouteSettings(name: "SettingsPage"),
                           builder: (c) => const SettingsPage(),
                         ),
                       );
