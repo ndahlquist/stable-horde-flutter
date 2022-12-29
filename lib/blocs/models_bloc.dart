@@ -13,12 +13,17 @@ class _ModelsBloc {
 
     final start = DateTime.now();
 
-    final models = await _getModels();
+    final results = await Future.wait([
+      _getModels(),
+      _getModelDetails(),
+      _getStyles(),
+    ]);
+
+    final models = results[0] as List<StableHordeBaseModel>;
+    final modelDetails = results[1] as Map<String, StableHordeModelDetails>;
+    final styles = results[2] as Map<String, String>;
 
     models.sort((a, b) => b.workerCount.compareTo(a.workerCount));
-
-    final modelDetails = await _getModelDetails();
-    final styles = await _getStyles();
 
     final end = DateTime.now();
 
@@ -112,8 +117,7 @@ class _ModelsBloc {
     return styles;
   }
 
-  Future<Map<String, StableHordeModelDetails>> _getModelDetails(
-  ) async {
+  Future<Map<String, StableHordeModelDetails>> _getModelDetails() async {
     final response = await http.get(
       Uri.parse(
         'https://raw.githubusercontent.com/Sygil-Dev/nataili-model-reference/main/db.json',
@@ -134,7 +138,6 @@ class _ModelsBloc {
       final details = jsonResponse[modelName];
       final showcases = details['showcases'];
       if (showcases == null || showcases.isEmpty) {
-        print('Warning: skipping $modelName because it has no showcases');
         continue;
       }
 
@@ -146,7 +149,6 @@ class _ModelsBloc {
 
     return modelDetails;
   }
-
 }
 
 final modelsBloc = _ModelsBloc();
