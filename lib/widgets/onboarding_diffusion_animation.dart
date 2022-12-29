@@ -19,9 +19,9 @@ class _OnboardingDiffusionAnimationState
   static const Map<String, String> _prompts = {
     '"A Renaissance portrait of a cat wearing glasses. Highly detailed."':
         'assets/images/cat.jpg',
-    '"iOS icon app. Nature. Highly detailed, trending on artstation, IconsMi"':
+    '"iOS icon app. Nature. Highly detailed, trending on artstation"':
         'assets/images/ios_icon.jpg',
-    '"knollingcase, isometric render, a Greek underwater city with volcano, isometric display case, data visualization"':
+    '"A Greek underwater city with volcano, isometric display case, data visualization"':
         'assets/images/knollingcase.jpg',
   };
 
