@@ -15,6 +15,8 @@ class _ModelsBloc {
 
     models.sort((a, b) => b.workerCount.compareTo(a.workerCount));
 
+    final styles = await _getStyles();
+
     _cachedModels = await _getModelDetails(models);
     return _cachedModels!;
   }
@@ -48,6 +50,35 @@ class _ModelsBloc {
     }
 
     return models;
+  }
+
+
+  // Returns a mapping of model name to model style strings.
+  // This is necessary to get the trigger keyword for each model.
+  Future<Map<String, String>> _getStyles() async {
+    print('get styles');
+    final response = await http.get(
+      Uri.parse(
+        'https://raw.githubusercontent.com/db0/Stable-Horde-Styles/main/styles.json',
+      ),
+    );
+    print('get styles');
+
+    if (response.statusCode != 200) {
+      throw Exception(
+        'Failed to get styles: '
+            '${response.statusCode} ${response.body}',
+      );
+    }
+
+    final jsonResponse = jsonDecode(response.body) as Map;
+
+    final Map<String, String> styles = {};
+    for (final entry in jsonResponse.entries) {
+      print(entry);
+    }
+
+    return styles;
   }
 
   Future<List<StableHordeModel>> _getModelDetails(
