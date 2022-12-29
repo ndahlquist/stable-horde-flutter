@@ -5,6 +5,13 @@ class StableHordeBaseModel {
   StableHordeBaseModel(this.name, this.workerCount);
 }
 
+class StableHordeModelDetails {
+  final String description;
+  final String previewImageUrl;
+
+  StableHordeModelDetails(this.description, this.previewImageUrl);
+}
+
 class StableHordeModel extends StableHordeBaseModel {
   final String description;
   final String previewImageUrl;
@@ -15,6 +22,6 @@ class StableHordeModel extends StableHordeBaseModel {
     workerCount,
     this.description,
     this.previewImageUrl,
-      this.promptTemplate,
+    this.promptTemplate,
   ) : super(name, workerCount);
 }

@@ -16,7 +16,32 @@ class _ModelsBloc {
     models.sort((a, b) => b.workerCount.compareTo(a.workerCount));
 
 
-    _cachedModels = await _getModelDetails(models);
+    final modelDetails = await _getModelDetails(models);
+    final styles = await _getStyles();
+
+    List<StableHordeModel> outputModels = [];
+
+    for (final model in models) {
+      final modelDetail = modelDetails[model.name];
+      final style = styles[model.name];
+      if (modelDetail == null) {
+        print('skipping model ${model.name} because it has no details');
+        continue;
+      }
+
+      outputModels.add(
+        StableHordeModel(
+          model.name,
+          model.workerCount,
+          modelDetails[model.name]!.description,
+          modelDetails[model.name]!.previewImageUrl,
+          styles[model.name] ?? "{p} {np}",
+        ),
+      );
+    }
+
+    _cachedModels = outputModels;
+
     return _cachedModels!;
   }
 
@@ -88,7 +113,43 @@ class _ModelsBloc {
     return styles;
   }
 
-  Future<List<StableHordeModel>> _getModelDetails(
+  Future<Map<String, StableHordeModelDetails>> _getModelDetails(
+      List<StableHordeBaseModel> models,
+      ) async {
+    final response = await http.get(
+      Uri.parse(
+        'https://raw.githubusercontent.com/Sygil-Dev/nataili-model-reference/main/db.json',
+      ),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception(
+        'Failed to get models: '
+            '${response.statusCode} ${response.body}',
+      );
+    }
+
+    final jsonResponse = jsonDecode(response.body) as Map<String, dynamic>;
+
+    final Map<String, StableHordeModelDetails> modelDetails = {};
+    for (final model in models) {
+      final details = jsonResponse[model.name];
+      final showcases = details['showcases'];
+      if (showcases == null || showcases.isEmpty) {
+        print('Warning: skipping ${model.name} because it has no showcases');
+        continue;
+      }
+
+      modelDetails[model.name] = StableHordeModelDetails(
+        details['description'],
+        showcases[0],
+      );
+    }
+
+    return modelDetails;
+  }
+
+  Future<List<StableHordeModel>> _getModelDetailsDeprecated(
     List<StableHordeBaseModel> models,
   ) async {
     final response = await http.get(
