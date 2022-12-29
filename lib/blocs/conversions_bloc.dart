@@ -10,6 +10,10 @@ class _ConversionsBloc {
   void tutorialComplete() {
     FirebaseAnalytics.instance.logTutorialComplete();
   }
+
+  void generateImage() {
+    FirebaseAnalytics.instance.logEvent(name: "generate_image");
+  }
 }
 
 final conversionsBloc = _ConversionsBloc();
