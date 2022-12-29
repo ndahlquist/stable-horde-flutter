@@ -294,7 +294,7 @@ class _DreamTabState extends State<DreamTab> {
       return;
     }
 
-    tasksBloc.requestDiffusion().onError((error, stackTrace)  {
+    tasksBloc.requestDiffusion().onError((error, stackTrace) {
       print(error);
       print(stackTrace);
       Sentry.captureException(error, stackTrace: stackTrace);
