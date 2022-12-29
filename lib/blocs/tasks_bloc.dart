@@ -52,8 +52,10 @@ class _TasksBloc {
 
     final model = await modelsBloc.getModel(modelName);
     print("template: ${model.promptTemplate}");
-   final formattedPrompt = model.promptTemplate.replaceAll('{p}', prompt).replaceAll('{np}', ' ### $negativePrompt');
-   print(formattedPrompt);
+    final formattedPrompt = model.promptTemplate
+        .replaceAll('{p}', prompt)
+        .replaceAll('{np}', ' ### $negativePrompt');
+    print(formattedPrompt);
 
     final json = {
       'prompt': formattedPrompt,
@@ -237,7 +239,6 @@ class _TasksBloc {
       yield await _getTasks();
     }
   }
-
 }
 
 final tasksBloc = _TasksBloc();
