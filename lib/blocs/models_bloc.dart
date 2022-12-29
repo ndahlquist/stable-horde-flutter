@@ -84,6 +84,7 @@ class _ModelsBloc {
       }
     }
 
+    print('got styles');
     return styles;
   }
 
@@ -122,7 +123,7 @@ class _ModelsBloc {
           model.workerCount,
           details['description'],
           showcases[0],
-          styles[model.name]!,
+          styles[model.name] ?? "{p} {np}",
         ),
       );
     }
