@@ -35,6 +35,7 @@ class _ModelButtonState extends State<ModelButton> {
         onTap: () async {
           await Navigator.of(context).push(
             MaterialPageRoute(
+              settings: const RouteSettings(name: "ModelChooserPage"),
               builder: (context) => const ModelChooserPage(),
             ),
           );

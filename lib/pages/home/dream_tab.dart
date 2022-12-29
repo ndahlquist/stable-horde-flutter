@@ -85,6 +85,7 @@ class _DreamTabState extends State<DreamTab> {
             onTap: () async {
               final newPrompt = await Navigator.of(context).push(
                 MaterialPageRoute(
+                  settings: const RouteSettings(name: "Prompt Page"),
                   builder: (_) => PromptEditPage("Prompt", prompt),
                 ),
               );
@@ -119,6 +120,7 @@ class _DreamTabState extends State<DreamTab> {
             onTap: () async {
               final newPrompt = await Navigator.of(context).push(
                 MaterialPageRoute(
+                  settings: const RouteSettings(name: "Negative Prompt Page"),
                   builder: (_) => PromptEditPage("Negative Prompt", prompt),
                 ),
               );
@@ -163,6 +165,7 @@ class _DreamTabState extends State<DreamTab> {
             onTap: () async {
               final int? newSeed = await Navigator.of(context).push(
                 MaterialPageRoute(
+                  settings: const RouteSettings(name: "SeedEditPage"),
                   builder: (_) => SeedEditPage(seed),
                 ),
               );

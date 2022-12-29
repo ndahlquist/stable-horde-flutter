@@ -66,6 +66,7 @@ class SettingsPage extends StatelessWidget {
                   onTap: () {
                     Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(
+                        settings: const RouteSettings(name: "OnboardingPage"),
                         builder: (_) {
                           conversionsBloc.tutorialBegin();
                           return const OnboardingPage();

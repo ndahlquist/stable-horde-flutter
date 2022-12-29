@@ -75,6 +75,7 @@ class _MyArtTabState extends State<MyArtTab>
               onTap: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
+                    settings: const RouteSettings(name: "FullScreenViewPage"),
                     builder: (_) => FullScreenViewPage(initialIndex: index),
                   ),
                 );

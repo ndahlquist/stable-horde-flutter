@@ -66,6 +66,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                           } else {
                             Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
+                                settings: const RouteSettings(name: "HomePage"),
                                 builder: (c) => const HomePage(),
                               ),
                             );
