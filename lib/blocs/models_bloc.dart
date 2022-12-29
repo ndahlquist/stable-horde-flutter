@@ -15,8 +15,7 @@ class _ModelsBloc {
 
     models.sort((a, b) => b.workerCount.compareTo(a.workerCount));
 
-
-    final modelDetails = await _getModelDetails(models);
+    final modelDetails = await _getModelDetails();
     final styles = await _getStyles();
 
     List<StableHordeModel> outputModels = [];
@@ -76,7 +75,6 @@ class _ModelsBloc {
     return models;
   }
 
-
   // Returns a mapping of model name to model style strings.
   // This is necessary to get the trigger keyword for each model.
   Future<Map<String, String>> _getStyles() async {
@@ -91,7 +89,7 @@ class _ModelsBloc {
     if (response.statusCode != 200) {
       throw Exception(
         'Failed to get styles: '
-            '${response.statusCode} ${response.body}',
+        '${response.statusCode} ${response.body}',
       );
     }
 
@@ -114,43 +112,6 @@ class _ModelsBloc {
   }
 
   Future<Map<String, StableHordeModelDetails>> _getModelDetails(
-      List<StableHordeBaseModel> models,
-      ) async {
-    final response = await http.get(
-      Uri.parse(
-        'https://raw.githubusercontent.com/Sygil-Dev/nataili-model-reference/main/db.json',
-      ),
-    );
-
-    if (response.statusCode != 200) {
-      throw Exception(
-        'Failed to get models: '
-            '${response.statusCode} ${response.body}',
-      );
-    }
-
-    final jsonResponse = jsonDecode(response.body) as Map<String, dynamic>;
-
-    final Map<String, StableHordeModelDetails> modelDetails = {};
-    for (final model in models) {
-      final details = jsonResponse[model.name];
-      final showcases = details['showcases'];
-      if (showcases == null || showcases.isEmpty) {
-        print('Warning: skipping ${model.name} because it has no showcases');
-        continue;
-      }
-
-      modelDetails[model.name] = StableHordeModelDetails(
-        details['description'],
-        showcases[0],
-      );
-    }
-
-    return modelDetails;
-  }
-
-  Future<List<StableHordeModel>> _getModelDetailsDeprecated(
-    List<StableHordeBaseModel> models,
   ) async {
     final response = await http.get(
       Uri.parse(
@@ -165,32 +126,27 @@ class _ModelsBloc {
       );
     }
 
-    final styles = await _getStyles();
-
     final jsonResponse = jsonDecode(response.body) as Map<String, dynamic>;
+    print(jsonResponse);
 
-    final List<StableHordeModel> modelsWithDetails = [];
-    for (final model in models) {
-      final details = jsonResponse[model.name];
+    final Map<String, StableHordeModelDetails> modelDetails = {};
+    for (final modelName in jsonResponse.keys) {
+      final details = jsonResponse[modelName];
       final showcases = details['showcases'];
-      if (showcases == null) {
-        print('Warning: skipping ${model.name} because it has no showcases');
+      if (showcases == null || showcases.isEmpty) {
+        print('Warning: skipping ${modelName} because it has no showcases');
         continue;
       }
 
-      modelsWithDetails.add(
-        StableHordeModel(
-          model.name,
-          model.workerCount,
-          details['description'],
-          showcases[0],
-          styles[model.name] ?? "{p} {np}",
-        ),
+      modelDetails[modelName] = StableHordeModelDetails(
+        details['description'],
+        showcases[0],
       );
     }
 
-    return modelsWithDetails;
+    return modelDetails;
   }
+
 }
 
 final modelsBloc = _ModelsBloc();
