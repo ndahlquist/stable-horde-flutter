@@ -3,6 +3,7 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stable_horde_flutter/blocs/tasks_bloc.dart';
 import 'package:stable_horde_flutter/model/stable_horde_task.dart';
 import 'package:stable_horde_flutter/pages/fullscreen_view_page.dart';
+import 'package:stable_horde_flutter/pages/home_page.dart';
 import 'package:stable_horde_flutter/widgets/task_image.dart';
 import 'package:stable_horde_flutter/widgets/task_progress_indicator.dart';
 
@@ -37,6 +38,28 @@ class _MyArtTabState extends State<MyArtTab>
         var tasks = snapshot.data ?? [];
 
         tasks = tasks.reversed.toList();
+
+        if (tasks.isEmpty) {
+          return Center(
+            child: Column(
+              children: [
+                const Spacer(),
+                const Text('No dreams yet!'),
+                const SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: () {
+                    homeController.animateToPage(0);
+                  },
+                  child: const Text(
+                    'Generate your first image',
+                    style: TextStyle(color: Colors.black87),
+                  ),
+                ),
+                const Spacer(),
+              ],
+            ),
+          );
+        }
 
         return GridView.builder(
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
