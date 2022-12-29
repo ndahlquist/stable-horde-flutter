@@ -11,12 +11,52 @@ class _ModelsBloc {
       return _cachedModels!;
     }
 
-    final models = await _getModels();
+    final start = DateTime.now();
+
+    final results = await Future.wait([
+      _getModels(),
+      _getModelDetails(),
+      _getStyles(),
+    ]);
+
+    final models = results[0] as List<StableHordeBaseModel>;
+    final modelDetails = results[1] as Map<String, StableHordeModelDetails>;
+    final styles = results[2] as Map<String, String>;
 
     models.sort((a, b) => b.workerCount.compareTo(a.workerCount));
 
-    _cachedModels = await _getModelDetails(models);
+    final end = DateTime.now();
+
+    print("Models loaded in ${end.difference(start).inMilliseconds}ms");
+
+    List<StableHordeModel> outputModels = [];
+
+    for (final model in models) {
+      final modelDetail = modelDetails[model.name];
+      if (modelDetail == null) {
+        print('skipping model ${model.name} because it has no details');
+        continue;
+      }
+
+      outputModels.add(
+        StableHordeModel(
+          model.name,
+          model.workerCount,
+          modelDetails[model.name]!.description,
+          modelDetails[model.name]!.previewImageUrl,
+          styles[model.name] ?? "{p} {np}",
+        ),
+      );
+    }
+
+    _cachedModels = outputModels;
+
     return _cachedModels!;
+  }
+
+  Future<StableHordeModel> getModel(String modelName) async {
+    final models = await getModels();
+    return models.firstWhere((model) => model.name == modelName);
   }
 
   Future<List<StableHordeBaseModel>> _getModels() async {
@@ -50,9 +90,44 @@ class _ModelsBloc {
     return models;
   }
 
-  Future<List<StableHordeModel>> _getModelDetails(
-    List<StableHordeBaseModel> models,
-  ) async {
+  // Returns a mapping of model name to model style strings.
+  // This is necessary to get the trigger keyword for each model.
+  Future<Map<String, String>> _getStyles() async {
+    final response = await http.get(
+      Uri.parse(
+        'https://raw.githubusercontent.com/db0/Stable-Horde-Styles/main/styles.json',
+      ),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception(
+        'Failed to get styles: '
+        '${response.statusCode} ${response.body}',
+      );
+    }
+
+    final jsonResponse = jsonDecode(response.body) as Map;
+    print(jsonResponse);
+
+    final Map<String, String> styles = {};
+    for (final rawStyle in jsonResponse.values) {
+      final modelName = rawStyle['model'];
+      final prompt = rawStyle['prompt'] as String;
+      if (!prompt.contains('{p}') || !prompt.contains('{np}')) {
+        continue;
+      }
+
+      if (!styles.containsKey(modelName)) {
+        styles[modelName] = prompt;
+      } else if (styles[modelName]!.length > prompt.length) {
+        styles[modelName] = prompt;
+      }
+    }
+
+    return styles;
+  }
+
+  Future<Map<String, StableHordeModelDetails>> _getModelDetails() async {
     final response = await http.get(
       Uri.parse(
         'https://raw.githubusercontent.com/Sygil-Dev/nataili-model-reference/main/db.json',
@@ -68,26 +143,21 @@ class _ModelsBloc {
 
     final jsonResponse = jsonDecode(response.body) as Map<String, dynamic>;
 
-    final List<StableHordeModel> modelsWithDetails = [];
-    for (final model in models) {
-      final details = jsonResponse[model.name];
+    final Map<String, StableHordeModelDetails> modelDetails = {};
+    for (final modelName in jsonResponse.keys) {
+      final details = jsonResponse[modelName];
       final showcases = details['showcases'];
-      if (showcases == null) {
-        print('Warning: skipping ${model.name} because it has no showcases');
+      if (showcases == null || showcases.isEmpty) {
         continue;
       }
 
-      modelsWithDetails.add(
-        StableHordeModel(
-          model.name,
-          model.workerCount,
-          details['description'],
-          showcases[0],
-        ),
+      modelDetails[modelName] = StableHordeModelDetails(
+        details['description'],
+        showcases[0],
       );
     }
 
-    return modelsWithDetails;
+    return modelDetails;
   }
 }
 

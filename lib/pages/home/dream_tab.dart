@@ -1,5 +1,6 @@
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/blocs/tasks_bloc.dart';
 import 'package:stable_horde_flutter/pages/home_page.dart';
@@ -293,7 +294,11 @@ class _DreamTabState extends State<DreamTab> {
       return;
     }
 
-    tasksBloc.requestDiffusion();
+    tasksBloc.requestDiffusion().onError((error, stackTrace) {
+      print(error);
+      print(stackTrace);
+      Sentry.captureException(error, stackTrace: stackTrace);
+    });
     homeController.animateToPage(1);
   }
 }
