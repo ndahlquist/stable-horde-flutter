@@ -1,3 +1,9 @@
+#1.0.0+6
+- Automatically apply trigger keywords for models.
+- Add placeholder for empty feed.
+- Add app icon.
+- Fix error when using invalid API key.
+
 #1.0.0+5
 - Fix prompt not getting saved.
 
