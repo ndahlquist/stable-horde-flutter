@@ -88,9 +88,14 @@ class _TasksBloc {
     );
 
     if (response.statusCode != 202) {
+      task.failed = true;
+      await isar.writeTxn(() async {
+        isar.stableHordeTasks.put(task);
+      });
+
       throw Exception(
         'Failed to request diffusion: '
-        '${response.statusCode} ${response.body}',
+        '${response.statusCode} ${response.body} ${jsonEncode(json)}',
       );
     }
     final jsonResponse = jsonDecode(response.body);
@@ -226,6 +231,10 @@ class _TasksBloc {
 
     for (final task in tasks) {
       if (task.isComplete()) {
+        continue;
+      }
+
+      if (task.failed) {
         continue;
       }
 

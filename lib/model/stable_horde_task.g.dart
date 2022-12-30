@@ -22,38 +22,43 @@ const StableHordeTaskSchema = CollectionSchema(
       name: r'estimatedCompletionTime',
       type: IsarType.dateTime,
     ),
-    r'firstShowProgressIndicatorTime': PropertySchema(
+    r'failed': PropertySchema(
       id: 1,
+      name: r'failed',
+      type: IsarType.bool,
+    ),
+    r'firstShowProgressIndicatorTime': PropertySchema(
+      id: 2,
       name: r'firstShowProgressIndicatorTime',
       type: IsarType.dateTime,
     ),
     r'imageFilename': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'imageFilename',
       type: IsarType.string,
     ),
     r'model': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'model',
       type: IsarType.string,
     ),
     r'negativePrompt': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'negativePrompt',
       type: IsarType.string,
     ),
     r'prompt': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'prompt',
       type: IsarType.string,
     ),
     r'seed': PropertySchema(
-      id: 6,
+      id: 7,
       name: r'seed',
       type: IsarType.long,
     ),
     r'stableHordeId': PropertySchema(
-      id: 7,
+      id: 8,
       name: r'stableHordeId',
       type: IsarType.string,
     )
@@ -103,13 +108,14 @@ void _stableHordeTaskSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeDateTime(offsets[0], object.estimatedCompletionTime);
-  writer.writeDateTime(offsets[1], object.firstShowProgressIndicatorTime);
-  writer.writeString(offsets[2], object.imageFilename);
-  writer.writeString(offsets[3], object.model);
-  writer.writeString(offsets[4], object.negativePrompt);
-  writer.writeString(offsets[5], object.prompt);
-  writer.writeLong(offsets[6], object.seed);
-  writer.writeString(offsets[7], object.stableHordeId);
+  writer.writeBool(offsets[1], object.failed);
+  writer.writeDateTime(offsets[2], object.firstShowProgressIndicatorTime);
+  writer.writeString(offsets[3], object.imageFilename);
+  writer.writeString(offsets[4], object.model);
+  writer.writeString(offsets[5], object.negativePrompt);
+  writer.writeString(offsets[6], object.prompt);
+  writer.writeLong(offsets[7], object.seed);
+  writer.writeString(offsets[8], object.stableHordeId);
 }
 
 StableHordeTask _stableHordeTaskDeserialize(
@@ -119,16 +125,17 @@ StableHordeTask _stableHordeTaskDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = StableHordeTask(
+    reader.readString(offsets[6]),
     reader.readString(offsets[5]),
     reader.readString(offsets[4]),
-    reader.readString(offsets[3]),
   );
   object.dbId = id;
   object.estimatedCompletionTime = reader.readDateTimeOrNull(offsets[0]);
-  object.firstShowProgressIndicatorTime = reader.readDateTimeOrNull(offsets[1]);
-  object.imageFilename = reader.readStringOrNull(offsets[2]);
-  object.seed = reader.readLongOrNull(offsets[6]);
-  object.stableHordeId = reader.readStringOrNull(offsets[7]);
+  object.failed = reader.readBool(offsets[1]);
+  object.firstShowProgressIndicatorTime = reader.readDateTimeOrNull(offsets[2]);
+  object.imageFilename = reader.readStringOrNull(offsets[3]);
+  object.seed = reader.readLongOrNull(offsets[7]);
+  object.stableHordeId = reader.readStringOrNull(offsets[8]);
   return object;
 }
 
@@ -142,18 +149,20 @@ P _stableHordeTaskDeserializeProp<P>(
     case 0:
       return (reader.readDateTimeOrNull(offset)) as P;
     case 1:
-      return (reader.readDateTimeOrNull(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 2:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readDateTimeOrNull(offset)) as P;
     case 3:
-      return (reader.readString(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 4:
       return (reader.readString(offset)) as P;
     case 5:
       return (reader.readString(offset)) as P;
     case 6:
-      return (reader.readLongOrNull(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 7:
+      return (reader.readLongOrNull(offset)) as P;
+    case 8:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -380,6 +389,16 @@ extension StableHordeTaskQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      failedEqualTo(bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'failed',
+        value: value,
       ));
     });
   }
@@ -1271,6 +1290,19 @@ extension StableHordeTaskQuerySortBy
     });
   }
 
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy> sortByFailed() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'failed', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy>
+      sortByFailedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'failed', Sort.desc);
+    });
+  }
+
   QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy>
       sortByFirstShowProgressIndicatorTime() {
     return QueryBuilder.apply(this, (query) {
@@ -1396,6 +1428,19 @@ extension StableHordeTaskQuerySortThenBy
     });
   }
 
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy> thenByFailed() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'failed', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy>
+      thenByFailedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'failed', Sort.desc);
+    });
+  }
+
   QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy>
       thenByFirstShowProgressIndicatorTime() {
     return QueryBuilder.apply(this, (query) {
@@ -1501,6 +1546,12 @@ extension StableHordeTaskQueryWhereDistinct
     });
   }
 
+  QueryBuilder<StableHordeTask, StableHordeTask, QDistinct> distinctByFailed() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'failed');
+    });
+  }
+
   QueryBuilder<StableHordeTask, StableHordeTask, QDistinct>
       distinctByFirstShowProgressIndicatorTime() {
     return QueryBuilder.apply(this, (query) {
@@ -1565,6 +1616,12 @@ extension StableHordeTaskQueryProperty
       estimatedCompletionTimeProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'estimatedCompletionTime');
+    });
+  }
+
+  QueryBuilder<StableHordeTask, bool, QQueryOperations> failedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'failed');
     });
   }
 

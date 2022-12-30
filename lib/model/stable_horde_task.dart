@@ -20,6 +20,8 @@ class StableHordeTask {
   DateTime? firstShowProgressIndicatorTime;
   DateTime? estimatedCompletionTime;
 
+  bool failed = true;
+
   StableHordeTask(this.prompt, this.negativePrompt, this.model);
 
   bool isComplete() {
