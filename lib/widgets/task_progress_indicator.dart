@@ -48,7 +48,15 @@ class _TaskProgressIndicatorState extends State<TaskProgressIndicator> {
     }
 
     final Widget progressIndicator;
-    if (widget.task.estimatedCompletionTime == null) {
+    if (widget.task.failed) {
+      progressIndicator = const Center(
+        child: Icon(
+          Icons.error,
+          size: 48,
+          //color: Colors.red,
+        ),
+      );
+    } else if (widget.task.estimatedCompletionTime == null) {
       progressIndicator = const Center(child: CircularProgressIndicator());
     } else {
       progressIndicator = Center(
@@ -68,7 +76,9 @@ class _TaskProgressIndicatorState extends State<TaskProgressIndicator> {
     }
 
     Widget loadingMessageWidget;
-    if (widget.task.estimatedCompletionTime == null) {
+    if (widget.task.failed) {
+      loadingMessageWidget = const Text('Error generating image.');
+    }else if (widget.task.estimatedCompletionTime == null) {
       loadingMessageWidget = const Text('Loading...');
     } else {
       final difference = widget.task.estimatedCompletionTime!.difference(
@@ -83,6 +93,9 @@ class _TaskProgressIndicatorState extends State<TaskProgressIndicator> {
       future: sharedPrefsBloc.getApiKey(),
       builder: (context, snapshot) {
         final apiKey = snapshot.data;
+
+        if (widget.task.failed) return const SizedBox.shrink();
+
         if (apiKey == null) {
           return RichText(
             textScaleFactor: MediaQuery.of(context).textScaleFactor,
