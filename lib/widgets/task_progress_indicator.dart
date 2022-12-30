@@ -77,7 +77,7 @@ class _TaskProgressIndicatorState extends State<TaskProgressIndicator> {
     Widget loadingMessageWidget;
     if (widget.task.failed) {
       loadingMessageWidget = const Text('Error generating image.');
-    }else if (widget.task.estimatedCompletionTime == null) {
+    } else if (widget.task.estimatedCompletionTime == null) {
       loadingMessageWidget = const Text('Loading...');
     } else {
       final difference = widget.task.estimatedCompletionTime!.difference(
