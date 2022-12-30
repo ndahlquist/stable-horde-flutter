@@ -53,7 +53,6 @@ class _TaskProgressIndicatorState extends State<TaskProgressIndicator> {
         child: Icon(
           Icons.error,
           size: 48,
-          //color: Colors.red,
         ),
       );
     } else if (widget.task.estimatedCompletionTime == null) {
