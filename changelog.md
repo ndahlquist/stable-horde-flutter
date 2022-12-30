@@ -1,3 +1,6 @@
+#1.0.0+8
+- Bug fixes.
+
 #1.0.0+6
 - Automatically apply trigger keywords for models.
 - Add placeholder for empty feed.
