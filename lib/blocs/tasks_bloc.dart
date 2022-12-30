@@ -229,6 +229,10 @@ class _TasksBloc {
         continue;
       }
 
+      if (task.failed) {
+        continue;
+      }
+
       _waitOnTask(task);
     }
   }
