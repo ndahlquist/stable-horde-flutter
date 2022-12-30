@@ -115,6 +115,25 @@ class _TasksBloc {
       ),
     );
 
+    if (response.statusCode == 404) {
+      // This can happen if the client gets closed
+      //  and doesn't check for the task before it expires.
+      // To fix this, we could move the polling to server-side.
+      final exception = Exception(
+        'Task expired: '
+        '${response.statusCode} ${response.body}',
+      );
+      print(exception);
+      Sentry.captureException(exception, stackTrace: StackTrace.current);
+
+      task.failed = true;
+      await isar.writeTxn(() async {
+        isar.stableHordeTasks.put(task);
+      });
+
+      return false;
+    }
+
     if (response.statusCode != 200) {
       final exception = Exception(
         'Failed to get task status: '
