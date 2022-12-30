@@ -39,109 +39,100 @@ class _TasksBloc {
     final task = await isar.stableHordeTasks.get(dbId);
     task!;
 
-    var apiKey = await sharedPrefsBloc.getApiKey();
-    apiKey ??= "0000000000"; // Anonymous API key.
+    try {
+      var apiKey = await sharedPrefsBloc.getApiKey();
+      apiKey ??= "0000000000"; // Anonymous API key.
 
-    final headers = {
-      'Accept': '* / *',
-      'Accept-Language': 'en-US,en;q=0.9',
-      'Connection': 'keep-alive',
-      "Content-Type": "application/json",
-      "apikey": apiKey,
-    };
+      final headers = {
+        'Accept': '* / *',
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Connection': 'keep-alive',
+        "Content-Type": "application/json",
+        "apikey": apiKey,
+      };
 
-    final model = await modelsBloc.getModel(modelName);
-    print("template: ${model.promptTemplate}");
-    final formattedPrompt = model.promptTemplate
-        .replaceAll('{p}', prompt)
-        .replaceAll('{np}', ' ### $negativePrompt');
-    print(formattedPrompt);
+      final model = await modelsBloc.getModel(modelName);
+      print("template: ${model.promptTemplate}");
+      final formattedPrompt = model.promptTemplate
+          .replaceAll('{p}', prompt)
+          .replaceAll('{np}', ' ### $negativePrompt');
+      print(formattedPrompt);
 
-    final json = {
-      'prompt': formattedPrompt,
-      'params': {
-        'steps': 30,
-        'n': 1,
-        'sampler_name': 'k_euler',
-        'width': 512,
-        'height': 512,
-        'cfg_scale': 7,
-        'seed_variation': 1000,
-        'seed': seed == null ? '' : '$seed',
-        'karras': true,
-        //'denoising_strength': mutationRate,
-        'post_processing': postProcessors,
-      },
-      'nsfw': false,
-      'censor_nsfw': false,
-      'trusted_workers': false,
-      //'source_processing': 'img2img',
-      //'source_image': base64.encode(sourceImage.buffer.asUint8List()),
-      'models': [modelName],
-      'r2': true,
-    };
+      final json = {
+        'prompt': formattedPrompt,
+        'params': {
+          'steps': 30,
+          'n': 1,
+          'sampler_name': 'k_euler',
+          'width': 512,
+          'height': 512,
+          'cfg_scale': 7,
+          'seed_variation': 1000,
+          'seed': seed == null ? '' : '$seed',
+          'karras': true,
+          //'denoising_strength': mutationRate,
+          'post_processing': postProcessors,
+        },
+        'nsfw': false,
+        'censor_nsfw': false,
+        'trusted_workers': false,
+        //'source_processing': 'img2img',
+        //'source_image': base64.encode(sourceImage.buffer.asUint8List()),
+        'models': [modelName],
+        'r2': true,
+      };
 
-    final response = await http.post(
-      Uri.parse('https://stablehorde.net/api/v2/generate/async'),
-      headers: headers,
-      body: jsonEncode(json),
-    );
+      final response = await http.post(
+        Uri.parse('https://stablehorde.net/api/v2/generate/async'),
+        headers: headers,
+        body: jsonEncode(json),
+      );
 
-    if (response.statusCode != 202) {
+      if (response.statusCode != 202) {
+        throw Exception(
+          'Failed to request diffusion: '
+          '${response.statusCode} ${response.body} ${jsonEncode(json)}',
+        );
+      }
+      final jsonResponse = jsonDecode(response.body);
+
+      task.stableHordeId = jsonResponse['id']!;
+      await isar.writeTxn(() async {
+        isar.stableHordeTasks.put(task);
+      });
+    } on Exception catch (_) {
       task.failed = true;
       await isar.writeTxn(() async {
         isar.stableHordeTasks.put(task);
       });
 
-      throw Exception(
-        'Failed to request diffusion: '
-        '${response.statusCode} ${response.body} ${jsonEncode(json)}',
-      );
+      rethrow;
     }
-    final jsonResponse = jsonDecode(response.body);
-
-    task.stableHordeId = jsonResponse['id']!;
-    await isar.writeTxn(() async {
-      isar.stableHordeTasks.put(task);
-    });
 
     _waitOnTask(task);
   }
 
   Future<bool> _checkTaskCompletion(StableHordeTask task) async {
-    final response = await http.get(
-      Uri.parse(
-        'https://stablehorde.net/api/v2/generate/check/${task.stableHordeId!}',
-      ),
-    );
+    final http.Response response;
 
-    if (response.statusCode == 404) {
-      // This can happen if the client gets closed
-      //  and doesn't check for the task before it expires.
-      // To fix this, we could move the polling to server-side.
-      final exception = Exception(
-        'Task expired: '
-        '${response.statusCode} ${response.body}',
-      );
-      print(exception);
-      Sentry.captureException(exception, stackTrace: StackTrace.current);
+    try {
+      final url =
+          'https://stablehorde.net/api/v2/generate/check/${task.stableHordeId!}';
+      response = await http.get(Uri.parse(url));
+    } on http.ClientException catch (e) {
+      if (e.message.contains("Failed host lookup")) {
+        // No internet connection.
+        return false;
+      }
 
-      task.failed = true;
-      await isar.writeTxn(() async {
-        isar.stableHordeTasks.put(task);
-      });
-
-      return false;
+      rethrow;
     }
 
     if (response.statusCode != 200) {
-      final exception = Exception(
+      throw Exception(
         'Failed to get task status: '
         '${response.statusCode} ${response.body}',
       );
-      print(exception);
-      Sentry.captureException(exception, stackTrace: StackTrace.current);
-      return false;
     }
 
     final jsonResponse = jsonDecode(response.body);
@@ -166,20 +157,26 @@ class _TasksBloc {
   }
 
   Future<bool> _retrieveTaskResult(StableHordeTask task) async {
-    final response = await http.get(
-      Uri.parse(
-        'https://stablehorde.net/api/v2/generate/status/${task.stableHordeId!}',
-      ),
-    );
+    final http.Response response;
+
+    try {
+      final url =
+          'https://stablehorde.net/api/v2/generate/status/${task.stableHordeId!}';
+      response = await http.get(Uri.parse(url));
+    } on http.ClientException catch (e) {
+      if (e.message.contains("Failed host lookup")) {
+        // No internet connection.
+        return false;
+      }
+
+      rethrow;
+    }
 
     if (response.statusCode != 200) {
-      final exception = Exception(
+      throw Exception(
         'Failed to get task status: '
         '${response.statusCode} ${response.body}',
       );
-      print(exception);
-      Sentry.captureException(exception, stackTrace: StackTrace.current);
-      return false;
     }
 
     final jsonResponse = jsonDecode(response.body);
@@ -211,12 +208,29 @@ class _TasksBloc {
     for (int i = 0; i < 10000; i++) {
       await Future.delayed(const Duration(seconds: 2));
       print('update $i');
-      bool complete = await _checkTaskCompletion(task);
-      if (!complete) continue;
+      try {
+        bool complete = await _checkTaskCompletion(task);
+        if (!complete) continue;
+      } catch (e, stackTrace) {
+        print(e);
+        print(stackTrace);
+        Sentry.captureException(e, stackTrace: stackTrace);
+        continue;
+      }
 
-      bool success = await _retrieveTaskResult(task);
+      try {
+        bool success = await _retrieveTaskResult(task);
+        if (!success) continue;
+      } catch (e, stackTrace) {
+        print(e);
+        print(stackTrace);
 
-      if (success) return;
+        task.failed = true;
+        await isar.writeTxn(() async {
+          isar.stableHordeTasks.put(task);
+        });
+        rethrow;
+      }
     }
 
     throw Exception('Failed to complete task');
