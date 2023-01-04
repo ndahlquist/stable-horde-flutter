@@ -56,7 +56,13 @@ class _ModelsBloc {
 
   Future<StableHordeModel> getModel(String modelName) async {
     final models = await getModels();
-    return models.firstWhere((model) => model.name == modelName);
+    try {
+      return models.firstWhere((element) => element.name == modelName);
+    } catch (e) {
+      print(e);
+      print("Models length: ${models.length}");
+      throw Exception("Model $modelName not found");
+    }
   }
 
   Future<List<StableHordeBaseModel>> _getModels() async {
