@@ -113,6 +113,8 @@ class _TasksBloc {
   }
 
   Future<bool> _checkTaskCompletion(StableHordeTask task) async {
+    if (task.failed) return true;
+
     final http.Response response;
 
     try {
@@ -126,6 +128,15 @@ class _TasksBloc {
       }
 
       rethrow;
+    }
+
+    if (response.statusCode == 404) {
+      print(response);
+      await isar.writeTxn(() async {
+        task.failed = true;
+        isar.stableHordeTasks.put(task);
+      });
+      return false;
     }
 
     if (response.statusCode != 200) {
