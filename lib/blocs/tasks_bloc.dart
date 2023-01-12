@@ -117,8 +117,8 @@ class _TasksBloc {
           'https://stablehorde.net/api/v2/generate/check/${task.stableHordeId!}';
       response = await http.get(Uri.parse(url));
     } on http.ClientException catch (e) {
-      if (e.message.contains("Failed host lookup")
-          || e.message.contains("Connection timed out")) {
+      if (e.message.contains("Failed host lookup") ||
+          e.message.contains("Connection timed out")) {
         // No internet connection.
         return false;
       }
@@ -171,8 +171,8 @@ class _TasksBloc {
           'https://stablehorde.net/api/v2/generate/status/${task.stableHordeId!}';
       response = await http.get(Uri.parse(url));
     } on http.ClientException catch (e) {
-      if (e.message.contains("Failed host lookup")
-          || e.message.contains("Connection timed out")) {
+      if (e.message.contains("Failed host lookup") ||
+          e.message.contains("Connection timed out")) {
         // No internet connection.
         return false;
       }
