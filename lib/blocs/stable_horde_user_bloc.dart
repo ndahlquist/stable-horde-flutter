@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:package_info/package_info.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/model/stable_horde_user.dart';
@@ -7,6 +8,19 @@ import 'package:stable_horde_flutter/model/stable_horde_user.dart';
 import 'package:http/http.dart' as http;
 
 class _StableHordeUserBloc {
+  Future<Map<String, String>?> getHttpHeaders(String apiKey) async {
+    final pi = await PackageInfo.fromPlatform();
+
+    return {
+      'Accept': '* / *',
+      'Accept-Language': 'en-US,en;q=0.9',
+      'Connection': 'keep-alive',
+      'Content-Type': 'application/json',
+      'Client-Agent': 'stable-horde-flutter:${pi.version}:ndahlquist',
+      'apikey': apiKey,
+    };
+  }
+
   Future<StableHordeUser?> lookupUser(String? apiKey) async {
     apiKey ??= await sharedPrefsBloc.getApiKey();
 
@@ -14,13 +28,7 @@ class _StableHordeUserBloc {
       return null;
     }
 
-    final headers = {
-      'Accept': '* / *',
-      'Accept-Language': 'en-US,en;q=0.9',
-      'Connection': 'keep-alive',
-      "Content-Type": "application/json",
-      "apikey": apiKey,
-    };
+    final headers = await getHttpHeaders(apiKey);
 
     final response = await http.get(
       Uri.parse(
