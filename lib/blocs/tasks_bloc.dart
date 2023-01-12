@@ -7,6 +7,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stable_horde_flutter/blocs/models_bloc.dart';
 import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
+import 'package:stable_horde_flutter/blocs/stable_horde_user_bloc.dart';
 import 'package:stable_horde_flutter/main.dart';
 import 'package:stable_horde_flutter/model/stable_horde_task.dart';
 
@@ -43,13 +44,7 @@ class _TasksBloc {
       var apiKey = await sharedPrefsBloc.getApiKey();
       apiKey ??= "0000000000"; // Anonymous API key.
 
-      final headers = {
-        'Accept': '* / *',
-        'Accept-Language': 'en-US,en;q=0.9',
-        'Connection': 'keep-alive',
-        "Content-Type": "application/json",
-        "apikey": apiKey,
-      };
+      final headers = await stableHordeUserBloc.getHttpHeaders(apiKey);
 
       final model = await modelsBloc.getModel(modelName);
       print("template: ${model.promptTemplate}");
