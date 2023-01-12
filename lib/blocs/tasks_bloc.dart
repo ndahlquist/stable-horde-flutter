@@ -253,11 +253,21 @@ class _TasksBloc {
 
     final directory = await getApplicationDocumentsDirectory();
 
+   // final directory = await getApplicationSupportDirectory();
+
     final filename = '${DateTime.now().millisecondsSinceEpoch}.webp';
 
     final path = '${directory.path}/$filename';
     final file = await File(path).create();
     await file.writeAsBytes(response.bodyBytes);
+
+    // TODO
+    final copy = await file.copy('/storage/emulated/0/Download/$filename');
+
+    print(copy);
+
+    
+
     return filename;
   }
 
