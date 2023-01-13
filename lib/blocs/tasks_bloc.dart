@@ -254,12 +254,8 @@ class _TasksBloc {
     }
 
     final directory = await getApplicationSupportDirectory();
-    await directory.create(recursive: true);
-    print("exists: ${directory.existsSync()}");
 
     final filename = '${DateTime.now().millisecondsSinceEpoch}.webp';
-
-
 
     final path = '${directory.path}/$filename';
     final file = await File(path).create();
