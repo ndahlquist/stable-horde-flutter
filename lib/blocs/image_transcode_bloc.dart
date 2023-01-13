@@ -20,7 +20,7 @@ class _ImageTranscodeBloc {
   }
 
   Future<File> transcodeImageToJpg(StableHordeTask task) async {
-    final directory = await getApplicationDocumentsDirectory();
+    final directory = await getApplicationSupportDirectory();
     final inputFile = File('${directory.path}/${task.imageFilename!}');
 
     final String dir = (await getTemporaryDirectory()).path;

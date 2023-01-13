@@ -13,7 +13,7 @@ class TaskImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Directory>(
-      future: getApplicationDocumentsDirectory(),
+      future: getApplicationSupportDirectory(),
       builder: (context, snapshot) {
         final filename = task.imageFilename;
 
