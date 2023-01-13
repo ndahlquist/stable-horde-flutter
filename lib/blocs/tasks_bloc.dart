@@ -210,13 +210,22 @@ class _TasksBloc {
       isar.stableHordeTasks.put(task);
     });
 
+    // This feature transcodes the image to jpg for convenience,
+    // and saves it to a user-accessible directory.
+    // On Android, this is the Pictures directory.
     imageTranscodeBloc.transcodeImageToJpg(task).then((jpegFile) async {
-      // TODO: Find the right dir for Android
-      final docsDirectory = await getApplicationDocumentsDirectory();
+      final Directory externalDirectory;
+      if (Platform.isAndroid) {
+        externalDirectory = Directory("/sdcard/Pictures/stable-diffusion");
+      } else {
+        externalDirectory = await getApplicationDocumentsDirectory();
+      }
       final outFilename = task.imageFilename!.replaceAll('.webp', '.jpg');
 
-      jpegFile.copy('${docsDirectory.path}/$outFilename');
-      print('transcoded to ${docsDirectory.path}/$outFilename');
+      await externalDirectory.create();
+
+      await jpegFile.copy('${externalDirectory.path}/$outFilename');
+      print('transcoded to ${externalDirectory.path}/$outFilename');
     });
 
     return true;
