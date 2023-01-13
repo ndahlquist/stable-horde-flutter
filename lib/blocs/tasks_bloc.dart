@@ -228,7 +228,7 @@ class _TasksBloc {
 
       try {
         bool success = await _retrieveTaskResult(task);
-        if (!success) continue;
+        if (success) return;
       } catch (e, stackTrace) {
         print(e);
         print(stackTrace);
