@@ -117,7 +117,8 @@ class _TasksBloc {
           'https://stablehorde.net/api/v2/generate/check/${task.stableHordeId!}';
       response = await http.get(Uri.parse(url));
     } on http.ClientException catch (e) {
-      if (e.message.contains("Failed host lookup")) {
+      if (e.message.contains("Failed host lookup") ||
+          e.message.contains("Connection timed out")) {
         // No internet connection.
         return false;
       }
@@ -170,7 +171,8 @@ class _TasksBloc {
           'https://stablehorde.net/api/v2/generate/status/${task.stableHordeId!}';
       response = await http.get(Uri.parse(url));
     } on http.ClientException catch (e) {
-      if (e.message.contains("Failed host lookup")) {
+      if (e.message.contains("Failed host lookup") ||
+          e.message.contains("Connection timed out")) {
         // No internet connection.
         return false;
       }
@@ -212,7 +214,7 @@ class _TasksBloc {
 
   Future _waitOnTask(StableHordeTask task) async {
     for (int i = 0; i < 10000; i++) {
-      await Future.delayed(const Duration(seconds: 6));
+      await Future.delayed(const Duration(seconds: 7));
       print('update $i');
       try {
         bool complete = await _checkTaskCompletion(task);
