@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:isar/isar.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stable_horde_flutter/blocs/conversions_bloc.dart';
 import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
@@ -48,6 +50,8 @@ Future _mainGuarded() async {
 
   isar = await Isar.open([StableHordeTaskSchema]);
 
+  _copyFilesFromOldDirectory();
+
   if (kDebugMode) {
     runApp(const MyApp());
   } else {
@@ -62,6 +66,28 @@ Future _mainGuarded() async {
       appRunner: () => runApp(const MyApp()),
     );
   }
+}
+
+// Before v1.0.1 (Jan 2023), we used getApplicationDocumentsDirectory.
+// in v1.0.1, we switched to getApplicationSupportDirectory() instead.
+// This function copies any .webps from the old directory to the new directory.
+Future _copyFilesFromOldDirectory() async {
+  final oldDirectory = await getApplicationDocumentsDirectory();
+  final newDirectory = await getApplicationSupportDirectory();
+
+  final files = await oldDirectory.list().toList();
+  for (var file in files) {
+    if (file.path.endsWith(".webp")) {
+      final oldFile = File(file.path);
+      final newFile = File("${newDirectory.path}/${file.path.split("/").last}");
+
+      if (newFile.existsSync()) continue;
+
+      await newFile.writeAsBytes(await oldFile.readAsBytes());
+    }
+  }
+
+  print("Copied files from ${oldDirectory.path} to ${newDirectory.path}");
 }
 
 class MyApp extends StatefulWidget {
