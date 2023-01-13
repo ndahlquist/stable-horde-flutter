@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:stable_horde_flutter/blocs/image_transcode_bloc.dart';
 import 'package:stable_horde_flutter/blocs/models_bloc.dart';
 import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/blocs/stable_horde_user_bloc.dart';
@@ -209,13 +210,31 @@ class _TasksBloc {
       isar.stableHordeTasks.put(task);
     });
 
+    // This feature transcodes the image to jpg for convenience,
+    // and saves it to a user-accessible directory.
+    // On Android, this is the Pictures directory.
+    imageTranscodeBloc.transcodeImageToJpg(task).then((jpegFile) async {
+      final Directory externalDirectory;
+      if (Platform.isAndroid) {
+        externalDirectory = Directory("/sdcard/Pictures/stable-diffusion");
+      } else {
+        externalDirectory = await getApplicationDocumentsDirectory();
+      }
+      final outFilename = task.imageFilename!.replaceAll('.webp', '.jpg');
+
+      await externalDirectory.create();
+
+      await jpegFile.copy('${externalDirectory.path}/$outFilename');
+      print('transcoded to ${externalDirectory.path}/$outFilename');
+    });
+
     return true;
   }
 
   Future _waitOnTask(StableHordeTask task) async {
     for (int i = 0; i < 10000; i++) {
       await Future.delayed(const Duration(seconds: 7));
-      print('update $i');
+      print('update ${task.dbId} -- $i');
       try {
         bool complete = await _checkTaskCompletion(task);
         if (!complete) continue;
@@ -260,6 +279,7 @@ class _TasksBloc {
     final path = '${directory.path}/$filename';
     final file = await File(path).create();
     await file.writeAsBytes(response.bodyBytes);
+
     return filename;
   }
 

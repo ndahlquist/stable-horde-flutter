@@ -15,7 +15,7 @@ class _SharedPrefsBloc {
 
   static const defaultPrompt =
       "Futuristic spaceship. Rainforest. A painting of a spaceship on a rainforest planet by Caravaggio. Trending on Artstation. chiaroscuro.";
-  static const defaultNegativePrompt = "Cropped.";
+  static const defaultNegativePrompt = "Cropped, framed";
 
   Future<bool> hasSeenOnboarding() async {
     final prefs = await SharedPreferences.getInstance();
