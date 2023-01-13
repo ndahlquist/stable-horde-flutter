@@ -79,9 +79,7 @@ Future _copyFilesFromOldDirectory() async {
   for (var file in files) {
     if (file.path.endsWith(".webp")) {
       final oldFile = File(file.path);
-      final newFile = File("${newDirectory.path}/${file.path
-          .split("/")
-          .last}");
+      final newFile = File("${newDirectory.path}/${file.path.split("/").last}");
 
       if (newFile.existsSync()) continue;
 
