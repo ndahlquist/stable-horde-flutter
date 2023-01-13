@@ -211,14 +211,12 @@ class _TasksBloc {
     });
 
     imageTranscodeBloc.transcodeImageToJpg(task).then((jpegFile) async {
-
       // TODO: Find the right dir for Android
       final docsDirectory = await getApplicationDocumentsDirectory();
+      final outFilename = task.imageFilename!.replaceAll('.webp', '.jpg');
 
-      jpegFile.copy(
-        '${docsDirectory.path}/${task.imageFilename!.replaceAll('.webp', '.jpg')}',
-      );
-      print('transcoded to ${task.imageFilename}.jpg');
+      jpegFile.copy('${docsDirectory.path}/$outFilename');
+      print('transcoded to ${docsDirectory.path}/$outFilename');
     });
 
     return true;
@@ -227,7 +225,7 @@ class _TasksBloc {
   Future _waitOnTask(StableHordeTask task) async {
     for (int i = 0; i < 10000; i++) {
       await Future.delayed(const Duration(seconds: 7));
-      print('update $i');
+      print('update ${task.dbId} -- $i');
       try {
         bool complete = await _checkTaskCompletion(task);
         if (!complete) continue;
@@ -240,7 +238,7 @@ class _TasksBloc {
 
       try {
         bool success = await _retrieveTaskResult(task);
-        if (!success) continue;
+        if (success) return;
       } catch (e, stackTrace) {
         print(e);
         print(stackTrace);
