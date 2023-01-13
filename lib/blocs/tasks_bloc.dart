@@ -253,7 +253,7 @@ class _TasksBloc {
       );
     }
 
-    final directory = await getApplicationDocumentsDirectory();
+    final directory = await getApplicationSupportDirectory();
 
    // final directory = await getApplicationSupportDirectory();
 
