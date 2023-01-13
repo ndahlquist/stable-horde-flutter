@@ -211,6 +211,8 @@ class _TasksBloc {
     });
 
     imageTranscodeBloc.transcodeImageToJpg(task).then((jpegFile) async {
+
+      // TODO: Find the right dir for Android
       final docsDirectory = await getApplicationDocumentsDirectory();
 
       jpegFile.copy(
