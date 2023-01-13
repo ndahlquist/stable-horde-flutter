@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:stable_horde_flutter/blocs/image_transcode_bloc.dart';
 import 'package:stable_horde_flutter/blocs/models_bloc.dart';
 import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/blocs/stable_horde_user_bloc.dart';
@@ -209,6 +210,12 @@ class _TasksBloc {
       isar.stableHordeTasks.put(task);
     });
 
+    imageTranscodeBloc.transcodeImageToJpg(task).then((jpegFile) async {
+      final docsDirectory = await getApplicationDocumentsDirectory();
+      jpegFile.copy('${docsDirectory.path}/${task.imageFilename}.jpg');
+      print('transcoded to ${task.imageFilename}.jpg');
+    });
+
     return true;
   }
 
@@ -255,20 +262,11 @@ class _TasksBloc {
 
     final directory = await getApplicationSupportDirectory();
 
-   // final directory = await getApplicationSupportDirectory();
-
     final filename = '${DateTime.now().millisecondsSinceEpoch}.webp';
 
     final path = '${directory.path}/$filename';
     final file = await File(path).create();
     await file.writeAsBytes(response.bodyBytes);
-
-    // TODO
-    //final copy = await file.copy('/storage/emulated/0/Download/$filename');
-
-   // print(copy);
-
-    
 
     return filename;
   }
