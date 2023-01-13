@@ -212,7 +212,10 @@ class _TasksBloc {
 
     imageTranscodeBloc.transcodeImageToJpg(task).then((jpegFile) async {
       final docsDirectory = await getApplicationDocumentsDirectory();
-      jpegFile.copy('${docsDirectory.path}/${task.imageFilename}.jpg');
+
+      jpegFile.copy(
+        '${docsDirectory.path}/${task.imageFilename!.replaceAll('.webp', '.jpg')}',
+      );
       print('transcoded to ${task.imageFilename}.jpg');
     });
 
