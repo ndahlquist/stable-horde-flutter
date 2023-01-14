@@ -78,11 +78,17 @@ class _TasksBloc {
         'r2': true,
       };
 
-      final response = await http.post(
-        Uri.parse('https://stablehorde.net/api/v2/generate/async'),
+      final response = await httpPost(
+        'https://stablehorde.net/api/v2/generate/async',
         headers: headers,
         body: jsonEncode(json),
       );
+
+      if (response == null) {
+        throw Exception(
+          'Failed to request diffusion due to internet connection',
+        );
+      }
 
       if (response.statusCode != 202) {
         throw Exception(
