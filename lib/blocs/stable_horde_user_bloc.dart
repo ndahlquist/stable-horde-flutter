@@ -19,12 +19,14 @@ class _StableHordeUserBloc {
 
     final headers = await getHttpHeaders(apiKey);
 
-    final response = await http.get(
-      Uri.parse(
+    final response = await httpGet(
         'https://stablehorde.net/api/v2/find_user',
-      ),
       headers: headers,
     );
+
+    if (response == null) {
+      throw Exception('Failed to lookup user due to internet connection.');
+    }
 
     if (response.statusCode == 401 || response.statusCode == 404) {
       sharedPrefsBloc.setApiKey(null);

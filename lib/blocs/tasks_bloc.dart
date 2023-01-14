@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:http/http.dart' as http;
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -249,7 +248,13 @@ class _TasksBloc {
   }
 
   Future<String> _downloadImageFromUrl(String url) async {
-    final response = await http.get(Uri.parse(url));
+    final response = await httpGet(url);
+    if (response == null) {
+      throw Exception(
+        'Failed to get image due to internet connection.',
+      );
+    }
+
     if (response.statusCode != 200) {
       throw Exception(
         'Failed to download image: '
