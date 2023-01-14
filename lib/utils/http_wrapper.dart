@@ -2,8 +2,12 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:package_info/package_info.dart';
+import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 
 Future<Map<String, String>?> getHttpHeaders(String? apiKey) async {
+  var apiKey = await sharedPrefsBloc.getApiKey();
+  apiKey ??= "0000000000"; // Anonymous API key.
+
   final pi = await PackageInfo.fromPlatform();
 
   return {
@@ -12,7 +16,7 @@ Future<Map<String, String>?> getHttpHeaders(String? apiKey) async {
     'Connection': 'keep-alive',
     'Content-Type': 'application/json',
     'Client-Agent': 'stable-horde-flutter:${pi.version}:ndahlquist',
-    if (apiKey != null) 'apikey': apiKey,
+    'apikey': apiKey,
   };
 }
 

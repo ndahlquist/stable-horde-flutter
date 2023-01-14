@@ -41,11 +41,6 @@ class _TasksBloc {
     task!;
 
     try {
-      var apiKey = await sharedPrefsBloc.getApiKey();
-      apiKey ??= "0000000000"; // Anonymous API key.
-
-      final headers = await getHttpHeaders(apiKey);
-
       final model = await modelsBloc.getModel(modelName);
       print("template: ${model.promptTemplate}");
       final formattedPrompt = model.promptTemplate
@@ -79,7 +74,6 @@ class _TasksBloc {
 
       final response = await httpPost(
         'https://stablehorde.net/api/v2/generate/async',
-        headers: headers,
         body: jsonEncode(json),
       );
 
