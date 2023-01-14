@@ -16,8 +16,11 @@ Future<Map<String, String>?> getHttpHeaders(String apiKey) async {
   };
 }
 
-Future<http.Response?> httpGet(String url,
-    {Map<String, String>? headers}) async {
+Future<http.Response?> httpGet(
+  String url, {
+  Map<String, String>? headers,
+}) async {
+
   final uri = Uri.parse(url);
   try {
     return await http.get(uri, headers: headers);
