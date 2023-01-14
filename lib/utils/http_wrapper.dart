@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:package_info/package_info.dart';
 
-Future<Map<String, String>?> getHttpHeaders(String apiKey) async {
+Future<Map<String, String>?> getHttpHeaders(String? apiKey) async {
   final pi = await PackageInfo.fromPlatform();
 
   return {
@@ -12,7 +12,7 @@ Future<Map<String, String>?> getHttpHeaders(String apiKey) async {
     'Connection': 'keep-alive',
     'Content-Type': 'application/json',
     'Client-Agent': 'stable-horde-flutter:${pi.version}:ndahlquist',
-    'apikey': apiKey,
+    if (apiKey != null) 'apikey': apiKey,
   };
 }
 
@@ -20,6 +20,7 @@ Future<http.Response?> httpGet(
   String url, {
   Map<String, String>? headers,
 }) async {
+  headers ??= await getHttpHeaders(null);
 
   final uri = Uri.parse(url);
   try {
@@ -42,6 +43,8 @@ Future<http.Response?> httpPost(
   Object? body,
   Encoding? encoding,
 }) async {
+  headers ??= await getHttpHeaders(null);
+
   final uri = Uri.parse(url);
   try {
     return await http.post(
