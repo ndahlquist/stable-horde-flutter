@@ -20,10 +20,6 @@ class _TasksBloc {
     final modelName = await sharedPrefsBloc.getModel();
     final seed = await sharedPrefsBloc.getSeed();
     final img2ImgInputEncodedString = await sharedPrefsBloc.getImg2ImgInput();
-    Uint8List? img2ImgFile;
-    if (img2ImgInputEncodedString != null) {
-      img2ImgFile = base64.decode(img2ImgInputEncodedString);
-    }
 
     final List<String> postProcessors = [];
 
@@ -63,7 +59,7 @@ class _TasksBloc {
 
       final Map<String, dynamic> json;
 
-      if (isLoggedIn && img2ImgFile != null) {
+      if (isLoggedIn && img2ImgInputEncodedString != null) {
         json = {
           'prompt': formattedPrompt,
           'params': {
@@ -76,14 +72,14 @@ class _TasksBloc {
             'seed_variation': 1000,
             'seed': seed == null ? '' : '$seed',
             'karras': true,
-            //'denoising_strength': mutationRate,
+            'denoising_strength': .3,
             'post_processing': postProcessors,
           },
           'nsfw': false,
           'censor_nsfw': false,
           'trusted_workers': false,
           'source_processing': 'img2img',
-          'source_image': img2ImgFile,
+          'source_image': img2ImgInputEncodedString,
           'models': [modelName],
           'r2': true,
         };
