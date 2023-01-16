@@ -109,11 +109,13 @@ class _SharedPrefsBloc {
     await prefs.setBool(_codeformersKey, enabled);
   }
 
+  // Note: This is a base64 encoded image- not a filename!
   Future<String?> getImg2ImgInput() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString(_img2ImgInputKey);
   }
 
+  // Note: This expects a base64 encoded image- not a filename!
   Future setImg2ImgInput(String? encodedFileString) async {
     final prefs = await SharedPreferences.getInstance();
     if (encodedFileString != null) {
