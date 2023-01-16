@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
@@ -45,7 +44,9 @@ class _TasksBloc {
 
     try {
       var apiKey = await sharedPrefsBloc.getApiKey();
-      bool isLoggedIn = apiKey != null;
+      if (img2ImgInputEncodedString != null && apiKey == null) {
+        throw Exception('Cannot use img2img without logging in.');
+      }
       apiKey ??= "0000000000"; // Anonymous API key.
 
       final headers = await stableHordeUserBloc.getHttpHeaders(apiKey);
@@ -59,7 +60,7 @@ class _TasksBloc {
 
       final Map<String, dynamic> json;
 
-      if (isLoggedIn && img2ImgInputEncodedString != null) {
+      if (img2ImgInputEncodedString != null) {
         json = {
           'prompt': formattedPrompt,
           'params': {
@@ -72,7 +73,7 @@ class _TasksBloc {
             'seed_variation': 1000,
             'seed': seed == null ? '' : '$seed',
             'karras': true,
-            'denoising_strength': .3,
+            'denoising_strength': .4,
             'post_processing': postProcessors,
           },
           'nsfw': false,
