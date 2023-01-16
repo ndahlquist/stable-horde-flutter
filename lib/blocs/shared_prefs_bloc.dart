@@ -12,6 +12,7 @@ class _SharedPrefsBloc {
   static const _seedKey = 'SEED_KEY';
   static const _upscaleKey = 'UPSCALE_KEY';
   static const _codeformersKey = 'CODEFORMERS_KEY';
+  static const _img2ImgInputKey = 'IMG2IMG_INPUT_KEY';
 
   static const defaultPrompt =
       "Futuristic spaceship. Rainforest. A painting of a spaceship on a rainforest planet by Caravaggio. Trending on Artstation. chiaroscuro.";
@@ -106,6 +107,20 @@ class _SharedPrefsBloc {
   Future setCodeformersEnabled(bool enabled) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(_codeformersKey, enabled);
+  }
+
+  Future<String?> getImg2ImgInput() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_img2ImgInputKey);
+  }
+
+  Future setImg2ImgInput(String? encodedFileString) async {
+    final prefs = await SharedPreferences.getInstance();
+    if (encodedFileString != null) {
+      await prefs.setString(_img2ImgInputKey, encodedFileString);
+    } else {
+      await prefs.remove(_img2ImgInputKey);
+    }
   }
 }
 

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dotted_border/dotted_border.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/foundation.dart';
@@ -18,8 +20,6 @@ class ImagePickerPage extends StatefulWidget {
 }
 
 class _ImagePickerPageState extends State<ImagePickerPage> {
-  Uint8List? _file;
-
   @override
   Widget build(BuildContext context) {
     return ExpandablePanel(
@@ -51,163 +51,17 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           // Loading
           return const Padding(
-            padding: EdgeInsets.only(left: 12),
+            padding: EdgeInsets.all(12),
             child: CircularProgressIndicator(),
           );
         }
         var apiKey = snapshot.data;
         if (apiKey == null) {
           // User is anonymous
-          return FractionallySizedBox(
-            widthFactor: 1,
-            child: GestureDetector(
-              onTap: () async {
-                conversionsBloc.beginLogin();
-
-                await showDialog(
-                  context: context,
-                  builder: (_) {
-                    return const LoginDialog();
-                  },
-                );
-
-                // Refresh user UI.
-                setState(() {});
-              },
-              child: SectionFrame(
-                child: RichText(
-                  textScaleFactor: MediaQuery.of(context).textScaleFactor,
-                  text: const TextSpan(
-                    children: [
-                      TextSpan(
-                        text:
-                            "You are currently anonymous. In order to use Img2Img login to a Stable Horde account. ",
-                      ),
-                      TextSpan(
-                        text: 'Login',
-                        style: TextStyle(
-                            fontStyle: FontStyle.italic, color: Colors.blue),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          );
+          return _anonymouseWidget();
         } else {
           // logged in
-          Widget image;
-          if (_file == null) {
-            image = GestureDetector(
-              onTap: () => _selectImage(context),
-              child: DottedBorder(
-                borderType: BorderType.RRect,
-                radius: const Radius.circular(12),
-                dashPattern: const [10, 4],
-                strokeCap: StrokeCap.round,
-                color: Colors.white,
-                child: Container(
-                  width: double.infinity,
-                  height: 216,
-                  decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(.2),
-                      borderRadius: BorderRadius.circular(8)),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(
-                        Icons.cloud_upload_rounded,
-                        size: 40,
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Text(
-                        'Select your image',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 18,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            );
-          } else {
-            image = Stack(
-              children: [
-                Positioned(
-                  child: GestureDetector(
-                    onTap: () => _selectImage(context),
-                    child: SizedBox(
-                      height: 216,
-                      width: 216,
-                      child: Container(
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                          image: MemoryImage(_file!),
-                          fit: BoxFit.fill,
-                          alignment: FractionalOffset.topCenter,
-                        )),
-                      ),
-                    ),
-                  ),
-                ),
-                if (_file != null)
-                  Positioned(
-                    right: -16,
-                    child: RawMaterialButton(
-                      onPressed: _removeSelectedImage,
-                      elevation: 2.0,
-                      fillColor: Colors.black.withOpacity(.5),
-                      shape: const CircleBorder(),
-                      child: const Icon(
-                        Icons.delete,
-                        size: 20.0,
-                      ),
-                    ),
-                  )
-              ],
-            );
-          }
-
-          return FractionallySizedBox(
-            widthFactor: 1,
-            child: SectionFrame(
-              padding: 8,
-              child: SizedBox(
-                height: 216,
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                          left: 4,
-                          top: 4,
-                          bottom: 4,
-                          right: 8,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
-                            Text('Input '),
-                          ],
-                        ),
-                      ),
-                    ),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: AspectRatio(
-                        aspectRatio: 1,
-                        child: image,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          );
+          return _loggedInWidget();
         }
       },
     );
@@ -224,24 +78,14 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
               padding: const EdgeInsets.all(20),
               child: const Text('Take a photo'),
               onPressed: () async {
-                Navigator.of(context).pop();
-                Uint8List file = await pickImage(ImageSource.camera);
-
-                setState(() {
-                  _file = file;
-                });
+                onImagePick(ImageSource.camera);
               },
             ),
             SimpleDialogOption(
               padding: const EdgeInsets.all(20),
               child: const Text('Choose from gallery'),
               onPressed: () async {
-                Navigator.of(context).pop();
-                Uint8List file = await pickImage(ImageSource.gallery);
-
-                setState(() {
-                  _file = file;
-                });
+                onImagePick(ImageSource.gallery);
               },
             ),
             SimpleDialogOption(
@@ -257,9 +101,197 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
     );
   }
 
-  void _removeSelectedImage() {
-    setState(() {
-      _file = null;
-    });
+  void _removeSelectedImage() async {
+    await sharedPrefsBloc.setImg2ImgInput(null);
+    // Refresh the UI.
+    setState(() {});
+  }
+
+  void onImagePick(ImageSource imageSource) async {
+    Navigator.of(context).pop();
+    Uint8List file = await pickImage(imageSource);
+
+    String encodedFile = base64.encode(file);
+    await sharedPrefsBloc.setImg2ImgInput(encodedFile);
+
+    // Refresh the UI.
+    setState(() {});
+  }
+
+  Widget _loggedInWidget() {
+    return FutureBuilder<String?>(
+      future: sharedPrefsBloc.getImg2ImgInput(),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          print(snapshot.error);
+          print(snapshot.stackTrace);
+          Sentry.captureException(
+            snapshot.error,
+            stackTrace: snapshot.stackTrace,
+          );
+        }
+
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          // Loading
+          return const Padding(
+            padding: EdgeInsets.all(12),
+            child: CircularProgressIndicator(),
+          );
+        }
+        String? img2ImgInput = snapshot.data;
+
+        Widget image;
+        if (img2ImgInput != null) {
+          Uint8List inputFile = base64.decode(img2ImgInput);
+          image = Stack(
+            children: [
+              Positioned(
+                child: GestureDetector(
+                  onTap: () => _selectImage(context),
+                  child: SizedBox(
+                    height: 216,
+                    width: 216,
+                    child: Container(
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                        image: MemoryImage(inputFile),
+                        fit: BoxFit.fill,
+                        alignment: FractionalOffset.topCenter,
+                      )),
+                    ),
+                  ),
+                ),
+              ),
+              Positioned(
+                right: -16,
+                child: RawMaterialButton(
+                  onPressed: _removeSelectedImage,
+                  elevation: 2.0,
+                  fillColor: Colors.black.withOpacity(.5),
+                  shape: const CircleBorder(),
+                  child: const Icon(
+                    Icons.delete,
+                    size: 20.0,
+                  ),
+                ),
+              ),
+            ],
+          );
+        } else {
+          // No img selected yet
+          image = GestureDetector(
+            onTap: () => _selectImage(context),
+            child: DottedBorder(
+              borderType: BorderType.RRect,
+              radius: const Radius.circular(12),
+              dashPattern: const [10, 4],
+              strokeCap: StrokeCap.round,
+              color: Colors.white,
+              child: Container(
+                width: double.infinity,
+                height: 216,
+                decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(.2),
+                    borderRadius: BorderRadius.circular(8)),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Icon(
+                      Icons.cloud_upload_rounded,
+                      size: 40,
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Text(
+                      'Select your image',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        }
+        return FractionallySizedBox(
+          widthFactor: 1,
+          child: SectionFrame(
+            padding: 8,
+            child: SizedBox(
+              height: 216,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        left: 4,
+                        top: 4,
+                        bottom: 4,
+                        right: 8,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: const [
+                          Text('Input '),
+                        ],
+                      ),
+                    ),
+                  ),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: AspectRatio(
+                      aspectRatio: 1,
+                      child: image,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _anonymouseWidget() {
+    return FractionallySizedBox(
+      widthFactor: 1,
+      child: GestureDetector(
+        onTap: () async {
+          conversionsBloc.beginLogin();
+
+          await showDialog(
+            context: context,
+            builder: (_) {
+              return const LoginDialog();
+            },
+          );
+
+          // Refresh the UI.
+          setState(() {});
+        },
+        child: SectionFrame(
+          child: RichText(
+            textScaleFactor: MediaQuery.of(context).textScaleFactor,
+            text: const TextSpan(
+              children: [
+                TextSpan(
+                  text:
+                      "You are currently anonymous. In order to use Img2Img login to a Stable Horde account. ",
+                ),
+                TextSpan(
+                  text: 'Login',
+                  style: TextStyle(
+                      fontStyle: FontStyle.italic, color: Colors.blue),
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
