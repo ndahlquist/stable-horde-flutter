@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
@@ -18,6 +19,11 @@ class _TasksBloc {
     final negativePrompt = await sharedPrefsBloc.getNegativePrompt();
     final modelName = await sharedPrefsBloc.getModel();
     final seed = await sharedPrefsBloc.getSeed();
+    final img2ImgInputEncodedString = await sharedPrefsBloc.getImg2ImgInput();
+    Uint8List? img2ImgFile;
+    if (img2ImgInputEncodedString != null) {
+      img2ImgFile = base64.decode(img2ImgInputEncodedString);
+    }
 
     final List<String> postProcessors = [];
 
@@ -43,6 +49,7 @@ class _TasksBloc {
 
     try {
       var apiKey = await sharedPrefsBloc.getApiKey();
+      bool isLoggedIn = apiKey != null;
       apiKey ??= "0000000000"; // Anonymous API key.
 
       final headers = await stableHordeUserBloc.getHttpHeaders(apiKey);
@@ -54,29 +61,57 @@ class _TasksBloc {
           .replaceAll('{np}', ' ### $negativePrompt');
       print(formattedPrompt);
 
-      final json = {
-        'prompt': formattedPrompt,
-        'params': {
-          'steps': 30,
-          'n': 1,
-          'sampler_name': 'k_euler',
-          'width': 512,
-          'height': 512,
-          'cfg_scale': 7,
-          'seed_variation': 1000,
-          'seed': seed == null ? '' : '$seed',
-          'karras': true,
-          //'denoising_strength': mutationRate,
-          'post_processing': postProcessors,
-        },
-        'nsfw': false,
-        'censor_nsfw': false,
-        'trusted_workers': false,
-        //'source_processing': 'img2img',
-        //'source_image': base64.encode(sourceImage.buffer.asUint8List()),
-        'models': [modelName],
-        'r2': true,
-      };
+      final Map<String, dynamic> json;
+
+      if (isLoggedIn && img2ImgFile != null) {
+        json = {
+          'prompt': formattedPrompt,
+          'params': {
+            'steps': 30,
+            'n': 1,
+            'sampler_name': 'k_euler',
+            'width': 512,
+            'height': 512,
+            'cfg_scale': 7,
+            'seed_variation': 1000,
+            'seed': seed == null ? '' : '$seed',
+            'karras': true,
+            //'denoising_strength': mutationRate,
+            'post_processing': postProcessors,
+          },
+          'nsfw': false,
+          'censor_nsfw': false,
+          'trusted_workers': false,
+          'source_processing': 'img2img',
+          'source_image': img2ImgFile,
+          'models': [modelName],
+          'r2': true,
+        };
+      } else {
+        json = {
+          'prompt': formattedPrompt,
+          'params': {
+            'steps': 30,
+            'n': 1,
+            'sampler_name': 'k_euler',
+            'width': 512,
+            'height': 512,
+            'cfg_scale': 7,
+            'seed_variation': 1000,
+            'seed': seed == null ? '' : '$seed',
+            'karras': true,
+            //'denoising_strength': mutationRate,
+            'post_processing': postProcessors,
+          },
+          'nsfw': false,
+          'censor_nsfw': false,
+          'trusted_workers': false,
+          //'source_processing': 'img2img',
+          //'source_image': base64.encode(sourceImage.buffer.asUint8List()),
+          'models': [modelName],
+          'r2': true,
+        };
+      }
 
       final response = await http.post(
         Uri.parse('https://stablehorde.net/api/v2/generate/async'),
