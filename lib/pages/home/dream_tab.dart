@@ -5,6 +5,7 @@ import 'package:stable_horde_flutter/blocs/conversions_bloc.dart';
 import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/blocs/tasks_bloc.dart';
 import 'package:stable_horde_flutter/pages/home_page.dart';
+import 'package:stable_horde_flutter/pages/image_picker_page.dart';
 import 'package:stable_horde_flutter/pages/prompt_edit_page.dart';
 import 'package:stable_horde_flutter/pages/seed_edit_page.dart';
 import 'package:stable_horde_flutter/widgets/model_button.dart';
@@ -18,6 +19,26 @@ class DreamTab extends StatefulWidget {
 }
 
 class _DreamTabState extends State<DreamTab> {
+  String? _apiKey;
+
+  @override
+  void initState() {
+    super.initState();
+    getSharedPref();
+  }
+
+  void getSharedPref() {
+    sharedPrefsBloc.getApiKey().then((apiKey) {
+      setState(() {
+        _apiKey = apiKey;
+      });
+    });
+  }
+
+  Widget _img2ImgSection() {
+    return const ImagePickerPage();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -28,7 +49,8 @@ class _DreamTabState extends State<DreamTab> {
           children: [
             const SizedBox(height: 16),
             _promptWidget(),
-            const SizedBox(height: 36),
+            const SizedBox(height: 32),
+            if (_apiKey != null) _img2ImgSection(),
             ExpandablePanel(
               header: const Text(
                 "Advanced Options",
@@ -40,7 +62,7 @@ class _DreamTabState extends State<DreamTab> {
                 iconColor: Colors.white,
               ),
             ),
-            const SizedBox(height: 64),
+            const SizedBox(height: 16),
             FractionallySizedBox(
               widthFactor: 1,
               child: ElevatedButton(

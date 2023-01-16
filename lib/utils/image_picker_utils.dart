@@ -8,6 +8,8 @@ pickImage(ImageSource source) async {
 
   if (_file != null) {
     return await _file.readAsBytes();
+  } else {
+    // TODO: Log it on sentry.
   }
 
   print('No image selected!');
