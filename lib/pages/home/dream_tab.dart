@@ -19,26 +19,6 @@ class DreamTab extends StatefulWidget {
 }
 
 class _DreamTabState extends State<DreamTab> {
-  String? _apiKey;
-
-  @override
-  void initState() {
-    super.initState();
-    getSharedPref();
-  }
-
-  void getSharedPref() {
-    sharedPrefsBloc.getApiKey().then((apiKey) {
-      setState(() {
-        _apiKey = apiKey;
-      });
-    });
-  }
-
-  Widget _img2ImgSection() {
-    return const ImagePickerPage();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -50,7 +30,8 @@ class _DreamTabState extends State<DreamTab> {
             const SizedBox(height: 16),
             _promptWidget(),
             const SizedBox(height: 32),
-            if (_apiKey != null) _img2ImgSection(),
+            const ImagePickerPage(),
+            const SizedBox(height: 16),
             ExpandablePanel(
               header: const Text(
                 "Advanced Options",
