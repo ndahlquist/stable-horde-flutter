@@ -7,7 +7,6 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stable_horde_flutter/blocs/image_transcode_bloc.dart';
 import 'package:stable_horde_flutter/blocs/models_bloc.dart';
 import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
-import 'package:stable_horde_flutter/blocs/stable_horde_user_bloc.dart';
 import 'package:stable_horde_flutter/main.dart';
 import 'package:stable_horde_flutter/model/stable_horde_task.dart';
 import 'package:stable_horde_flutter/utils/http_wrapper.dart';
