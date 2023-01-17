@@ -58,57 +58,30 @@ class _TasksBloc {
           .replaceAll('{np}', ' ### $negativePrompt');
       print(formattedPrompt);
 
-      final Map<String, dynamic> json;
-
-      if (img2ImgInputEncodedString != null) {
-        json = {
-          'prompt': formattedPrompt,
-          'params': {
-            'steps': 30,
-            'n': 1,
-            'sampler_name': 'k_euler',
-            'width': 512,
-            'height': 512,
-            'cfg_scale': 7,
-            'seed_variation': 1000,
-            'seed': seed == null ? '' : '$seed',
-            'karras': true,
-            'denoising_strength': .4,
-            'post_processing': postProcessors,
-          },
-          'nsfw': false,
-          'censor_nsfw': false,
-          'trusted_workers': false,
-          'source_processing': 'img2img',
+      final json = {
+        'prompt': formattedPrompt,
+        'params': {
+          'steps': 30,
+          'n': 1,
+          'sampler_name': 'k_euler',
+          'width': 512,
+          'height': 512,
+          'cfg_scale': 7,
+          'seed_variation': 1000,
+          'seed': seed == null ? '' : '$seed',
+          'karras': true,
+          if (img2ImgInputEncodedString != null) 'denoising_strength': .4,
+          'post_processing': postProcessors,
+        },
+        'nsfw': false,
+        'censor_nsfw': false,
+        'trusted_workers': false,
+        if (img2ImgInputEncodedString != null) 'source_processing': 'img2img',
+        if (img2ImgInputEncodedString != null)
           'source_image': img2ImgInputEncodedString,
-          'models': [modelName],
-          'r2': true,
-        };
-      } else {
-        json = {
-          'prompt': formattedPrompt,
-          'params': {
-            'steps': 30,
-            'n': 1,
-            'sampler_name': 'k_euler',
-            'width': 512,
-            'height': 512,
-            'cfg_scale': 7,
-            'seed_variation': 1000,
-            'seed': seed == null ? '' : '$seed',
-            'karras': true,
-            //'denoising_strength': mutationRate,
-            'post_processing': postProcessors,
-          },
-          'nsfw': false,
-          'censor_nsfw': false,
-          'trusted_workers': false,
-          //'source_processing': 'img2img',
-          //'source_image': base64.encode(sourceImage.buffer.asUint8List()),
-          'models': [modelName],
-          'r2': true,
-        };
-      }
+        'models': [modelName],
+        'r2': true,
+      };
 
       final response = await http.post(
         Uri.parse('https://stablehorde.net/api/v2/generate/async'),
