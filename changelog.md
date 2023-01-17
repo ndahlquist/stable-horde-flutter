@@ -1,3 +1,6 @@
+#1.0.3+11
+- Bug fixes.
+
 #1.0.2+10
 - Automatically save images to the file system as jpeg.
 - Bug fixes.
