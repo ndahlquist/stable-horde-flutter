@@ -205,7 +205,7 @@ class _TasksBloc {
 
         await jpegFile.copy('${externalDirectory.path}/$outFilename');
         print('transcoded to ${externalDirectory.path}/$outFilename');
-      } on FileSystemException catch  ( e) {
+      } on FileSystemException catch (e) {
         // On Android 10 and before, this can happen if the permission has not been granted.
         // On Android 11 and later, no permission is required.
         print('Failed to copy file: $e');
