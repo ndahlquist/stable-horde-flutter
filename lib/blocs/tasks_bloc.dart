@@ -108,10 +108,17 @@ class _TasksBloc {
   }
 
   Future<bool> _checkTaskCompletion(StableHordeTask task) async {
+    final taskId = task.stableHordeId;
+    if (taskId == null) {
+      task.failed = true;
+      await isar.writeTxn(() async {
+        isar.stableHordeTasks.put(task);
+      });
+    }
+
     if (task.failed) return true;
 
-    final url =
-        'https://stablehorde.net/api/v2/generate/check/${task.stableHordeId!}';
+    final url = 'https://stablehorde.net/api/v2/generate/check/$taskId';
     final response = await httpGet(url);
     if (response == null) return false;
 
