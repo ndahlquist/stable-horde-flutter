@@ -49,8 +49,6 @@ class _TasksBloc {
       }
       apiKey ??= "0000000000"; // Anonymous API key.
 
-      final headers = await getHttpHeaders(apiKey);
-
       final model = await modelsBloc.getModel(modelName);
       print("template: ${model.promptTemplate}");
       final formattedPrompt = model.promptTemplate
