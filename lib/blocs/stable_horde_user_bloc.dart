@@ -1,26 +1,12 @@
 import 'dart:convert';
 
-import 'package:package_info/package_info.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/model/stable_horde_user.dart';
 
-import 'package:http/http.dart' as http;
+import 'package:stable_horde_flutter/utils/http_wrapper.dart';
 
 class _StableHordeUserBloc {
-  Future<Map<String, String>?> getHttpHeaders(String apiKey) async {
-    final pi = await PackageInfo.fromPlatform();
-
-    return {
-      'Accept': '* / *',
-      'Accept-Language': 'en-US,en;q=0.9',
-      'Connection': 'keep-alive',
-      'Content-Type': 'application/json',
-      'Client-Agent': 'stable-horde-flutter:${pi.version}:ndahlquist',
-      'apikey': apiKey,
-    };
-  }
-
   Future<StableHordeUser?> lookupUser(String? apiKey) async {
     apiKey ??= await sharedPrefsBloc.getApiKey();
 
@@ -30,12 +16,14 @@ class _StableHordeUserBloc {
 
     final headers = await getHttpHeaders(apiKey);
 
-    final response = await http.get(
-      Uri.parse(
-        'https://stablehorde.net/api/v2/find_user',
-      ),
+    final response = await httpGet(
+      'https://stablehorde.net/api/v2/find_user',
       headers: headers,
     );
+
+    if (response == null) {
+      throw Exception('Failed to lookup user due to internet connection.');
+    }
 
     if (response.statusCode == 401 || response.statusCode == 404) {
       sharedPrefsBloc.setApiKey(null);

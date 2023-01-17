@@ -1,16 +1,15 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:http/http.dart' as http;
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stable_horde_flutter/blocs/image_transcode_bloc.dart';
 import 'package:stable_horde_flutter/blocs/models_bloc.dart';
 import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
-import 'package:stable_horde_flutter/blocs/stable_horde_user_bloc.dart';
 import 'package:stable_horde_flutter/main.dart';
 import 'package:stable_horde_flutter/model/stable_horde_task.dart';
+import 'package:stable_horde_flutter/utils/http_wrapper.dart';
 
 class _TasksBloc {
   Future requestDiffusion() async {
@@ -42,11 +41,6 @@ class _TasksBloc {
     task!;
 
     try {
-      var apiKey = await sharedPrefsBloc.getApiKey();
-      apiKey ??= "0000000000"; // Anonymous API key.
-
-      final headers = await stableHordeUserBloc.getHttpHeaders(apiKey);
-
       final model = await modelsBloc.getModel(modelName);
       print("template: ${model.promptTemplate}");
       final formattedPrompt = model.promptTemplate
@@ -78,11 +72,16 @@ class _TasksBloc {
         'r2': true,
       };
 
-      final response = await http.post(
-        Uri.parse('https://stablehorde.net/api/v2/generate/async'),
-        headers: headers,
+      final response = await httpPost(
+        'https://stablehorde.net/api/v2/generate/async',
         body: jsonEncode(json),
       );
+
+      if (response == null) {
+        throw Exception(
+          'Failed to request diffusion due to internet connection',
+        );
+      }
 
       if (response.statusCode != 202) {
         throw Exception(
@@ -111,21 +110,10 @@ class _TasksBloc {
   Future<bool> _checkTaskCompletion(StableHordeTask task) async {
     if (task.failed) return true;
 
-    final http.Response response;
-
-    try {
-      final url =
-          'https://stablehorde.net/api/v2/generate/check/${task.stableHordeId!}';
-      response = await http.get(Uri.parse(url));
-    } on http.ClientException catch (e) {
-      if (e.message.contains("Failed host lookup") ||
-          e.message.contains("Connection timed out")) {
-        // No internet connection.
-        return false;
-      }
-
-      rethrow;
-    }
+    final url =
+        'https://stablehorde.net/api/v2/generate/check/${task.stableHordeId!}';
+    final response = await httpGet(url);
+    if (response == null) return false;
 
     if (response.statusCode == 404) {
       print(response);
@@ -165,21 +153,11 @@ class _TasksBloc {
   }
 
   Future<bool> _retrieveTaskResult(StableHordeTask task) async {
-    final http.Response response;
+    final url =
+        'https://stablehorde.net/api/v2/generate/status/${task.stableHordeId!}';
 
-    try {
-      final url =
-          'https://stablehorde.net/api/v2/generate/status/${task.stableHordeId!}';
-      response = await http.get(Uri.parse(url));
-    } on http.ClientException catch (e) {
-      if (e.message.contains("Failed host lookup") ||
-          e.message.contains("Connection timed out")) {
-        // No internet connection.
-        return false;
-      }
-
-      rethrow;
-    }
+    final response = await httpGet(url);
+    if (response == null) return false;
 
     if (response.statusCode != 200) {
       throw Exception(
@@ -264,7 +242,13 @@ class _TasksBloc {
   }
 
   Future<String> _downloadImageFromUrl(String url) async {
-    final response = await http.get(Uri.parse(url));
+    final response = await httpGet(url);
+    if (response == null) {
+      throw Exception(
+        'Failed to get image due to internet connection.',
+      );
+    }
+
     if (response.statusCode != 200) {
       throw Exception(
         'Failed to download image: '
