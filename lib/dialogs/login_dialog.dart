@@ -19,7 +19,7 @@ class _LoginDialogState extends State<LoginDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: widget.title != null ? Text(widget.title!) : null,
+      title: widget.title != null ? Text(widget.title ?? "Login") : null,
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
