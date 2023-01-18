@@ -184,7 +184,9 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
       await showDialog(
         context: context,
         builder: (_) {
-          return const LoginDialog();
+          return const LoginDialog(
+              title:
+                  "You are currently anonymous. Login required in order to use Img2Img.");
         },
       );
 

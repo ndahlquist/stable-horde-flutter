@@ -5,7 +5,8 @@ import 'package:stable_horde_flutter/blocs/stable_horde_user_bloc.dart';
 import 'package:stable_horde_flutter/utils/legal_links.dart';
 
 class LoginDialog extends StatefulWidget {
-  const LoginDialog({super.key});
+  final String? title;
+  const LoginDialog({Key? key, this.title}) : super(key: key);
 
   @override
   State<LoginDialog> createState() => _LoginDialogState();
@@ -18,6 +19,7 @@ class _LoginDialogState extends State<LoginDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      title: widget.title != null ? Text(widget.title!) : null,
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
