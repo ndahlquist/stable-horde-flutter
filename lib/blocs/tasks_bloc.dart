@@ -116,10 +116,17 @@ class _TasksBloc {
   }
 
   Future<bool> _checkTaskCompletion(StableHordeTask task) async {
+    final taskId = task.stableHordeId;
+    if (taskId == null) {
+      task.failed = true;
+      await isar.writeTxn(() async {
+        isar.stableHordeTasks.put(task);
+      });
+    }
+
     if (task.failed) return true;
 
-    final url =
-        'https://stablehorde.net/api/v2/generate/check/${task.stableHordeId!}';
+    final url = 'https://stablehorde.net/api/v2/generate/check/$taskId';
     final response = await httpGet(url);
     if (response == null) return false;
 
@@ -208,10 +215,16 @@ class _TasksBloc {
       }
       final outFilename = task.imageFilename!.replaceAll('.webp', '.jpg');
 
-      await externalDirectory.create();
+      try {
+        await externalDirectory.create();
 
-      await jpegFile.copy('${externalDirectory.path}/$outFilename');
-      print('transcoded to ${externalDirectory.path}/$outFilename');
+        await jpegFile.copy('${externalDirectory.path}/$outFilename');
+        print('transcoded to ${externalDirectory.path}/$outFilename');
+      } on FileSystemException catch (e) {
+        // On Android 10 and before, this can happen if the permission has not been granted.
+        // On Android 11 and later, no permission is required.
+        print('Failed to copy file: $e');
+      }
     });
 
     return true;
