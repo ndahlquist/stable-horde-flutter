@@ -203,6 +203,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
                         SliderTheme(
                           data: SliderThemeData(
                             thumbColor: Colors.white,
+                            inactiveTickMarkColor: Colors.black.withOpacity(.1),
                             activeTrackColor: Colors.white,
                             inactiveTrackColor: Colors.black.withOpacity(.2),
                           ),
