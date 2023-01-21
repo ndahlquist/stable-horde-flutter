@@ -212,7 +212,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
                             divisions: 10,
                             label: _denoisingStrength.toString(),
                             onChanged: (double value) async {
-                              sharedPrefsBloc.setDenoisingStrength(value);
+                              await sharedPrefsBloc.setDenoisingStrength(value);
                               setState(() {
                                 _denoisingStrength = value;
                               });
@@ -300,7 +300,6 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
 
     String encodedFile = base64.encode(file);
     await sharedPrefsBloc.setImg2ImgInput(encodedFile);
-
     // Refresh the UI.
     setState(() {});
   }

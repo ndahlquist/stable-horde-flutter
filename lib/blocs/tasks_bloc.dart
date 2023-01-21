@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -17,7 +18,7 @@ class _TasksBloc {
     final negativePrompt = await sharedPrefsBloc.getNegativePrompt();
     final modelName = await sharedPrefsBloc.getModel();
     final seed = await sharedPrefsBloc.getSeed();
-    final img2ImgInputEncodedString = await sharedPrefsBloc.getImg2ImgInput();
+    String? img2ImgInputEncodedString = await sharedPrefsBloc.getImg2ImgInput();
 
     final List<String> postProcessors = [];
 
@@ -46,6 +47,17 @@ class _TasksBloc {
       if (img2ImgInputEncodedString != null && apiKey == null) {
         throw Exception('Cannot use img2img without logging in.');
       }
+
+      if (img2ImgInputEncodedString != null) {
+        // Transcode image to webp
+        final img = base64.decode(img2ImgInputEncodedString);
+        final transcodedImage = await FlutterImageCompress.compressWithList(
+          img,
+          format: CompressFormat.webp,
+        );
+        img2ImgInputEncodedString = base64.encode(transcodedImage);
+      }
+
       var denoisingStrength = await sharedPrefsBloc.getDenoisingStrength();
       apiKey ??= "0000000000"; // Anonymous API key.
 
