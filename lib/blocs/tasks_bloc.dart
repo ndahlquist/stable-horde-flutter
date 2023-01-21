@@ -46,6 +46,7 @@ class _TasksBloc {
       if (img2ImgInputEncodedString != null && apiKey == null) {
         throw Exception('Cannot use img2img without logging in.');
       }
+      var denoisingStrength = await sharedPrefsBloc.getDenoisingStrength();
       apiKey ??= "0000000000"; // Anonymous API key.
 
       final model = await modelsBloc.getModel(modelName);
@@ -67,7 +68,8 @@ class _TasksBloc {
           'seed_variation': 1000,
           'seed': seed == null ? '' : '$seed',
           'karras': true,
-          if (img2ImgInputEncodedString != null) 'denoising_strength': .4,
+          if (img2ImgInputEncodedString != null)
+            'denoising_strength': denoisingStrength,
           'post_processing': postProcessors,
         },
         'nsfw': false,

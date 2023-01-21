@@ -20,6 +20,14 @@ class ImagePickerPage extends StatefulWidget {
 }
 
 class _ImagePickerPageState extends State<ImagePickerPage> {
+  double _denoisingStrength = .4;
+
+  @override
+  void initState() {
+    getDenoisingStrength();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ExpandablePanel(
@@ -138,35 +146,83 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
             widthFactor: 1,
             child: SectionFrame(
               padding: 8,
-              child: SizedBox(
-                height: 216,
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                          left: 4,
-                          top: 4,
-                          bottom: 4,
-                          right: 8,
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 216,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              left: 4,
+                              top: 4,
+                              bottom: 4,
+                              right: 8,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: const [
+                                Text('Input '),
+                                SizedBox(height: 8),
+                              ],
+                            ),
+                          ),
                         ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
-                            Text('Input '),
-                          ],
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: AspectRatio(
+                            aspectRatio: 1,
+                            child: image,
+                          ),
                         ),
-                      ),
+                      ],
                     ),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: AspectRatio(
-                        aspectRatio: 1,
-                        child: image,
-                      ),
+                  ),
+                  SizedBox(
+                    height: 50,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              left: 4,
+                              top: 4,
+                              bottom: 4,
+                              right: 8,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: const [
+                                Text('Denoising strength '),
+                                SizedBox(height: 8),
+                              ],
+                            ),
+                          ),
+                        ),
+                        SliderTheme(
+                          data: SliderThemeData(
+                            thumbColor: Colors.white,
+                            activeTrackColor: Colors.white,
+                            inactiveTrackColor: Colors.black.withOpacity(.2),
+                          ),
+                          child: Slider(
+                            value: _denoisingStrength,
+                            max: 1,
+                            divisions: 10,
+                            label: _denoisingStrength.toString(),
+                            onChanged: (double value) async {
+                              sharedPrefsBloc.setDenoisingStrength(value);
+                              setState(() {
+                                _denoisingStrength = value;
+                              });
+                            },
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           );
@@ -247,5 +303,14 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
 
     // Refresh the UI.
     setState(() {});
+  }
+
+  void getDenoisingStrength() async {
+    double? denoisingStrength = await sharedPrefsBloc.getDenoisingStrength();
+    if (denoisingStrength != null) {
+      setState(() {
+        _denoisingStrength = denoisingStrength;
+      });
+    }
   }
 }

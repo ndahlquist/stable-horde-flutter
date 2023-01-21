@@ -13,6 +13,7 @@ class _SharedPrefsBloc {
   static const _upscaleKey = 'UPSCALE_KEY';
   static const _codeformersKey = 'CODEFORMERS_KEY';
   static const _img2ImgInputKey = 'IMG2IMG_INPUT_KEY';
+  static const _denoisingStrengthKey = 'DENOISING_STRENGTH_KEY';
 
   static const defaultPrompt =
       "Futuristic spaceship. Rainforest. A painting of a spaceship on a rainforest planet by Caravaggio. Trending on Artstation. chiaroscuro.";
@@ -122,6 +123,21 @@ class _SharedPrefsBloc {
       await prefs.setString(_img2ImgInputKey, encodedFileString);
     } else {
       await prefs.remove(_img2ImgInputKey);
+    }
+  }
+
+  // Returns denoising strength (default is 0.4)
+  Future<double> getDenoisingStrength() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getDouble(_denoisingStrengthKey) ?? .4;
+  }
+
+  Future setDenoisingStrength(double? value) async {
+    final prefs = await SharedPreferences.getInstance();
+    if (value == null) {
+      await prefs.remove(_denoisingStrengthKey);
+    } else {
+      await prefs.setDouble(_denoisingStrengthKey, value);
     }
   }
 }
