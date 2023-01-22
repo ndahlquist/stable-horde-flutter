@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stable_horde_flutter/blocs/conversions_bloc.dart';
-import 'package:stable_horde_flutter/blocs/image_transcode_bloc.dart';
 import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/dialogs/login_dialog.dart';
 import 'package:stable_horde_flutter/utils/image_picker_utils.dart';
@@ -80,11 +79,12 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
                     width: 216,
                     child: Container(
                       decoration: BoxDecoration(
-                          image: DecorationImage(
-                        image: MemoryImage(inputFile),
-                        fit: BoxFit.fill,
-                        alignment: FractionalOffset.topCenter,
-                      )),
+                        image: DecorationImage(
+                          image: MemoryImage(inputFile),
+                          fit: BoxFit.fill,
+                          alignment: FractionalOffset.topCenter,
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -118,8 +118,9 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
                 width: double.infinity,
                 height: 216,
                 decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(.2),
-                    borderRadius: BorderRadius.circular(8)),
+                  color: Colors.black.withOpacity(.2),
+                  borderRadius: BorderRadius.circular(8),
+                ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: const [
@@ -300,14 +301,9 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
 
   void onImagePick(ImageSource imageSource) async {
     Navigator.of(context).pop();
-    Uint8List file = await pickImage(imageSource);
-
-    String b64Bytes = base64.encode(file);
-
-    final img2ImgInputEncodedString =
-        await imageTranscodeBloc.transcodeImageToJpeg(b64Bytes);
-
+    final img2ImgInputEncodedString = await pickImage(imageSource);
     await sharedPrefsBloc.setImg2ImgInput(img2ImgInputEncodedString);
+
     // Refresh the UI.
     setState(() {});
   }

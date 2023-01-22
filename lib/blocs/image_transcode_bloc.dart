@@ -38,15 +38,15 @@ class _ImageTranscodeBloc {
     return outputFile;
   }
 
-  String _transcodeWebp(String inputB64Bytes) {
-    final bytes = base64.decode(inputB64Bytes);
+  String? _transcodeWebp(Uint8List bytes) {
     final image = decodeImage(bytes);
+    if (image == null) return null;
 
-    final transcodedBytes = encodeJpg(image!);
+    final transcodedBytes = encodeJpg(image);
     return base64.encode(transcodedBytes);
   }
 
-  Future<String> transcodeImageToJpeg(String inputB64Bytes) async {
+  Future<String?> transcodeImageToJpgBytes(Uint8List inputB64Bytes) async {
     return await compute(
       _transcodeWebp,
       inputB64Bytes,
