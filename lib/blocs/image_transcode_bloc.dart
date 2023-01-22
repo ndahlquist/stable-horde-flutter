@@ -41,7 +41,6 @@ class _ImageTranscodeBloc {
   String _transcodeWebp(String inputB64Bytes) {
     final bytes = base64.decode(inputB64Bytes);
     final image = decodeImage(bytes);
-    //final image = decodeWebP(param.inputFile.readAsBytesSync())!;
 
     final transcodedBytes = encodeJpg(image!);
     return base64.encode(transcodedBytes);
