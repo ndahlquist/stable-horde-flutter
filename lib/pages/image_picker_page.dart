@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stable_horde_flutter/blocs/conversions_bloc.dart';
+import 'package:stable_horde_flutter/blocs/image_transcode_bloc.dart';
 import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/dialogs/login_dialog.dart';
 import 'package:stable_horde_flutter/utils/image_picker_utils.dart';
@@ -299,18 +300,20 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
     Navigator.of(context).pop();
     Uint8List file = await pickImage(imageSource);
 
-    String encodedFile = base64.encode(file);
-    await sharedPrefsBloc.setImg2ImgInput(encodedFile);
+    String b64Bytes = base64.encode(file);
+
+    final img2ImgInputEncodedString =
+        await imageTranscodeBloc.transcodeImageToJpeg(b64Bytes);
+
+    await sharedPrefsBloc.setImg2ImgInput(img2ImgInputEncodedString);
     // Refresh the UI.
     setState(() {});
   }
 
   void getDenoisingStrength() async {
     double? denoisingStrength = await sharedPrefsBloc.getDenoisingStrength();
-    if (denoisingStrength != null) {
-      setState(() {
-        _denoisingStrength = denoisingStrength;
-      });
-    }
+    setState(() {
+      _denoisingStrength = denoisingStrength;
+    });
   }
 }

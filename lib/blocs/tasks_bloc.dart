@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -46,16 +45,6 @@ class _TasksBloc {
       var apiKey = await sharedPrefsBloc.getApiKey();
       if (img2ImgInputEncodedString != null && apiKey == null) {
         throw Exception('Cannot use img2img without logging in.');
-      }
-
-      if (img2ImgInputEncodedString != null) {
-        // Transcode image to webp
-        final img = base64.decode(img2ImgInputEncodedString);
-        final transcodedImage = await FlutterImageCompress.compressWithList(
-          img,
-          format: CompressFormat.webp,
-        );
-        img2ImgInputEncodedString = base64.encode(transcodedImage);
       }
 
       var denoisingStrength = await sharedPrefsBloc.getDenoisingStrength();
