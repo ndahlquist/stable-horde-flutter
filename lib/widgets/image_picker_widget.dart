@@ -245,8 +245,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
         context: context,
         builder: (_) {
           return const LoginDialog(
-            title:
-                "You are currently anonymous. Login required in order to use Img2Img.",
+            title: "You are currently anonymous. Login to use Img2Img.",
           );
         },
       );

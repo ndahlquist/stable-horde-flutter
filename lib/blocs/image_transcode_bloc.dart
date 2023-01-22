@@ -38,7 +38,7 @@ class _ImageTranscodeBloc {
     return outputFile;
   }
 
-  String? _transcodeWebp(Uint8List bytes) {
+  String? _transcodeToB64Jpg(Uint8List bytes) {
     final image = decodeImage(bytes);
     if (image == null) return null;
 
@@ -48,7 +48,7 @@ class _ImageTranscodeBloc {
 
   Future<String?> transcodeImageToJpgBytes(Uint8List inputB64Bytes) async {
     return await compute(
-      _transcodeWebp,
+      _transcodeToB64Jpg,
       inputB64Bytes,
     );
   }
