@@ -10,6 +10,7 @@ import 'package:stable_horde_flutter/blocs/conversions_bloc.dart';
 import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/dialogs/login_dialog.dart';
 import 'package:stable_horde_flutter/utils/image_picker_utils.dart';
+import 'package:stable_horde_flutter/widgets/denoising_strength_box.dart';
 import 'package:stable_horde_flutter/widgets/section_frame.dart';
 
 class ImagePickerWidget extends StatefulWidget {
@@ -20,14 +21,6 @@ class ImagePickerWidget extends StatefulWidget {
 }
 
 class _ImagePickerWidgetState extends State<ImagePickerWidget> {
-  double _denoisingStrength = .4;
-
-  @override
-  void initState() {
-    getDenoisingStrength();
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return ExpandablePanel(
@@ -181,50 +174,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
                     ],
                   ),
                 ),
-                SizedBox(
-                  height: 50,
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            left: 4,
-                            top: 4,
-                            bottom: 4,
-                            right: 8,
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
-                              Text('Denoising strength '),
-                              SizedBox(height: 8),
-                            ],
-                          ),
-                        ),
-                      ),
-                      SliderTheme(
-                        data: SliderThemeData(
-                          thumbColor: Colors.white,
-                          inactiveTickMarkColor: Colors.black.withOpacity(.1),
-                          activeTrackColor: Colors.white,
-                          inactiveTrackColor: Colors.black.withOpacity(.2),
-                        ),
-                        child: Slider(
-                          value: _denoisingStrength,
-                          max: 1,
-                          divisions: 10,
-                          label: _denoisingStrength.toString(),
-                          onChanged: (double value) async {
-                            await sharedPrefsBloc.setDenoisingStrength(value);
-                            setState(() {
-                              _denoisingStrength = value;
-                            });
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                const DenoisingStrengthBox(),
               ],
             ),
           ),
@@ -305,12 +255,5 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
 
     // Refresh the UI.
     setState(() {});
-  }
-
-  void getDenoisingStrength() async {
-    double? denoisingStrength = await sharedPrefsBloc.getDenoisingStrength();
-    setState(() {
-      _denoisingStrength = denoisingStrength;
-    });
   }
 }
