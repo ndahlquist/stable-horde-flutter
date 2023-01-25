@@ -57,7 +57,8 @@ class _ImageTranscodeBloc {
   }
 
   Future<String?> transcodeImageToSquareJpgBytes(
-      Uint8List inputB64Bytes) async {
+    Uint8List inputB64Bytes,
+  ) async {
     return await compute(
       _transcodeToSquareB64Jpg,
       inputB64Bytes,
