@@ -26,25 +26,29 @@ class _DenoisingStrengthBoxState extends State<DenoisingStrengthBox> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 50,
+    return Padding(
+      padding: const EdgeInsets.only(
+        left: 4,
+        top: 16,
+        bottom: 4,
+      ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(
-                left: 4,
-                top: 4,
-                bottom: 4,
-                right: 8,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text('Denoising strength '),
-                  SizedBox(height: 8),
-                ],
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: const [
+                Text('Denoising strength'),
+                SizedBox(height: 4),
+                Text(
+                  'Smaller values make the result similar to the input image. Larger values create more variation.',
+                  style: TextStyle(
+                    fontSize: 10,
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+              ],
             ),
           ),
           SliderTheme(
@@ -56,9 +60,10 @@ class _DenoisingStrengthBoxState extends State<DenoisingStrengthBox> {
             ),
             child: Slider(
               value: _denoisingStrength,
+              min: .2,
               max: 1,
-              divisions: 10,
-              label: _denoisingStrength.toString(),
+              divisions: 8,
+              label: "${(_denoisingStrength * 100).toInt()}%",
               onChanged: (double value) async {
                 await sharedPrefsBloc.setDenoisingStrength(value);
                 setState(() {
