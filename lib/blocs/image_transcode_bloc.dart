@@ -38,17 +38,27 @@ class _ImageTranscodeBloc {
     return outputFile;
   }
 
-  String? _transcodeToB64Jpg(Uint8List bytes) {
-    final image = decodeImage(bytes);
+  String? _transcodeToSquareB64Jpg(Uint8List bytes) {
+    Image? image = decodeImage(bytes);
     if (image == null) return null;
+
+    // For non-square images, crop down to center square
+    final int x = (image.width - image.height) ~/ 2;
+    final int y = (image.height - image.width) ~/ 2;
+    final int w = image.height;
+    final int h = image.width;
+
+    if (x != 0 || y != 0 || w != image.width || h != image.height) {
+      image = copyCrop(image, x, y, w, h);
+    }
 
     final transcodedBytes = encodeJpg(image);
     return base64.encode(transcodedBytes);
   }
 
-  Future<String?> transcodeImageToJpgBytes(Uint8List inputB64Bytes) async {
+  Future<String?> transcodeImageToSquareJpgBytes(Uint8List inputB64Bytes) async {
     return await compute(
-      _transcodeToB64Jpg,
+      _transcodeToSquareB64Jpg,
       inputB64Bytes,
     );
   }

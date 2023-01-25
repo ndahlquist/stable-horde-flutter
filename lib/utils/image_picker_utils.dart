@@ -22,7 +22,7 @@ Future<String?> pickImage(
 
     if (_file == null) return null;
     final Uint8List bytes = await _file.readAsBytes();
-    return await imageTranscodeBloc.transcodeImageToJpgBytes(bytes);
+    return await imageTranscodeBloc.transcodeImageToSquareJpgBytes(bytes);
   } catch (error, stackTrace) {
     Sentry.captureException(error, stackTrace: stackTrace);
     print(error.toString());
