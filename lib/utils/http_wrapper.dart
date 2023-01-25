@@ -30,14 +30,8 @@ Future<http.Response?> httpGet(
   try {
     return await http.get(uri, headers: headers);
   } on http.ClientException catch (e) {
-    if (e.message.contains("Failed host lookup") ||
-        e.message.contains("Connection timed out") ||
-        e.message.contains("Software caused connection abort")) {
-      // No internet connection or connection interrupted.
-      return null;
-    }
-
-    rethrow;
+    print(e);
+    return null;
   }
 }
 
@@ -58,13 +52,7 @@ Future<http.Response?> httpPost(
       encoding: encoding,
     );
   } on http.ClientException catch (e) {
-    if (e.message.contains("Failed host lookup") ||
-        e.message.contains("Connection timed out") ||
-        e.message.contains("Software caused connection abort")) {
-      // No internet connection or connection interrupted.
-      return null;
-    }
-
+    print(e);
     rethrow;
   }
 }
