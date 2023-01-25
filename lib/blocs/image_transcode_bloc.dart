@@ -56,7 +56,8 @@ class _ImageTranscodeBloc {
     return base64.encode(transcodedBytes);
   }
 
-  Future<String?> transcodeImageToSquareJpgBytes(Uint8List inputB64Bytes) async {
+  Future<String?> transcodeImageToSquareJpgBytes(
+      Uint8List inputB64Bytes) async {
     return await compute(
       _transcodeToSquareB64Jpg,
       inputB64Bytes,
