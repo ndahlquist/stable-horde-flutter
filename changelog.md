@@ -1,3 +1,7 @@
+#1.0.4+12
+- Implement img2img (thanks to @Khosbayar!).
+- Bug fixes.
+
 #1.0.3+11
 - Bug fixes.
 
