@@ -91,6 +91,7 @@ class _UserWidgetState extends State<UserWidget> {
                   onPressed: () async {
                     conversionsBloc.logout();
                     await sharedPrefsBloc.setApiKey(null);
+                    await sharedPrefsBloc.setImg2ImgInput(null);
                     setState(() {});
                   },
                   child: const Text(

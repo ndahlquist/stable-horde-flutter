@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -13,7 +14,7 @@ class _TranscodeParam {
 }
 
 class _ImageTranscodeBloc {
-  void _saveImage(_TranscodeParam param) {
+  void _saveImageJpeg(_TranscodeParam param) {
     final image = decodeWebP(param.inputFile.readAsBytesSync())!;
 
     param.outputFile.writeAsBytesSync(encodeJpg(image));
@@ -30,11 +31,26 @@ class _ImageTranscodeBloc {
     );
 
     await compute(
-      _saveImage,
+      _saveImageJpeg,
       _TranscodeParam(inputFile, outputFile),
     );
 
     return outputFile;
+  }
+
+  String? _transcodeToB64Jpg(Uint8List bytes) {
+    final image = decodeImage(bytes);
+    if (image == null) return null;
+
+    final transcodedBytes = encodeJpg(image);
+    return base64.encode(transcodedBytes);
+  }
+
+  Future<String?> transcodeImageToJpgBytes(Uint8List inputB64Bytes) async {
+    return await compute(
+      _transcodeToB64Jpg,
+      inputB64Bytes,
+    );
   }
 }
 

@@ -7,6 +7,7 @@ import 'package:stable_horde_flutter/blocs/tasks_bloc.dart';
 import 'package:stable_horde_flutter/pages/home_page.dart';
 import 'package:stable_horde_flutter/pages/prompt_edit_page.dart';
 import 'package:stable_horde_flutter/pages/seed_edit_page.dart';
+import 'package:stable_horde_flutter/widgets/image_picker_widget.dart';
 import 'package:stable_horde_flutter/widgets/model_button.dart';
 import 'package:stable_horde_flutter/widgets/section_frame.dart';
 
@@ -28,7 +29,9 @@ class _DreamTabState extends State<DreamTab> {
           children: [
             const SizedBox(height: 16),
             _promptWidget(),
-            const SizedBox(height: 36),
+            const SizedBox(height: 32),
+            const ImagePickerWidget(),
+            const SizedBox(height: 16),
             ExpandablePanel(
               header: const Text(
                 "Advanced Options",
@@ -40,7 +43,7 @@ class _DreamTabState extends State<DreamTab> {
                 iconColor: Colors.white,
               ),
             ),
-            const SizedBox(height: 64),
+            const SizedBox(height: 16),
             FractionallySizedBox(
               widthFactor: 1,
               child: ElevatedButton(

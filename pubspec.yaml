@@ -3,52 +3,38 @@ description: An unofficial Flutter client for the Stable Horde.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
-publish_to: 'none'
+publish_to: "none"
 
 version: 1.0.3+11
 
 environment:
-  sdk: '>=2.17.3 <3.0.0'
-  flutter: '>=3.3.7'
+  sdk: ">=2.17.3 <3.0.0"
+  flutter: ">=3.3.7"
 
 dependencies:
   cached_network_image: ^3.2.3
-
   collection: ^1.16.0
-
+  dotted_border: ^2.0.0+3
   expandable: ^5.0.1
-
-  flutter:
-    sdk: flutter
-
   firebase_analytics: ^10.0.8
   firebase_core: ^2.4.0
   firebase_remote_config: ^3.0.8
-
+  flutter:
+    sdk: flutter
+  flutter_svg: ^1.1.6
   google_fonts: ^3.0.1
-
-  intl: ^0.17.0
-
-  url_launcher: ^6.1.6
-
+  http: ^0.13.5
   image: ^3.2.2
-
-  sentry_flutter: ^6.18.1
-
-  shared_preferences: ^2.0.5
+  image_picker: ^0.8.6
+  intl: ^0.17.0
   isar: ^3.0.5
   isar_flutter_libs: ^3.0.5
-
-  path_provider: ^2.0.11
-
-  share_plus: ^6.3.0
-
-  http: ^0.13.5
-
-  flutter_svg: ^1.1.6
-
   package_info: ^2.0.0
-
+  path_provider: ^2.0.11
+  sentry_flutter: ^6.18.1
+  share_plus: ^6.3.0
+  shared_preferences: ^2.0.5
+  url_launcher: ^6.1.6
 
 dev_dependencies:
   build_runner: ^2.3.2
@@ -59,10 +45,8 @@ dev_dependencies:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
-
 # The following section is specific to Flutter.
 flutter:
-
   uses-material-design: true
 
   assets:

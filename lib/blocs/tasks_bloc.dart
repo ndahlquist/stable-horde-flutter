@@ -17,6 +17,7 @@ class _TasksBloc {
     final negativePrompt = await sharedPrefsBloc.getNegativePrompt();
     final modelName = await sharedPrefsBloc.getModel();
     final seed = await sharedPrefsBloc.getSeed();
+    String? img2ImgInputEncodedString = await sharedPrefsBloc.getImg2ImgInput();
 
     final List<String> postProcessors = [];
 
@@ -41,6 +42,14 @@ class _TasksBloc {
     task!;
 
     try {
+      var apiKey = await sharedPrefsBloc.getApiKey();
+      if (img2ImgInputEncodedString != null && apiKey == null) {
+        throw Exception('Cannot use img2img without logging in.');
+      }
+
+      var denoisingStrength = await sharedPrefsBloc.getDenoisingStrength();
+      apiKey ??= "0000000000"; // Anonymous API key.
+
       final model = await modelsBloc.getModel(modelName);
       print("template: ${model.promptTemplate}");
       final formattedPrompt = model.promptTemplate
@@ -60,14 +69,16 @@ class _TasksBloc {
           'seed_variation': 1000,
           'seed': seed == null ? '' : '$seed',
           'karras': true,
-          //'denoising_strength': mutationRate,
+          if (img2ImgInputEncodedString != null)
+            'denoising_strength': denoisingStrength,
           'post_processing': postProcessors,
         },
         'nsfw': false,
         'censor_nsfw': false,
         'trusted_workers': false,
-        //'source_processing': 'img2img',
-        //'source_image': base64.encode(sourceImage.buffer.asUint8List()),
+        if (img2ImgInputEncodedString != null) 'source_processing': 'img2img',
+        if (img2ImgInputEncodedString != null)
+          'source_image': img2ImgInputEncodedString,
         'models': [modelName],
         'r2': true,
       };

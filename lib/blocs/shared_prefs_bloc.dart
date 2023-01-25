@@ -12,6 +12,8 @@ class _SharedPrefsBloc {
   static const _seedKey = 'SEED_KEY';
   static const _upscaleKey = 'UPSCALE_KEY';
   static const _codeformersKey = 'CODEFORMERS_KEY';
+  static const _img2ImgInputKey = 'IMG2IMG_INPUT_KEY';
+  static const _denoisingStrengthKey = 'DENOISING_STRENGTH_KEY';
 
   static const defaultPrompt =
       "Futuristic spaceship. Rainforest. A painting of a spaceship on a rainforest planet by Caravaggio. Trending on Artstation. chiaroscuro.";
@@ -106,6 +108,37 @@ class _SharedPrefsBloc {
   Future setCodeformersEnabled(bool enabled) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(_codeformersKey, enabled);
+  }
+
+  // Note: This is a base64 encoded image- not a filename!
+  Future<String?> getImg2ImgInput() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_img2ImgInputKey);
+  }
+
+  // Note: This expects a base64 encoded image- not a filename!
+  Future setImg2ImgInput(String? encodedFileString) async {
+    final prefs = await SharedPreferences.getInstance();
+    if (encodedFileString != null) {
+      await prefs.setString(_img2ImgInputKey, encodedFileString);
+    } else {
+      await prefs.remove(_img2ImgInputKey);
+    }
+  }
+
+  // Returns denoising strength (default is 0.4)
+  Future<double> getDenoisingStrength() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getDouble(_denoisingStrengthKey) ?? .4;
+  }
+
+  Future setDenoisingStrength(double? value) async {
+    final prefs = await SharedPreferences.getInstance();
+    if (value == null) {
+      await prefs.remove(_denoisingStrengthKey);
+    } else {
+      await prefs.setDouble(_denoisingStrengthKey, value);
+    }
   }
 }
 
