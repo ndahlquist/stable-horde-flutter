@@ -34,9 +34,13 @@ jobs:
       - run: flutter pub get
       - run: flutter pub run build_runner build --delete-conflicting-outputs
 
+      - name: Dart format
+        run: dart format . --fix
+
       - name: Dart fix
         run: dart fix --apply
 
+      # Note: this step is intentionally duplicated, since dart fix may have created formatting issues.
       - name: Dart format
         run: dart format . --fix
 
