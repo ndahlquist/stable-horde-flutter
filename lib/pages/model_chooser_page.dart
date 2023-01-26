@@ -15,6 +15,9 @@ class ModelChooserPage extends StatefulWidget {
 }
 
 class _ModelChooserPageState extends State<ModelChooserPage> {
+  final _txtSearchController = TextEditingController();
+  String _searchStr = "";
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -44,81 +47,155 @@ class _ModelChooserPageState extends State<ModelChooserPage> {
                 );
               }
               var models = snapshot.data ?? [];
+              if (_searchStr != "") {
+                models = models
+                    .where(
+                      (element) => (element.description
+                              .toLowerCase()
+                              .contains(_searchStr.toLowerCase()) ||
+                          element.name
+                              .toLowerCase()
+                              .contains(_searchStr.toLowerCase())),
+                    )
+                    .toList();
+              }
 
-              return ListView.builder(
-                itemCount: models.length,
-                itemBuilder: (context, index) {
-                  final model = models[index];
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 6,
-                      horizontal: 12,
-                    ),
-                    child: GestureDetector(
-                      onTap: () async {
-                        await sharedPrefsBloc.setModel(model.name);
+              return Column(
+                children: [
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: models.length,
+                      itemBuilder: (context, index) {
+                        final model = models[index];
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 6,
+                            horizontal: 12,
+                          ),
+                          child: GestureDetector(
+                            onTap: () async {
+                              await sharedPrefsBloc.setModel(model.name);
 
-                        if (!mounted) return;
-                        Navigator.of(context).pop();
+                              if (!mounted) return;
+                              Navigator.of(context).pop();
+                            },
+                            child: SectionFrame(
+                              padding: 8,
+                              child: SizedBox(
+                                height: 128,
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 4,
+                                        ),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              model.name,
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 2),
+                                            Text(
+                                              "${model.workerCount} worker${model.workerCount == 1 ? "" : "s"}",
+                                              style: const TextStyle(
+                                                fontSize: 12,
+                                                fontStyle: FontStyle.italic,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 2),
+                                            Expanded(
+                                              child: Text(
+                                                model.description,
+                                                style: const TextStyle(
+                                                    fontSize: 10),
+                                                softWrap: true,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    AspectRatio(
+                                      aspectRatio: 1,
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(4),
+                                        child: CachedNetworkImage(
+                                          imageUrl: model.previewImageUrl,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
                       },
-                      child: SectionFrame(
-                        padding: 8,
-                        child: SizedBox(
-                          height: 128,
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 4,
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        model.name,
-                                        style: const TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 2),
-                                      Text(
-                                        "${model.workerCount} worker${model.workerCount == 1 ? "" : "s"}",
-                                        style: const TextStyle(
-                                          fontSize: 12,
-                                          fontStyle: FontStyle.italic,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 2),
-                                      Expanded(
-                                        child: Text(
-                                          model.description,
-                                          style: const TextStyle(fontSize: 10),
-                                          softWrap: true,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            controller: _txtSearchController,
+                            decoration: InputDecoration(
+                              enabledBorder: const UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white),
+                              ),
+                              focusedBorder: const UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white),
+                              ),
+                              border: const UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white),
+                              ),
+                              hintStyle: const TextStyle(color: Colors.white),
+                              hintText: "Text filter:",
+                              suffixIcon: IconButton(
+                                onPressed: () {
+                                  _txtSearchController.clear();
+                                  setState(() {
+                                    _searchStr = "";
+                                  });
+                                },
+                                icon: const Icon(
+                                  Icons.clear,
+                                  color: Colors.white,
                                 ),
                               ),
-                              AspectRatio(
-                                aspectRatio: 1,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(4),
-                                  child: CachedNetworkImage(
-                                    imageUrl: model.previewImageUrl,
-                                  ),
-                                ),
-                              ),
-                            ],
+                            ),
+                            keyboardType: TextInputType.text,
+                            onSubmitted: (_) {
+                              setState(() {
+                                _searchStr = _txtSearchController.text;
+                              });
+                            },
                           ),
                         ),
-                      ),
+                        IconButton(
+                          onPressed: () {
+                            setState(() {
+                              _searchStr = _txtSearchController.text;
+                            });
+                          },
+                          icon: const Icon(
+                            Icons.search,
+                            size: 30,
+                            color: Colors.white,
+                          ),
+                        )
+                      ],
                     ),
-                  );
-                },
+                  )
+                ],
               );
             },
           ),
