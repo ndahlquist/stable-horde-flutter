@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stable_horde_flutter/blocs/image_transcode_bloc.dart';
 import 'package:stable_horde_flutter/blocs/tasks_bloc.dart';
@@ -100,6 +101,23 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
     );
   }
 
+  Widget _copyButton(String text) {
+    return ElevatedButton(
+      onPressed: () async {
+        await Clipboard.setData(ClipboardData(text: text));
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.grey,
+        foregroundColor: Colors.black,
+        textStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+      ),
+      child: const Icon(
+        Icons.copy,
+        size: 14,
+      ),
+    );
+  }
+
   Widget _page(BuildContext context, StableHordeTask task) {
     return ClipRect(
       child: Stack(
@@ -141,31 +159,55 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
                     ),
                   ),
                   const SizedBox(height: 12),
-                  Text(
-                    '"${task.prompt}"',
-                    style: const TextStyle(
-                      fontSize: 12,
-                      fontStyle: FontStyle.italic,
-                    ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          '"${task.prompt}"',
+                          style: const TextStyle(
+                            fontSize: 12,
+                            fontStyle: FontStyle.italic,
+                          ),
+                          softWrap: false,
+                          maxLines: 4,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 12,
+                      ),
+                      _copyButton(task.prompt),
+                    ],
                   ),
                   const SizedBox(height: 12),
                   if (task.negativePrompt.isNotEmpty)
-                    RichText(
-                      textScaleFactor: MediaQuery.of(context).textScaleFactor,
-                      text: TextSpan(
-                        text: "Negative Prompt: ",
-                        style: const TextStyle(
-                          fontSize: 12,
-                        ),
-                        children: [
-                          TextSpan(
-                            text: '"${task.negativePrompt}"',
-                            style: const TextStyle(
-                              fontStyle: FontStyle.italic,
+                    Row(
+                      children: [
+                        Expanded(
+                          child: RichText(
+                            textScaleFactor:
+                                MediaQuery.of(context).textScaleFactor,
+                            text: TextSpan(
+                              text: "Negative Prompt: ",
+                              style: const TextStyle(
+                                fontSize: 12,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text: '"${task.negativePrompt}"',
+                                  style: const TextStyle(
+                                    fontStyle: FontStyle.italic,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                        const SizedBox(
+                          width: 12,
+                        ),
+                        _copyButton(task.negativePrompt),
+                      ],
                     ),
                   const SizedBox(height: 12),
                   Text(
@@ -175,9 +217,19 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
                   if (task.seed != null)
                     Padding(
                       padding: const EdgeInsets.only(top: 12),
-                      child: Text(
-                        "Seed: ${task.seed}",
-                        style: const TextStyle(fontSize: 12),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              "Seed: ${task.seed}",
+                              style: const TextStyle(fontSize: 12),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 12,
+                          ),
+                          _copyButton(task.seed.toString()),
+                        ],
                       ),
                     ),
                   const Spacer(),
