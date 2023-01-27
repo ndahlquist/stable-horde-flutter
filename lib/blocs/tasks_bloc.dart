@@ -97,8 +97,8 @@ class _TasksBloc {
 
       if (response.statusCode != 202) {
         throw Exception(
-          'Failed to request diffusion: '
-          '${response.statusCode} ${response.body} ${jsonEncode(json)}',
+          '${response.statusCode} ${json['message']}: '
+          '${jsonEncode(json)}',
         );
       }
       final jsonResponse = jsonDecode(response.body);
