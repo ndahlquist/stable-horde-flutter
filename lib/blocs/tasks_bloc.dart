@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
 import 'package:isar/isar.dart';
 import 'package:native_exif/native_exif.dart';
 import 'package:path_provider/path_provider.dart';
