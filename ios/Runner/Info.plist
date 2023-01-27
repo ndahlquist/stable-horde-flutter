@@ -47,10 +47,12 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Photo Library Usage</string>
+	<string>App requires access to the photo library.</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Camera Usage</string>
+	<string>App requires access to the camera.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Microphone Usage</string>
+	<string>App does not require access to the microphone.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>App requires write access to the photo library.</string>
 </dict>
 </plist>
