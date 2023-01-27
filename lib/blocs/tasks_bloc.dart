@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:isar/isar.dart';
+import 'package:native_exif/native_exif.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stable_horde_flutter/blocs/image_transcode_bloc.dart';
@@ -223,6 +224,15 @@ class _TasksBloc {
 
         await jpegFile.copy('${externalDirectory.path}/$outFilename');
         print('transcoded to ${externalDirectory.path}/$outFilename');
+
+        // writing the parameters as exif to the jpg file
+        final exif =
+            await Exif.fromPath('${externalDirectory.path}/$outFilename');
+        final attributes = await exif.getAttributes();
+        attributes!['prompt'] = task.prompt;
+        attributes!['negative_prompt'] = task.negativePrompt;
+        attributes!['seed'] = task.seed.toString();
+        await exif.writeAttributes(attributes);
       } on FileSystemException catch (e) {
         // On Android 10 and before, this can happen if the permission has not been granted.
         // On Android 11 and later, no permission is required.

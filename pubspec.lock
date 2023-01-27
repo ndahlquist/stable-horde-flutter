@@ -534,6 +534,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.4"
+  native_exif:
+    dependency: "direct main"
+    description:
+      name: native_exif
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.0"
   octo_image:
     dependency: transitive
     description:
