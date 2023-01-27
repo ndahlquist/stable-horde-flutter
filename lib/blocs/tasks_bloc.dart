@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:isar/isar.dart';
 import 'package:native_exif/native_exif.dart';
 import 'package:path_provider/path_provider.dart';
@@ -225,14 +226,17 @@ class _TasksBloc {
         await jpegFile.copy('${externalDirectory.path}/$outFilename');
         print('transcoded to ${externalDirectory.path}/$outFilename');
 
-        // writing the parameters as exif to the jpg file
+        // writing the parameters as exif to the jpg file --> testing with https://www.metadata2go.com/
         final exif =
             await Exif.fromPath('${externalDirectory.path}/$outFilename');
-        final attributes = await exif.getAttributes();
-        attributes!['prompt'] = task.prompt;
-        attributes!['negative_prompt'] = task.negativePrompt;
-        attributes!['seed'] = task.seed.toString();
-        await exif.writeAttributes(attributes);
+        final _attributes = await exif.getAttributes() ?? {};
+        _attributes['UserComment'] =
+            "\nprompt: ${task.prompt}\n\nnegative prompt: ${task.negativePrompt}\n\nseed: ${task.seed}";
+        _attributes['Software'] = "Stable Horde Flutter";
+
+        await exif.writeAttributes(_attributes);
+
+        await exif.close();
       } on FileSystemException catch (e) {
         // On Android 10 and before, this can happen if the permission has not been granted.
         // On Android 11 and later, no permission is required.
