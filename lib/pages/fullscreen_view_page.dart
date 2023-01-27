@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stable_horde_flutter/blocs/image_transcode_bloc.dart';
 import 'package:stable_horde_flutter/blocs/tasks_bloc.dart';
@@ -11,6 +10,9 @@ import 'package:stable_horde_flutter/widgets/task_image.dart';
 import 'package:stable_horde_flutter/widgets/task_progress_indicator.dart';
 
 import 'package:share_plus/share_plus.dart';
+
+import '../blocs/shared_prefs_bloc.dart';
+import 'home_page.dart';
 
 class FullScreenViewPage extends StatefulWidget {
   final int initialIndex;
@@ -101,20 +103,21 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
     );
   }
 
-  Widget _copyButton(String text) {
-    return ElevatedButton(
+  Widget _copyButton(String text, Function f) {
+    return ElevatedButton.icon(
       onPressed: () async {
-        await Clipboard.setData(ClipboardData(text: text));
+        await f();
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.grey,
         foregroundColor: Colors.black,
         textStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
       ),
-      child: const Icon(
+      icon: const Icon(
         Icons.copy,
         size: 14,
       ),
+      label: Text(text),
     );
   }
 
@@ -159,55 +162,37 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
                     ),
                   ),
                   const SizedBox(height: 12),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          '"${task.prompt}"',
-                          style: const TextStyle(
-                            fontSize: 12,
-                            fontStyle: FontStyle.italic,
-                          ),
-                          softWrap: false,
-                          maxLines: 4,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 12,
-                      ),
-                      _copyButton(task.prompt),
-                    ],
+                  Text(
+                    '"${task.prompt}"',
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontStyle: FontStyle.italic,
+                    ),
+                    softWrap: false,
+                    maxLines: 4,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(
+                    width: 12,
                   ),
                   const SizedBox(height: 12),
                   if (task.negativePrompt.isNotEmpty)
-                    Row(
-                      children: [
-                        Expanded(
-                          child: RichText(
-                            textScaleFactor:
-                                MediaQuery.of(context).textScaleFactor,
-                            text: TextSpan(
-                              text: "Negative Prompt: ",
-                              style: const TextStyle(
-                                fontSize: 12,
-                              ),
-                              children: [
-                                TextSpan(
-                                  text: '"${task.negativePrompt}"',
-                                  style: const TextStyle(
-                                    fontStyle: FontStyle.italic,
-                                  ),
-                                ),
-                              ],
+                    RichText(
+                      textScaleFactor: MediaQuery.of(context).textScaleFactor,
+                      text: TextSpan(
+                        text: "Negative Prompt: ",
+                        style: const TextStyle(
+                          fontSize: 12,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: '"${task.negativePrompt}"',
+                            style: const TextStyle(
+                              fontStyle: FontStyle.italic,
                             ),
                           ),
-                        ),
-                        const SizedBox(
-                          width: 12,
-                        ),
-                        _copyButton(task.negativePrompt),
-                      ],
+                        ],
+                      ),
                     ),
                   const SizedBox(height: 12),
                   Text(
@@ -217,21 +202,47 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
                   if (task.seed != null)
                     Padding(
                       padding: const EdgeInsets.only(top: 12),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              "Seed: ${task.seed}",
-                              style: const TextStyle(fontSize: 12),
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 12,
-                          ),
-                          _copyButton(task.seed.toString()),
-                        ],
+                      child: Text(
+                        "Seed: ${task.seed}",
+                        style: const TextStyle(fontSize: 12),
                       ),
                     ),
+                  const SizedBox(
+                    height: 24,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _copyButton("All parameters", () async {
+                        await sharedPrefsBloc.setPrompt(task.prompt);
+                        await sharedPrefsBloc
+                            .setNegativePrompt(task.negativePrompt);
+                        await sharedPrefsBloc.setSeed(task.seed);
+                        await Navigator.of(context).push(
+                          MaterialPageRoute(
+                            settings: const RouteSettings(name: "DreamTab"),
+                            builder: (_) => const HomePage(),
+                          ),
+                        );
+                      }),
+                      const SizedBox(
+                        width: 12,
+                      ),
+                      _copyButton("Parameters without seed", () async {
+                        await sharedPrefsBloc.setPrompt(task.prompt);
+                        await sharedPrefsBloc
+                            .setNegativePrompt(task.negativePrompt);
+                        await sharedPrefsBloc.setSeed(-1);
+
+                        await Navigator.of(context).push(
+                          MaterialPageRoute(
+                            settings: const RouteSettings(name: "DreamTab"),
+                            builder: (_) => const HomePage(),
+                          ),
+                        );
+                      })
+                    ],
+                  ),
                   const Spacer(),
                   _shareButton(task),
                 ],
