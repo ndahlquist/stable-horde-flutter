@@ -141,7 +141,7 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
                     ),
                   ),
                   const SizedBox(height: 12),
-                  Text(
+                  SelectableText(
                     '"${task.prompt}"',
                     style: const TextStyle(
                       fontSize: 12,
@@ -150,9 +150,8 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
                   ),
                   const SizedBox(height: 12),
                   if (task.negativePrompt.isNotEmpty)
-                    RichText(
-                      textScaleFactor: MediaQuery.of(context).textScaleFactor,
-                      text: TextSpan(
+                    SelectableText.rich(
+                      TextSpan(
                         text: "Negative Prompt: ",
                         style: const TextStyle(
                           fontSize: 12,
@@ -166,16 +165,17 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
                           ),
                         ],
                       ),
+                      textScaleFactor: MediaQuery.of(context).textScaleFactor,
                     ),
                   const SizedBox(height: 12),
-                  Text(
+                  SelectableText(
                     "Model: ${task.model}",
                     style: const TextStyle(fontSize: 12),
                   ),
                   if (task.seed != null)
                     Padding(
                       padding: const EdgeInsets.only(top: 12),
-                      child: Text(
+                      child: SelectableText(
                         "Seed: ${task.seed}",
                         style: const TextStyle(fontSize: 12),
                       ),

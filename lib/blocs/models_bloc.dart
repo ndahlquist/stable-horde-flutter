@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stable_horde_flutter/model/stable_horde_model.dart';
 import 'package:stable_horde_flutter/utils/http_wrapper.dart';
 
@@ -61,7 +60,7 @@ class _ModelsBloc {
       return models.firstWhere((element) => element.name == modelName);
     } catch (e) {
       print(e);
-      Sentry.captureMessage("Models length: ${models.length}");
+      print("Models length: ${models.length}");
       throw Exception("Model $modelName not found: $e");
     }
   }
