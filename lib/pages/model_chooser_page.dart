@@ -15,6 +15,8 @@ class ModelChooserPage extends StatefulWidget {
 }
 
 class _ModelChooserPageState extends State<ModelChooserPage> {
+  bool _isSearching = false;
+
   final _txtSearchController = TextEditingController();
 
   @override
@@ -27,7 +29,28 @@ class _ModelChooserPageState extends State<ModelChooserPage> {
           appBar: AppBar(
             backgroundColor: Colors.transparent,
             elevation: 0,
-            title: const Text("Models"),
+            title: _isSearching ? _searchField() : const Text("Models"),
+            actions: [
+              if (!_isSearching)
+                IconButton(
+                  onPressed: () {
+                    setState(() {
+                      _isSearching = true;
+                    });
+                  },
+                  icon: const Icon(Icons.search),
+                ),
+              if (_isSearching)
+                IconButton(
+                  onPressed: () {
+                    setState(() {
+                      _txtSearchController.clear();
+                      _isSearching = false;
+                    });
+                  },
+                  icon: const Icon(Icons.close),
+                ),
+            ],
           ),
           body: FutureBuilder<List<StableHordeModel>>(
             future: modelsBloc.getModels(),
@@ -59,142 +82,113 @@ class _ModelChooserPageState extends State<ModelChooserPage> {
                 }).toList();
               }
 
-              return Column(
-                children: [
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: models.length,
-                      itemBuilder: (context, index) {
-                        final model = models[index];
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 6,
-                            horizontal: 12,
-                          ),
-                          child: GestureDetector(
-                            onTap: () async {
-                              await sharedPrefsBloc.setModel(model.name);
-
-                              if (!mounted) return;
-                              Navigator.of(context).pop();
-                            },
-                            child: SectionFrame(
-                              padding: 8,
-                              child: SizedBox(
-                                height: 128,
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 4,
-                                        ),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              model.name,
-                                              style: const TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            const SizedBox(height: 2),
-                                            Text(
-                                              "${model.workerCount} worker${model.workerCount == 1 ? "" : "s"}",
-                                              style: const TextStyle(
-                                                fontSize: 12,
-                                                fontStyle: FontStyle.italic,
-                                              ),
-                                            ),
-                                            const SizedBox(height: 2),
-                                            Expanded(
-                                              child: Text(
-                                                model.description,
-                                                style: const TextStyle(
-                                                  fontSize: 10,
-                                                ),
-                                                softWrap: true,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    AspectRatio(
-                                      aspectRatio: 1,
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(4),
-                                        child: CachedNetworkImage(
-                                          imageUrl: model.previewImageUrl,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                      },
+              return ListView.builder(
+                itemCount: models.length,
+                keyboardDismissBehavior:
+                    ScrollViewKeyboardDismissBehavior.onDrag,
+                itemBuilder: (context, index) {
+                  final model = models[index];
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 6,
+                      horizontal: 12,
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            controller: _txtSearchController,
-                            decoration: InputDecoration(
-                              enabledBorder: const UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white),
-                              ),
-                              focusedBorder: const UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white),
-                              ),
-                              border: const UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white),
-                              ),
-                              hintStyle: const TextStyle(color: Colors.white),
-                              hintText: "Text filter:",
-                              suffixIcon: IconButton(
-                                onPressed: () {
-                                  _txtSearchController.clear();
-                                  setState(() {});
-                                },
-                                icon: const Icon(
-                                  Icons.clear,
-                                  color: Colors.white,
+                    child: GestureDetector(
+                      onTap: () async {
+                        await sharedPrefsBloc.setModel(model.name);
+
+                        if (!mounted) return;
+                        Navigator.of(context).pop();
+                      },
+                      child: SectionFrame(
+                        padding: 8,
+                        child: SizedBox(
+                          height: 128,
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 4,
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        model.name,
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 2),
+                                      Text(
+                                        "${model.workerCount} worker${model.workerCount == 1 ? "" : "s"}",
+                                        style: const TextStyle(
+                                          fontSize: 12,
+                                          fontStyle: FontStyle.italic,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 2),
+                                      Expanded(
+                                        child: Text(
+                                          model.description,
+                                          style: const TextStyle(
+                                            fontSize: 10,
+                                          ),
+                                          softWrap: true,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                            keyboardType: TextInputType.text,
-                            onSubmitted: (_) {
-                              setState(() {});
-                            },
+                              AspectRatio(
+                                aspectRatio: 1,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(4),
+                                  child: CachedNetworkImage(
+                                    imageUrl: model.previewImageUrl,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        IconButton(
-                          onPressed: () {
-                            setState(() {});
-                          },
-                          icon: const Icon(
-                            Icons.search,
-                            size: 30,
-                            color: Colors.white,
-                          ),
-                        )
-                      ],
+                      ),
                     ),
-                  )
-                ],
+                  );
+                },
               );
             },
           ),
         ),
       ],
+    );
+  }
+
+  Widget _searchField() {
+    return TextField(
+      controller: _txtSearchController,
+      autofocus: true,
+      decoration: const InputDecoration(
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.white),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.white),
+        ),
+        border: UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.white),
+        ),
+        hintStyle: TextStyle(color: Colors.white),
+        hintText: "Search",
+      ),
+      keyboardType: TextInputType.text,
+      onChanged: (_) {
+        setState(() {});
+      },
     );
   }
 }
