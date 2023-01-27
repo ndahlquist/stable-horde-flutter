@@ -16,7 +16,6 @@ class ModelChooserPage extends StatefulWidget {
 
 class _ModelChooserPageState extends State<ModelChooserPage> {
   final _txtSearchController = TextEditingController();
-  String _searchStr = "";
 
   @override
   Widget build(BuildContext context) {
@@ -47,17 +46,17 @@ class _ModelChooserPageState extends State<ModelChooserPage> {
                 );
               }
               var models = snapshot.data ?? [];
-              if (_searchStr != "") {
-                models = models
-                    .where(
-                      (element) => (element.description
-                              .toLowerCase()
-                              .contains(_searchStr.toLowerCase()) ||
-                          element.name
-                              .toLowerCase()
-                              .contains(_searchStr.toLowerCase())),
-                    )
-                    .toList();
+              if (_txtSearchController.text.isNotEmpty) {
+                final searchStr = _txtSearchController.text.toLowerCase();
+                models = models.where((StableHordeModel model) {
+                  if (model.name.toLowerCase().contains(searchStr)) {
+                    return true;
+                  }
+                  if (model.description.toLowerCase().contains(searchStr)) {
+                    return true;
+                  }
+                  return false;
+                }).toList();
               }
 
               return Column(
@@ -114,7 +113,8 @@ class _ModelChooserPageState extends State<ModelChooserPage> {
                                               child: Text(
                                                 model.description,
                                                 style: const TextStyle(
-                                                    fontSize: 10),
+                                                  fontSize: 10,
+                                                ),
                                                 softWrap: true,
                                               ),
                                             ),
@@ -162,9 +162,7 @@ class _ModelChooserPageState extends State<ModelChooserPage> {
                               suffixIcon: IconButton(
                                 onPressed: () {
                                   _txtSearchController.clear();
-                                  setState(() {
-                                    _searchStr = "";
-                                  });
+                                  setState(() {});
                                 },
                                 icon: const Icon(
                                   Icons.clear,
@@ -174,17 +172,13 @@ class _ModelChooserPageState extends State<ModelChooserPage> {
                             ),
                             keyboardType: TextInputType.text,
                             onSubmitted: (_) {
-                              setState(() {
-                                _searchStr = _txtSearchController.text;
-                              });
+                              setState(() {});
                             },
                           ),
                         ),
                         IconButton(
                           onPressed: () {
-                            setState(() {
-                              _searchStr = _txtSearchController.text;
-                            });
+                            setState(() {});
                           },
                           icon: const Icon(
                             Icons.search,
