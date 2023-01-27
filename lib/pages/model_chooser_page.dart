@@ -134,9 +134,7 @@ class _ModelChooserPageState extends State<ModelChooserPage> {
                                       Expanded(
                                         child: Text(
                                           model.description,
-                                          style: const TextStyle(
-                                            fontSize: 10,
-                                          ),
+                                          style: const TextStyle(fontSize: 10),
                                           softWrap: true,
                                         ),
                                       ),
