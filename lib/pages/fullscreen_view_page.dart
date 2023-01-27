@@ -168,9 +168,6 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
                       fontSize: 12,
                       fontStyle: FontStyle.italic,
                     ),
-                    softWrap: false,
-                    maxLines: 4,
-                    overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(
                     width: 12,
@@ -218,6 +215,7 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
                         await sharedPrefsBloc
                             .setNegativePrompt(task.negativePrompt);
                         await sharedPrefsBloc.setSeed(task.seed);
+                        if (!mounted) return;
                         await Navigator.of(context).push(
                           MaterialPageRoute(
                             settings: const RouteSettings(name: "DreamTab"),
@@ -233,7 +231,7 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
                         await sharedPrefsBloc
                             .setNegativePrompt(task.negativePrompt);
                         await sharedPrefsBloc.setSeed(-1);
-
+                        if (!mounted) return;
                         await Navigator.of(context).push(
                           MaterialPageRoute(
                             settings: const RouteSettings(name: "DreamTab"),
