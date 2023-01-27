@@ -15,6 +15,10 @@ class ModelChooserPage extends StatefulWidget {
 }
 
 class _ModelChooserPageState extends State<ModelChooserPage> {
+  bool _isSearching = false;
+
+  final _txtSearchController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -25,7 +29,28 @@ class _ModelChooserPageState extends State<ModelChooserPage> {
           appBar: AppBar(
             backgroundColor: Colors.transparent,
             elevation: 0,
-            title: const Text("Models"),
+            title: _isSearching ? _searchField() : const Text("Models"),
+            actions: [
+              if (!_isSearching)
+                IconButton(
+                  onPressed: () {
+                    setState(() {
+                      _isSearching = true;
+                    });
+                  },
+                  icon: const Icon(Icons.search),
+                ),
+              if (_isSearching)
+                IconButton(
+                  onPressed: () {
+                    setState(() {
+                      _txtSearchController.clear();
+                      _isSearching = false;
+                    });
+                  },
+                  icon: const Icon(Icons.close),
+                ),
+            ],
           ),
           body: FutureBuilder<List<StableHordeModel>>(
             future: modelsBloc.getModels(),
@@ -44,9 +69,23 @@ class _ModelChooserPageState extends State<ModelChooserPage> {
                 );
               }
               var models = snapshot.data ?? [];
+              if (_txtSearchController.text.isNotEmpty) {
+                final searchStr = _txtSearchController.text.toLowerCase();
+                models = models.where((StableHordeModel model) {
+                  if (model.name.toLowerCase().contains(searchStr)) {
+                    return true;
+                  }
+                  if (model.description.toLowerCase().contains(searchStr)) {
+                    return true;
+                  }
+                  return false;
+                }).toList();
+              }
 
               return ListView.builder(
                 itemCount: models.length,
+                keyboardDismissBehavior:
+                    ScrollViewKeyboardDismissBehavior.onDrag,
                 itemBuilder: (context, index) {
                   final model = models[index];
                   return Padding(
@@ -124,6 +163,30 @@ class _ModelChooserPageState extends State<ModelChooserPage> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _searchField() {
+    return TextField(
+      controller: _txtSearchController,
+      autofocus: true,
+      decoration: const InputDecoration(
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.white),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.white),
+        ),
+        border: UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.white),
+        ),
+        hintStyle: TextStyle(color: Colors.white),
+        hintText: "Search",
+      ),
+      keyboardType: TextInputType.text,
+      onChanged: (_) {
+        setState(() {});
+      },
     );
   }
 }
