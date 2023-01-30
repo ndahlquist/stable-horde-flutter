@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stable_horde_flutter/blocs/image_transcode_bloc.dart';
+import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/blocs/tasks_bloc.dart';
 import 'package:stable_horde_flutter/main.dart';
 import 'package:stable_horde_flutter/model/stable_horde_task.dart';
@@ -11,7 +12,6 @@ import 'package:stable_horde_flutter/widgets/task_progress_indicator.dart';
 
 import 'package:share_plus/share_plus.dart';
 
-import '../blocs/shared_prefs_bloc.dart';
 import 'home_page.dart';
 
 class FullScreenViewPage extends StatefulWidget {
@@ -103,11 +103,9 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
     );
   }
 
-  Widget _copyButton(String text, Function f) {
+  Widget _copyButton(String text, void Function() onPressed) {
     return ElevatedButton.icon(
-      onPressed: () async {
-        await f();
-      },
+      onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.grey,
         foregroundColor: Colors.black,
