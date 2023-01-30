@@ -307,6 +307,19 @@ class _DreamTabState extends State<DreamTab> {
       print(error);
       print(stackTrace);
       Sentry.captureException(error, stackTrace: stackTrace);
+
+      showDialog(
+        context: homeController.context(),
+        builder: (context) => AlertDialog(
+          content: Text(error.toString()),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text("OK"),
+            ),
+          ],
+        ),
+      );
     });
     homeController.animateToPage(1);
   }
