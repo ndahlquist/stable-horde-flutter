@@ -214,12 +214,8 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
                             .setNegativePrompt(task.negativePrompt);
                         await sharedPrefsBloc.setSeed(task.seed);
                         if (!mounted) return;
-                        await Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                            settings: const RouteSettings(name: "DreamTab"),
-                            builder: (_) => const HomePage(),
-                          ),
-                        );
+                        Navigator.of(context).pop();
+                        homeController.animateToPage(0);
                       }),
                       const SizedBox(
                         width: 12,
@@ -230,12 +226,8 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
                             .setNegativePrompt(task.negativePrompt);
                         await sharedPrefsBloc.setSeed(-1);
                         if (!mounted) return;
-                        await Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                            settings: const RouteSettings(name: "DreamTab"),
-                            builder: (_) => const HomePage(),
-                          ),
-                        );
+                        Navigator.of(context).pop();
+                        homeController.animateToPage(0);
                       })
                     ],
                   ),
