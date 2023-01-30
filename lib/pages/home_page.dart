@@ -19,7 +19,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
 
-    homeController.animateToPageCallback = (page) {
+    homeController._animateToPageCallback = (page) {
       _pageController.animateToPage(
         page,
         duration: const Duration(milliseconds: 500),
@@ -106,10 +106,10 @@ class _HomePageState extends State<HomePage> {
 }
 
 class _HomeController {
-  void Function(int)? animateToPageCallback;
+  void Function(int)? _animateToPageCallback;
 
   void animateToPage(int page) {
-    final callback = animateToPageCallback;
+    final callback = _animateToPageCallback;
     if (callback != null) {
       callback(page);
     }

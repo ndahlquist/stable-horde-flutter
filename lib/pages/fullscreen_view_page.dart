@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stable_horde_flutter/blocs/image_transcode_bloc.dart';
+import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/blocs/tasks_bloc.dart';
 import 'package:stable_horde_flutter/main.dart';
 import 'package:stable_horde_flutter/model/stable_horde_task.dart';
@@ -10,6 +11,8 @@ import 'package:stable_horde_flutter/widgets/task_image.dart';
 import 'package:stable_horde_flutter/widgets/task_progress_indicator.dart';
 
 import 'package:share_plus/share_plus.dart';
+
+import 'home_page.dart';
 
 class FullScreenViewPage extends StatefulWidget {
   final int initialIndex;
@@ -100,6 +103,22 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
     );
   }
 
+  Widget _copyButton(String text, void Function() onPressed) {
+    return ElevatedButton.icon(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.grey,
+        foregroundColor: Colors.black,
+        textStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+      ),
+      icon: const Icon(
+        Icons.copy,
+        size: 14,
+      ),
+      label: Text(text),
+    );
+  }
+
   Widget _page(BuildContext context, StableHordeTask task) {
     return ClipRect(
       child: Stack(
@@ -148,6 +167,9 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
                       fontStyle: FontStyle.italic,
                     ),
                   ),
+                  const SizedBox(
+                    width: 12,
+                  ),
                   const SizedBox(height: 12),
                   if (task.negativePrompt.isNotEmpty)
                     SelectableText.rich(
@@ -180,6 +202,35 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
                         style: const TextStyle(fontSize: 12),
                       ),
                     ),
+                  const SizedBox(
+                    height: 24,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _copyButton("All parameters", () async {
+                        await sharedPrefsBloc.setPrompt(task.prompt);
+                        await sharedPrefsBloc
+                            .setNegativePrompt(task.negativePrompt);
+                        await sharedPrefsBloc.setSeed(task.seed);
+                        if (!mounted) return;
+                        Navigator.of(context).pop();
+                        homeController.animateToPage(0);
+                      }),
+                      const SizedBox(
+                        width: 12,
+                      ),
+                      _copyButton("Parameters without seed", () async {
+                        await sharedPrefsBloc.setPrompt(task.prompt);
+                        await sharedPrefsBloc
+                            .setNegativePrompt(task.negativePrompt);
+                        await sharedPrefsBloc.setSeed(-1);
+                        if (!mounted) return;
+                        Navigator.of(context).pop();
+                        homeController.animateToPage(0);
+                      })
+                    ],
+                  ),
                   const Spacer(),
                   _shareButton(task),
                 ],
