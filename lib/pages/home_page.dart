@@ -26,6 +26,7 @@ class _HomePageState extends State<HomePage> {
         curve: Curves.easeInOut,
       );
     };
+    homeController._context = context;
   }
 
   @override
@@ -107,12 +108,17 @@ class _HomePageState extends State<HomePage> {
 
 class _HomeController {
   void Function(int)? _animateToPageCallback;
+  BuildContext? _context;
 
   void animateToPage(int page) {
     final callback = _animateToPageCallback;
     if (callback != null) {
       callback(page);
     }
+  }
+
+  BuildContext context() {
+    return _context!;
   }
 }
 

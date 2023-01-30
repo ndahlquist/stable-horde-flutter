@@ -91,7 +91,7 @@ class _TasksBloc {
 
       if (response == null) {
         throw Exception(
-          'Failed to request diffusion due to internet connection',
+          'Failed due to internet connection',
         );
       }
 
@@ -106,6 +106,7 @@ class _TasksBloc {
           '${jsonEncode(json)}',
         );
       }
+
       final jsonResponse = jsonDecode(response.body);
 
       task.stableHordeId = jsonResponse['id']!;
