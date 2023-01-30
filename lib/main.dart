@@ -62,6 +62,8 @@ Future _mainGuarded() async {
         // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
         // We recommend adjusting this value in production.
         options.tracesSampleRate = 1.0;
+        // This enables better HTTP body debugging and IP tracing.
+        options.sendDefaultPii;
       },
       appRunner: () => runApp(const MyApp()),
     );
