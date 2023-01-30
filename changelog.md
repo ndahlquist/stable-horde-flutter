@@ -1,3 +1,10 @@
+#1.0.5+13
+- Added search for models (thanks to @beeekey!).
+- Include stable diffusion parameters in exif data (thanks to @beeekey!).
+- Fixed sharing wasn't working when it is on iPad (thanks to @khosbayar!).
+- Added copy parameter buttons for images (thanks to @beeekey!).
+- Added error messages for tasks that failed.
+
 #1.0.4+12
 - Implement img2img (thanks to @Khosbayar!).
 - Bug fixes.
