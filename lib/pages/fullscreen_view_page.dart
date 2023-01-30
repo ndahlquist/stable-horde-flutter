@@ -90,12 +90,12 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
   Widget _shareButton(StableHordeTask task) {
     if (!task.isComplete()) return const SizedBox.shrink();
 
-    return IconButton(
-      icon: Icon(Icons.adaptive.share),
-      onPressed: () async {
-        final outputFile = await imageTranscodeBloc.transcodeImageToJpg(task);
-
-        await Share.shareXFiles([XFile(outputFile.path)]);
+    return Builder(
+      builder: (BuildContext context) {
+        return IconButton(
+          icon: Icon(Icons.adaptive.share),
+          onPressed: () => _onShare(context, task),
+        );
       },
     );
   }
@@ -200,6 +200,16 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
         BlendMode.modulate,
       ),
       child: child,
+    );
+  }
+
+  void _onShare(BuildContext context, StableHordeTask task) async {
+    final RenderBox box = context.findRenderObject() as RenderBox;
+    final outputFile = await imageTranscodeBloc.transcodeImageToJpg(task);
+
+    await Share.shareXFiles(
+      [XFile(outputFile.path)],
+      sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size,
     );
   }
 }
