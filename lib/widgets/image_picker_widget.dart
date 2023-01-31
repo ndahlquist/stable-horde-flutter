@@ -271,6 +271,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
       // Refresh the UI.
       setState(() {});
     } else {
+      if (!mounted) return;
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
