@@ -4,6 +4,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stable_horde_flutter/blocs/conversions_bloc.dart';
@@ -250,10 +251,38 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
 
   void onImagePick(ImageSource imageSource) async {
     Navigator.of(context).pop();
-    final img2ImgInputEncodedString = await pickImage(imageSource);
-    await sharedPrefsBloc.setImg2ImgInput(img2ImgInputEncodedString);
 
-    // Refresh the UI.
-    setState(() {});
+    final img2ImgInputEncodedString = await pickImage(imageSource);
+
+    // Check if pickImage thrown PlatformException
+    final String? error;
+    if (img2ImgInputEncodedString == null) {
+      error = "Something went wrong, please try again.";
+    } else if (img2ImgInputEncodedString == "photo_access_denied") {
+      error = "Please allow photo access to use Img2Img.";
+    } else if (img2ImgInputEncodedString == "camera_access_denied") {
+      error = "Please allow camera access to use Img2Img.";
+    } else {
+      error = null;
+    }
+
+    if (error == null) {
+      await sharedPrefsBloc.setImg2ImgInput(img2ImgInputEncodedString);
+      // Refresh the UI.
+      setState(() {});
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          content: Text(error!),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text("OK"),
+            ),
+          ],
+        ),
+      );
+    }
   }
 }
