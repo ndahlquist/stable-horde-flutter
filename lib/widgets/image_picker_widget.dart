@@ -249,7 +249,6 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
   }
 
   void onImagePick(ImageSource imageSource) async {
-    if (!mounted) return;
     Navigator.of(context).pop();
 
     final img2ImgInputEncodedString = await pickImage(imageSource);
