@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:package_info/package_info.dart';
@@ -32,6 +33,9 @@ Future<http.Response?> httpGet(
   } on http.ClientException catch (e) {
     print(e);
     return null;
+  } on IOException catch (e) {
+    print(e);
+    return null;
   }
 }
 
@@ -53,6 +57,9 @@ Future<http.Response?> httpPost(
     );
   } on http.ClientException catch (e) {
     print(e);
-    rethrow;
+    return null;
+  } on IOException catch (e) {
+    print(e);
+    return null;
   }
 }
