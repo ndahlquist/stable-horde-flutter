@@ -42,6 +42,8 @@ class _DonateImageWidgetState extends State<DonateImageWidget> {
   void onChangedDonateImageOption(bool value) async {
     // Check login state
     var apiKey = await sharedPrefsBloc.getApiKey();
+    if (!mounted) return;
+
     if (apiKey == null) {
       await showDialog(
         context: context,
