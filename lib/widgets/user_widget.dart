@@ -92,6 +92,7 @@ class _UserWidgetState extends State<UserWidget> {
                     conversionsBloc.logout();
                     await sharedPrefsBloc.setApiKey(null);
                     await sharedPrefsBloc.setImg2ImgInput(null);
+                    await sharedPrefsBloc.setDonateImageOption(true);
                     Sentry.configureScope((scope) {
                       scope.setUser(null);
                     });

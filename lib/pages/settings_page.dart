@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stable_horde_flutter/blocs/conversions_bloc.dart';
 import 'package:stable_horde_flutter/pages/onboarding_page.dart';
 import 'package:stable_horde_flutter/utils/legal_links.dart';
+import 'package:stable_horde_flutter/widgets/donate_image_widget.dart';
 import 'package:stable_horde_flutter/widgets/glassmorphic_background.dart';
 import 'package:stable_horde_flutter/widgets/user_widget.dart';
 
@@ -28,7 +29,23 @@ class SettingsPage extends StatelessWidget {
                 const UserWidget(),
                 const Padding(
                   padding: EdgeInsets.only(
-                    top: 64.0,
+                    top: 32.0,
+                    left: 16.0,
+                    bottom: 16,
+                  ),
+                  child: Text(
+                    'Options',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.left,
+                  ),
+                ),
+                const DonateImageWidget(),
+                const Padding(
+                  padding: EdgeInsets.only(
+                    top: 32.0,
                     left: 16.0,
                     bottom: 16,
                   ),
@@ -78,7 +95,7 @@ class SettingsPage extends StatelessWidget {
                 ),
                 const Padding(
                   padding: EdgeInsets.only(
-                    top: 64.0,
+                    top: 32.0,
                     left: 16.0,
                     bottom: 16,
                   ),

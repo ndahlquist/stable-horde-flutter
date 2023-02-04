@@ -14,6 +14,7 @@ class _SharedPrefsBloc {
   static const _codeformersKey = 'CODEFORMERS_KEY';
   static const _img2ImgInputKey = 'IMG2IMG_INPUT_KEY';
   static const _denoisingStrengthKey = 'DENOISING_STRENGTH_KEY';
+  static const _donateImageOptionKey = 'DONATE_IMAGE_OPTION_KEY';
 
   static const defaultPrompt =
       "Futuristic spaceship. Rainforest. A painting of a spaceship on a rainforest planet by Caravaggio. Trending on Artstation. chiaroscuro.";
@@ -139,6 +140,17 @@ class _SharedPrefsBloc {
     } else {
       await prefs.setDouble(_denoisingStrengthKey, value);
     }
+  }
+
+  // Returns donate image option (default should be true)
+  Future<bool> isDonateImageEnabled() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_donateImageOptionKey) ?? true;
+  }
+
+  Future setDonateImageOption(bool value) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_donateImageOptionKey, value);
   }
 }
 
