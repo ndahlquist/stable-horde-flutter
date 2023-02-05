@@ -58,6 +58,10 @@ class _TasksBloc {
           .replaceAll('{np}', ' ### $negativePrompt');
       print(formattedPrompt);
 
+      var isDonateImageEnabled = await sharedPrefsBloc.isDonateImageEnabled();
+      final shouldShare =
+          isDonateImageEnabled && img2ImgInputEncodedString == null;
+
       final json = {
         'prompt': formattedPrompt,
         'params': {
@@ -82,6 +86,7 @@ class _TasksBloc {
           'source_image': img2ImgInputEncodedString,
         'models': [modelName],
         'r2': true,
+        if (shouldShare) 'shared': true
       };
 
       final response = await httpPost(
