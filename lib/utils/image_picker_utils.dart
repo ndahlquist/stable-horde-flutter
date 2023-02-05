@@ -1,5 +1,4 @@
-import 'dart:typed_data';
-
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stable_horde_flutter/blocs/image_transcode_bloc.dart';
@@ -23,7 +22,11 @@ Future<String?> pickImage(
     if (_file == null) return null;
     final Uint8List bytes = await _file.readAsBytes();
     return await imageTranscodeBloc.transcodeImageToSquareJpgBytes(bytes);
-  } catch (error, stackTrace) {
+  } on PlatformException catch (error, stackTrace) {
+    print(error.toString());
+    Sentry.captureException(error, stackTrace: stackTrace);
+    return error.code;
+  } on Exception catch (error, stackTrace) {
     Sentry.captureException(error, stackTrace: stackTrace);
     print(error.toString());
     return null;
