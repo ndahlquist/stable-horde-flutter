@@ -101,15 +101,9 @@ class _TasksBloc {
       }
 
       if (response.statusCode != 202) {
-        // Redact this, both for user privacy and because it makes the logs hard to use.
-        if (json.containsKey('source_image')) {
-          json['source_image'] = 'REDACTED';
-        }
-
-        throw Exception(
-          '${response.statusCode} ${json['message']}: '
-          '${jsonEncode(json)}',
-        );
+        final responseJson = jsonDecode(response.body);
+        final message = responseJson['message'];
+        throw Exception(message);
       }
 
       final jsonResponse = jsonDecode(response.body);
