@@ -13,12 +13,13 @@ class _DenoisingStrengthBoxState extends State<DenoisingStrengthBox> {
 
   @override
   void initState() {
-    getDenoisingStrength();
+    _updateDenoisingStrength();
     super.initState();
   }
 
-  void getDenoisingStrength() async {
+  void _updateDenoisingStrength() async {
     double? denoisingStrength = await sharedPrefsBloc.getDenoisingStrength();
+    if (!mounted) return;
     setState(() {
       _denoisingStrength = denoisingStrength;
     });
