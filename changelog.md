@@ -1,4 +1,9 @@
-#1.0.5+13, 1.0.5+14, 1.0.5+15
+#1.0.6+16
+- Added permission denied handling when picking image for Img2Img (thanks to @khosbayar!).
+- Added new donate image option (thanks to @khosbayar!).
+- Bug fixes.
+
+#1.0.5+13,14,15
 - Added search for models (thanks to @beeekey!).
 - Include stable diffusion parameters in exif data (thanks to @beeekey!).
 - Fixed sharing wasn't working when it is on iPad (thanks to @khosbayar!).
