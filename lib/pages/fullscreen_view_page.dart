@@ -106,11 +106,7 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
   Widget _copyButton(String text, void Function() onPressed) {
     return ElevatedButton.icon(
       onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.grey,
-        foregroundColor: Colors.black,
-        textStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-      ),
+      style: ElevatedButton.styleFrom(foregroundColor: Colors.black87),
       icon: const Icon(
         Icons.copy,
         size: 14,
