@@ -161,7 +161,6 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
                     height: 24,
                   ),
                   Row(
-                    //mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       _copyButton("All parameters", () async {
                         await sharedPrefsBloc.setPrompt(task.prompt);
