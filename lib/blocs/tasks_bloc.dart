@@ -183,8 +183,9 @@ class _TasksBloc {
   }
 
   Future<bool> _retrieveTaskResult(StableHordeTask task) async {
-    final url =
-        'https://stablehorde.net/api/v2/generate/status/${task.stableHordeId!}';
+    final stableHordeId = task.stableHordeId;
+    if (stableHordeId == null) return false;
+    final url = 'https://stablehorde.net/api/v2/generate/status/$stableHordeId';
 
     final response = await httpGet(url);
     if (response == null) return false;
