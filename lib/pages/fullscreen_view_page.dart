@@ -160,53 +160,12 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
                     ),
                   ),
                   const SizedBox(height: 12),
-                  SelectableText(
-                    '"${task.prompt}"',
-                    style: const TextStyle(
-                      fontSize: 12,
-                      fontStyle: FontStyle.italic,
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 12,
-                  ),
-                  const SizedBox(height: 12),
-                  if (task.negativePrompt.isNotEmpty)
-                    SelectableText.rich(
-                      TextSpan(
-                        text: "Negative Prompt: ",
-                        style: const TextStyle(
-                          fontSize: 12,
-                        ),
-                        children: [
-                          TextSpan(
-                            text: '"${task.negativePrompt}"',
-                            style: const TextStyle(
-                              fontStyle: FontStyle.italic,
-                            ),
-                          ),
-                        ],
-                      ),
-                      textScaleFactor: MediaQuery.of(context).textScaleFactor,
-                    ),
-                  const SizedBox(height: 12),
-                  SelectableText(
-                    "Model: ${task.model}",
-                    style: const TextStyle(fontSize: 12),
-                  ),
-                  if (task.seed != null)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 12),
-                      child: SelectableText(
-                        "Seed: ${task.seed}",
-                        style: const TextStyle(fontSize: 12),
-                      ),
-                    ),
+                  Expanded(child: _imageParametersTextBody(task)),
                   const SizedBox(
                     height: 24,
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    //mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       _copyButton("All parameters", () async {
                         await sharedPrefsBloc.setPrompt(task.prompt);
@@ -231,7 +190,6 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
                       })
                     ],
                   ),
-                  const Spacer(),
                   _shareButton(task),
                 ],
               ),
@@ -239,6 +197,56 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _imageParametersTextBody(StableHordeTask task) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SelectableText(
+          '"${task.prompt}"',
+          style: const TextStyle(
+            fontSize: 12,
+            fontStyle: FontStyle.italic,
+          ),
+        ),
+        const SizedBox(
+          width: 12,
+        ),
+        const SizedBox(height: 12),
+        if (task.negativePrompt.isNotEmpty)
+          SelectableText.rich(
+            TextSpan(
+              text: "Negative Prompt: ",
+              style: const TextStyle(
+                fontSize: 12,
+              ),
+              children: [
+                TextSpan(
+                  text: '"${task.negativePrompt}"',
+                  style: const TextStyle(
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+              ],
+            ),
+            textScaleFactor: MediaQuery.of(context).textScaleFactor,
+          ),
+        const SizedBox(height: 12),
+        SelectableText(
+          "Model: ${task.model}",
+          style: const TextStyle(fontSize: 12),
+        ),
+        if (task.seed != null)
+          Padding(
+            padding: const EdgeInsets.only(top: 12),
+            child: SelectableText(
+              "Seed: ${task.seed}",
+              style: const TextStyle(fontSize: 12),
+            ),
+          ),
+      ],
     );
   }
 
