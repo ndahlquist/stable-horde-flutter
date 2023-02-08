@@ -1,4 +1,4 @@
-#1.0.6+16
+#1.0.6+16,17
 - Added permission denied handling when picking image for Img2Img (thanks to @khosbayar!).
 - Added new donate image option (thanks to @khosbayar!).
 - Bug fixes.
