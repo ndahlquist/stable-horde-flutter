@@ -66,8 +66,10 @@ class _HomePageState extends State<HomePage> {
             backgroundColor: const Color(0x9454545B),
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
-                icon: Icon(Icons.draw),
+                icon: Icon(Icons.draw),  
                 label: 'Dream',
+
+
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.account_circle),
