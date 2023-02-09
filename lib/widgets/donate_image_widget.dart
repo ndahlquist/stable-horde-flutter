@@ -9,19 +9,16 @@ class DonateImageWidget extends StatefulWidget {
 }
 
 class _DonateImageWidgetState extends State<DonateImageWidget> {
-  late bool _donateImageOptionEnabled;
+  bool _donateImageOptionEnabled = false;
 
   @override
   void initState() {
-    getDonateImageOption();
     super.initState();
-  }
 
-  void getDonateImageOption() async {
-    bool isDonateImageOptionEnabled =
-        await sharedPrefsBloc.isDonateImageEnabled();
-    setState(() {
-      _donateImageOptionEnabled = isDonateImageOptionEnabled;
+    sharedPrefsBloc.isDonateImageEnabled().then((value) {
+      setState(() {
+        _donateImageOptionEnabled = value;
+      });
     });
   }
 
