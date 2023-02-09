@@ -43,9 +43,9 @@ class SettingsPage extends StatelessWidget {
                     textAlign: TextAlign.left,
                   ),
                 ),
-                const DonateImageWidget(),
-                SizedBox(height: 16),
                 const SaveImagesWidget(),
+                const SizedBox(height: 16),
+                const DonateImageWidget(),
                 const Padding(
                   padding: EdgeInsets.only(
                     top: 32.0,
