@@ -163,7 +163,6 @@ class _SharedPrefsBloc {
     // https://developer.android.com/about/versions/11/privacy/storage
     if (Platform.isAndroid) {
       final version = await DeviceInfoPlugin().androidInfo;
-      print("Android SDK version: ${version.version.sdkInt}");
       if (version.version.sdkInt < 30) {
         final status = await Permission.storage.status;
         if (!status.isGranted) {
