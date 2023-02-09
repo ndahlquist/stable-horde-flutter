@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:device_info/device_info.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Provides access to shared preferences.
@@ -15,6 +19,7 @@ class _SharedPrefsBloc {
   static const _img2ImgInputKey = 'IMG2IMG_INPUT_KEY';
   static const _denoisingStrengthKey = 'DENOISING_STRENGTH_KEY';
   static const _donateImageOptionKey = 'DONATE_IMAGE_OPTION_KEY';
+  static const _saveImagesOptionKey = 'SAVE_IMAGES_OPTION_KEY';
 
   static const defaultPrompt =
       "Futuristic spaceship. Rainforest. A painting of a spaceship on a rainforest planet by Caravaggio. Trending on Artstation. chiaroscuro.";
@@ -151,6 +156,28 @@ class _SharedPrefsBloc {
   Future setDonateImageOption(bool value) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(_donateImageOptionKey, value);
+  }
+
+  Future<bool> getSaveImageEnabled() async {
+    // Before Android 10 (API level 30), we require the WRITE_EXTERNAL_STORAGE permission.
+    // https://developer.android.com/about/versions/11/privacy/storage
+    if (Platform.isAndroid) {
+      final version = await DeviceInfoPlugin().androidInfo;
+      if (version.version.sdkInt < 30) {
+        final status = await Permission.storage.status;
+        if (!status.isGranted) {
+          return false;
+        }
+      }
+    }
+
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_saveImagesOptionKey) ?? true;
+  }
+
+  Future setSaveImageEnabled(bool value) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_saveImagesOptionKey, value);
   }
 }
 

@@ -4,6 +4,7 @@ import 'package:stable_horde_flutter/pages/onboarding_page.dart';
 import 'package:stable_horde_flutter/utils/legal_links.dart';
 import 'package:stable_horde_flutter/widgets/donate_image_widget.dart';
 import 'package:stable_horde_flutter/widgets/glassmorphic_background.dart';
+import 'package:stable_horde_flutter/widgets/save_images_widget.dart';
 import 'package:stable_horde_flutter/widgets/user_widget.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -42,6 +43,8 @@ class SettingsPage extends StatelessWidget {
                     textAlign: TextAlign.left,
                   ),
                 ),
+                const SaveImagesWidget(),
+                const SizedBox(height: 16),
                 const DonateImageWidget(),
                 const Padding(
                   padding: EdgeInsets.only(
