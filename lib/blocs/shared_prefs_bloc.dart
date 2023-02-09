@@ -1,3 +1,4 @@
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Provides access to shared preferences.
@@ -155,8 +156,13 @@ class _SharedPrefsBloc {
   }
 
   Future<bool> getSaveImageEnabled() async {
+    final status = await Permission.storage.status;
+    if (!status.isGranted) {
+      return false;
+    }
+
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getBool(_saveImagesOptionKey) ?? false;
+    return prefs.getBool(_saveImagesOptionKey) ?? true;
   }
 
   Future setSaveImageEnabled(bool value) async {
