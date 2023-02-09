@@ -15,6 +15,7 @@ dependencies:
   cached_network_image: ^3.2.3
   collection: ^1.16.0
   dotted_border: ^2.0.0+3
+  device_info: ^2.0.3
   expandable: ^5.0.1
   firebase_analytics: ^10.0.8
   firebase_core: ^2.4.0

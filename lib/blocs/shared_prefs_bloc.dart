@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:device_info/device_info.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -156,9 +159,17 @@ class _SharedPrefsBloc {
   }
 
   Future<bool> getSaveImageEnabled() async {
-    final status = await Permission.storage.status;
-    if (!status.isGranted) {
-      return false;
+    // Before Android 10 (API level 30), we require the WRITE_EXTERNAL_STORAGE permission.
+    // https://developer.android.com/about/versions/11/privacy/storage
+    if (Platform.isAndroid) {
+      final version = await DeviceInfoPlugin().androidInfo;
+      print("Android SDK version: ${version.version.sdkInt}");
+      if (version.version.sdkInt < 30) {
+        final status = await Permission.storage.status;
+        if (!status.isGranted) {
+          return false;
+        }
+      }
     }
 
     final prefs = await SharedPreferences.getInstance();
