@@ -17,7 +17,7 @@ class _SaveImagesWidgetState extends State<SaveImagesWidget> {
   void initState() {
     super.initState();
 
-    sharedPrefsBloc.isDonateImageEnabled().then((value) {
+    sharedPrefsBloc.getSaveImageEnabled().then((value) {
       setState(() {
         _saveEnabled = value;
       });
@@ -38,37 +38,15 @@ class _SaveImagesWidgetState extends State<SaveImagesWidget> {
       activeTrackColor: Colors.white,
       activeColor: Colors.white,
       value: _saveEnabled,
-      onChanged: onChangedDonateImageOption,
+      onChanged: _onChanged,
       subtitle: Text(
         'Save a copy of each generated image to your phone\'s $externalDirectory directory.',
       ),
     );
   }
 
-  void onChangedDonateImageOption(bool value) async {
-    // Check login state
-    var apiKey = await sharedPrefsBloc.getApiKey();
-    if (!mounted) return;
-
-    if (apiKey == null) {
-      await showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          content: const Text(
-            'All images from anonymous users are donated. To turn off donation, create a Stable Horde account.',
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text("OK"),
-            )
-          ],
-        ),
-      );
-      return;
-    }
-
-    await sharedPrefsBloc.setDonateImageOption(value);
+  void _onChanged(bool value) async {
+    await sharedPrefsBloc.setSaveImageEnabled(value);
 
     setState(() {
       _saveEnabled = value;
