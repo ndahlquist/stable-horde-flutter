@@ -78,7 +78,7 @@ class _TasksBloc {
             'denoising_strength': denoisingStrength,
           'post_processing': postProcessors,
         },
-        'nsfw': false,
+        'nsfw': true,
         'censor_nsfw': false,
         'trusted_workers': false,
         if (img2ImgInputEncodedString != null) 'source_processing': 'img2img',
