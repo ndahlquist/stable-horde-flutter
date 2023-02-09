@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 
 class SaveImagesWidget extends StatefulWidget {
@@ -46,6 +47,11 @@ class _SaveImagesWidgetState extends State<SaveImagesWidget> {
   }
 
   void _onChanged(bool value) async {
+    final status = await Permission.storage.status;
+    if (!status.isGranted) {
+      await Permission.storage.request();
+    }
+
     await sharedPrefsBloc.setSaveImageEnabled(value);
 
     setState(() {
