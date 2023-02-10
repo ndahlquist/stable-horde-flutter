@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:isar/isar.dart';
-import 'package:native_exif/native_exif.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stable_horde_flutter/blocs/image_transcode_bloc.dart';
@@ -243,18 +242,6 @@ class _TasksBloc {
       final outFilename = task.imageFilename!.replaceAll('.webp', '.jpg');
       await jpegFile.copy('${externalDirectory.path}/$outFilename');
       print('transcoded to ${externalDirectory.path}/$outFilename');
-
-      // writing the parameters as exif to the jpg file --> testing with https://www.metadata2go.com/
-      final exif =
-          await Exif.fromPath('${externalDirectory.path}/$outFilename');
-      final _attributes = await exif.getAttributes() ?? {};
-      _attributes['UserComment'] =
-          "\nprompt: ${task.prompt}\n\nnegative prompt: ${task.negativePrompt}\n\nseed: ${task.seed}";
-      _attributes['Software'] = "Stable Horde Flutter";
-
-      await exif.writeAttributes(_attributes);
-
-      await exif.close();
     }
 
     return true;
