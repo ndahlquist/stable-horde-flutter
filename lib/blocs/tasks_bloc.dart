@@ -100,13 +100,12 @@ class _TasksBloc {
         );
       }
 
-      if (response.statusCode != 202) {
-        final responseJson = jsonDecode(response.body);
-        final message = responseJson['message'];
-        throw StableHordeException(message);
-      }
-
       final jsonResponse = jsonDecode(response.body);
+
+      if (response.statusCode != 202) {
+        final message = jsonResponse['message'];
+        throw StableHordeException(message, jsonEncode(json));
+      }
 
       task.stableHordeId = jsonResponse['id']!;
       await isar.writeTxn(() async {
