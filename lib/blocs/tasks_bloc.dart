@@ -8,6 +8,7 @@ import 'package:stable_horde_flutter/blocs/image_transcode_bloc.dart';
 import 'package:stable_horde_flutter/blocs/models_bloc.dart';
 import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/main.dart';
+import 'package:stable_horde_flutter/model/stable_horde_exception.dart';
 import 'package:stable_horde_flutter/model/stable_horde_task.dart';
 import 'package:stable_horde_flutter/utils/http_wrapper.dart';
 
@@ -99,13 +100,12 @@ class _TasksBloc {
         );
       }
 
-      if (response.statusCode != 202) {
-        final responseJson = jsonDecode(response.body);
-        final message = responseJson['message'];
-        throw Exception(message);
-      }
-
       final jsonResponse = jsonDecode(response.body);
+
+      if (response.statusCode != 202) {
+        final message = jsonResponse['message'];
+        throw StableHordeException(message, jsonEncode(json));
+      }
 
       task.stableHordeId = jsonResponse['id']!;
       await isar.writeTxn(() async {

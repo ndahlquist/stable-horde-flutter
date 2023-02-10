@@ -13,6 +13,7 @@ import 'package:stable_horde_flutter/blocs/conversions_bloc.dart';
 import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/blocs/tasks_bloc.dart';
 import 'package:stable_horde_flutter/firebase_options.dart';
+import 'package:stable_horde_flutter/model/stable_horde_exception.dart';
 import 'package:stable_horde_flutter/model/stable_horde_task.dart';
 import 'package:stable_horde_flutter/pages/home_page.dart';
 import 'package:stable_horde_flutter/pages/onboarding_page.dart';
@@ -64,10 +65,20 @@ Future _mainGuarded() async {
         options.tracesSampleRate = 1.0;
         // This enables better HTTP body debugging and IP tracing.
         options.sendDefaultPii;
+        options.beforeSend = _beforeSend;
       },
       appRunner: () => runApp(const MyApp()),
     );
   }
+}
+
+FutureOr<SentryEvent?> _beforeSend(SentryEvent event, {dynamic hint}) async {
+  final throwable = event.throwable;
+  if (throwable is StableHordeException) {
+    // Manually set fingerprint to the error message, to group errors by message.
+    event = event.copyWith(fingerprint: [throwable.message]);
+  }
+  return event;
 }
 
 // Before v1.0.1 (Jan 2023), we used getApplicationDocumentsDirectory.
