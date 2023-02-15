@@ -1,3 +1,7 @@
+#1.0.7+18
+- Add settings option to save images.
+- Bug fixes.
+
 #1.0.6+16,17
 - Added permission denied handling when picking image for Img2Img (thanks to @khosbayar!).
 - Added new donate image option (thanks to @khosbayar!).
