@@ -267,6 +267,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
 
     if (error == null) {
       await sharedPrefsBloc.setImg2ImgInput(img2ImgInputEncodedString);
+      if (!mounted) return;
       // Refresh the UI.
       setState(() {});
     } else {
