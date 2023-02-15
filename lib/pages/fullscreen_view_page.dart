@@ -178,7 +178,7 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
                         await sharedPrefsBloc.setPrompt(task.prompt);
                         await sharedPrefsBloc
                             .setNegativePrompt(task.negativePrompt);
-                        await sharedPrefsBloc.setSeed(-1);
+                        await sharedPrefsBloc.setSeed(null);
                         if (!mounted) return;
                         Navigator.of(context).pop();
                         homeController.animateToPage(0);
