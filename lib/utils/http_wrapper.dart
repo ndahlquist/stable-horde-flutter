@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:package_info/package_info.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 
 Future<Map<String, String>?> getHttpHeaders(String? apiKey) async {
@@ -36,6 +37,17 @@ Future<http.Response?> httpGet(
   } on IOException catch (e) {
     print(e);
     return null;
+  } on Exception catch (e) {
+    Sentry.addBreadcrumb(
+      Breadcrumb(
+        message: 'httpGet: $e',
+        data: {
+          'url': url,
+          'headers': headers,
+        },
+      ),
+    );
+    rethrow;
   }
 }
 
@@ -61,5 +73,16 @@ Future<http.Response?> httpPost(
   } on IOException catch (e) {
     print(e);
     return null;
+  } on Exception catch (e) {
+    Sentry.addBreadcrumb(
+      Breadcrumb(
+        message: 'httpGet: $e',
+        data: {
+          'url': url,
+          'headers': headers,
+        },
+      ),
+    );
+    rethrow;
   }
 }
