@@ -249,7 +249,7 @@ class _TasksBloc {
 
   Future _waitOnTask(StableHordeTask task) async {
     for (int i = 0; i < 10000; i++) {
-      await Future.delayed(const Duration(seconds: 7));
+      await Future.delayed(const Duration(seconds: 8));
       print('update ${task.dbId} -- $i');
       try {
         bool complete = await _checkTaskCompletion(task);
