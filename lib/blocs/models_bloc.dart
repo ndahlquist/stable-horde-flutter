@@ -144,13 +144,13 @@ class _ModelsBloc {
 
     if (response == null) {
       throw Exception(
-        'Failed to get models due to internet connection.',
+        'Failed to get model details due to internet connection.',
       );
     }
 
     if (response.statusCode != 200) {
       throw Exception(
-        'Failed to get models: '
+        'Failed to get model details: '
         '${response.statusCode} ${response.body}',
       );
     }
