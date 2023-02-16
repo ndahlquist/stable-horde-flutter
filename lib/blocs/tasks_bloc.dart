@@ -109,7 +109,11 @@ class _TasksBloc {
         }
 
         final message = jsonResponse['message'];
-        throw StableHordeException(message, jsonEncode(json));
+        throw StableHordeException(
+          message,
+          response.statusCode,
+          jsonEncode(json),
+        );
       }
 
       task.stableHordeId = jsonResponse['id']!;
