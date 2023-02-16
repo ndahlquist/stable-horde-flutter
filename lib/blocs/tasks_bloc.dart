@@ -103,6 +103,11 @@ class _TasksBloc {
       final jsonResponse = jsonDecode(response.body);
 
       if (response.statusCode != 202) {
+        if (json.containsKey('source_image')) {
+          // Redact this to make the logs easier to read and for privacy.
+          json['source_image'] = '[REDACTED]';
+        }
+
         final message = jsonResponse['message'];
         throw StableHordeException(message, jsonEncode(json));
       }
