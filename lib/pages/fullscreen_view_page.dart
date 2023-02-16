@@ -258,16 +258,17 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
   }
 
   void _onShare(BuildContext context, StableHordeTask task) async {
-    final RenderBox? box = context.findRenderObject() as RenderBox?;
+    final renderObject = context.findRenderObject();
     final outputFile = await imageTranscodeBloc.transcodeImageToJpg(task);
 
-    if (box == null) {
-      await Share.shareXFiles([XFile(outputFile.path)]);
-    } else {
+    if (renderObject is RenderBox) {
+      final box = renderObject;
       await Share.shareXFiles(
         [XFile(outputFile.path)],
         sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size,
       );
+    } else {
+      await Share.shareXFiles([XFile(outputFile.path)]);
     }
   }
 }
