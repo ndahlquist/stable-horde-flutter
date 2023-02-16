@@ -1,5 +1,4 @@
 class StableHordeException implements Exception {
-
   final String message;
   final int statusCode;
   final String payloadJson;
