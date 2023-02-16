@@ -237,20 +237,26 @@ class _TasksBloc {
     bool copyEnabled = await sharedPrefsBloc.getSaveImageEnabled();
 
     if (copyEnabled) {
-      final jpegFile = await imageTranscodeBloc.transcodeImageToJpg(task);
+      try {
+        final jpegFile = await imageTranscodeBloc.transcodeImageToJpg(task);
 
-      final Directory externalDirectory;
-      if (Platform.isAndroid) {
-        externalDirectory = Directory("/sdcard/Pictures/stable-diffusion");
-      } else {
-        externalDirectory = await getApplicationDocumentsDirectory();
+        final Directory externalDirectory;
+        if (Platform.isAndroid) {
+          externalDirectory = Directory("/sdcard/Pictures/stable-diffusion");
+        } else {
+          externalDirectory = await getApplicationDocumentsDirectory();
+        }
+
+        await externalDirectory.create();
+
+        final outFilename = task.imageFilename!.replaceAll('.webp', '.jpg');
+        await jpegFile.copy('${externalDirectory.path}/$outFilename');
+        print('transcoded to ${externalDirectory.path}/$outFilename');
+      } catch (e, stackTrace) {
+        print(e);
+        print(stackTrace);
+        Sentry.captureException(e, stackTrace: stackTrace);
       }
-
-      await externalDirectory.create();
-
-      final outFilename = task.imageFilename!.replaceAll('.webp', '.jpg');
-      await jpegFile.copy('${externalDirectory.path}/$outFilename');
-      print('transcoded to ${externalDirectory.path}/$outFilename');
     }
 
     return true;
