@@ -75,8 +75,20 @@ Future _mainGuarded() async {
 FutureOr<SentryEvent?> _beforeSend(SentryEvent event, {dynamic hint}) async {
   final throwable = event.throwable;
   if (throwable is StableHordeException) {
+    var message = throwable.message;
+
+    // If the message contains "your IP address has been put into timeout for [number] more seconds.",
+    // redact the number so that it gets grouped with other issues of this type.
+    message = message.replaceAllMapped(
+      RegExp(
+        r"your IP address has been put into timeout for (\d+) more seconds.",
+      ),
+      (match) =>
+          "your IP address has been put into timeout for [number] more seconds.",
+    );
+
     // Manually set fingerprint to the error message, to group errors by message.
-    event = event.copyWith(fingerprint: [throwable.message]);
+    event = event.copyWith(fingerprint: [message]);
   }
   return event;
 }
