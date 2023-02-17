@@ -1,3 +1,6 @@
+#1.0.8+19
+- Bug fixes.
+
 #1.0.7+18
 - Add settings option to save images.
 - Bug fixes.
