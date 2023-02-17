@@ -95,6 +95,8 @@ class _LoginDialogState extends State<LoginDialog> {
                   Navigator.of(context).pop();
                 }
               } finally {
+                // ignore: control_flow_in_finally
+                if (!mounted) return;
                 setState(() {
                   _validating = false;
                 });
