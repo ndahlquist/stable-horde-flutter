@@ -21,6 +21,7 @@ class StableHordeTask {
   DateTime? estimatedCompletionTime;
 
   bool failed = false;
+  String? errorMessage;
 
   StableHordeTask(this.prompt, this.negativePrompt, this.model);
 

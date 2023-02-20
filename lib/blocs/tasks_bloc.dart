@@ -109,6 +109,7 @@ class _TasksBloc {
         }
 
         final message = jsonResponse['message'];
+        task.errorMessage = message;
         throw StableHordeException(
           message,
           response.statusCode,
@@ -120,8 +121,9 @@ class _TasksBloc {
       await isar.writeTxn(() async {
         isar.stableHordeTasks.put(task);
       });
-    } on Exception catch (_) {
+    } on Exception catch (e) {
       task.failed = true;
+      task.errorMessage ??= e.toString();
       await isar.writeTxn(() async {
         isar.stableHordeTasks.put(task);
       });
@@ -136,6 +138,7 @@ class _TasksBloc {
     final taskId = task.stableHordeId;
     if (taskId == null) {
       task.failed = true;
+      task.errorMessage = 'Failed to submit task';
       await isar.writeTxn(() async {
         isar.stableHordeTasks.put(task);
       });
@@ -151,6 +154,7 @@ class _TasksBloc {
       print(response);
       await isar.writeTxn(() async {
         task.failed = true;
+        task.errorMessage = 'Failed to retrieve task';
         isar.stableHordeTasks.put(task);
       });
       return false;
@@ -284,6 +288,7 @@ class _TasksBloc {
         print(stackTrace);
 
         task.failed = true;
+        task.errorMessage = e.toString();
         await isar.writeTxn(() async {
           isar.stableHordeTasks.put(task);
         });
