@@ -37,7 +37,10 @@ class _SharedPrefsBloc {
 
   Future<String?> getApiKey() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getString(_apiKeyKey)?.trim().replaceAll("[^\\p{ASCII}]", "");
+    return prefs.getString(_apiKeyKey)?.replaceAll(
+          RegExp(r"[^A-Za-z0-9]"),
+          "",
+        );
   }
 
   Future<void> setApiKey(String? apiKey) async {
