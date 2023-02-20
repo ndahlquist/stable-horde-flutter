@@ -17,48 +17,53 @@ const StableHordeTaskSchema = CollectionSchema(
   name: r'StableHordeTask',
   id: -7546272270601559721,
   properties: {
-    r'estimatedCompletionTime': PropertySchema(
+    r'errorMessage': PropertySchema(
       id: 0,
+      name: r'errorMessage',
+      type: IsarType.string,
+    ),
+    r'estimatedCompletionTime': PropertySchema(
+      id: 1,
       name: r'estimatedCompletionTime',
       type: IsarType.dateTime,
     ),
     r'failed': PropertySchema(
-      id: 1,
+      id: 2,
       name: r'failed',
       type: IsarType.bool,
     ),
     r'firstShowProgressIndicatorTime': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'firstShowProgressIndicatorTime',
       type: IsarType.dateTime,
     ),
     r'imageFilename': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'imageFilename',
       type: IsarType.string,
     ),
     r'model': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'model',
       type: IsarType.string,
     ),
     r'negativePrompt': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'negativePrompt',
       type: IsarType.string,
     ),
     r'prompt': PropertySchema(
-      id: 6,
+      id: 7,
       name: r'prompt',
       type: IsarType.string,
     ),
     r'seed': PropertySchema(
-      id: 7,
+      id: 8,
       name: r'seed',
       type: IsarType.long,
     ),
     r'stableHordeId': PropertySchema(
-      id: 8,
+      id: 9,
       name: r'stableHordeId',
       type: IsarType.string,
     )
@@ -84,6 +89,12 @@ int _stableHordeTaskEstimateSize(
 ) {
   var bytesCount = offsets.last;
   {
+    final value = object.errorMessage;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
     final value = object.imageFilename;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -107,15 +118,16 @@ void _stableHordeTaskSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeDateTime(offsets[0], object.estimatedCompletionTime);
-  writer.writeBool(offsets[1], object.failed);
-  writer.writeDateTime(offsets[2], object.firstShowProgressIndicatorTime);
-  writer.writeString(offsets[3], object.imageFilename);
-  writer.writeString(offsets[4], object.model);
-  writer.writeString(offsets[5], object.negativePrompt);
-  writer.writeString(offsets[6], object.prompt);
-  writer.writeLong(offsets[7], object.seed);
-  writer.writeString(offsets[8], object.stableHordeId);
+  writer.writeString(offsets[0], object.errorMessage);
+  writer.writeDateTime(offsets[1], object.estimatedCompletionTime);
+  writer.writeBool(offsets[2], object.failed);
+  writer.writeDateTime(offsets[3], object.firstShowProgressIndicatorTime);
+  writer.writeString(offsets[4], object.imageFilename);
+  writer.writeString(offsets[5], object.model);
+  writer.writeString(offsets[6], object.negativePrompt);
+  writer.writeString(offsets[7], object.prompt);
+  writer.writeLong(offsets[8], object.seed);
+  writer.writeString(offsets[9], object.stableHordeId);
 }
 
 StableHordeTask _stableHordeTaskDeserialize(
@@ -125,17 +137,18 @@ StableHordeTask _stableHordeTaskDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = StableHordeTask(
+    reader.readString(offsets[7]),
     reader.readString(offsets[6]),
     reader.readString(offsets[5]),
-    reader.readString(offsets[4]),
   );
   object.dbId = id;
-  object.estimatedCompletionTime = reader.readDateTimeOrNull(offsets[0]);
-  object.failed = reader.readBool(offsets[1]);
-  object.firstShowProgressIndicatorTime = reader.readDateTimeOrNull(offsets[2]);
-  object.imageFilename = reader.readStringOrNull(offsets[3]);
-  object.seed = reader.readLongOrNull(offsets[7]);
-  object.stableHordeId = reader.readStringOrNull(offsets[8]);
+  object.errorMessage = reader.readStringOrNull(offsets[0]);
+  object.estimatedCompletionTime = reader.readDateTimeOrNull(offsets[1]);
+  object.failed = reader.readBool(offsets[2]);
+  object.firstShowProgressIndicatorTime = reader.readDateTimeOrNull(offsets[3]);
+  object.imageFilename = reader.readStringOrNull(offsets[4]);
+  object.seed = reader.readLongOrNull(offsets[8]);
+  object.stableHordeId = reader.readStringOrNull(offsets[9]);
   return object;
 }
 
@@ -147,22 +160,24 @@ P _stableHordeTaskDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readDateTimeOrNull(offset)) as P;
-    case 1:
-      return (reader.readBool(offset)) as P;
-    case 2:
-      return (reader.readDateTimeOrNull(offset)) as P;
-    case 3:
       return (reader.readStringOrNull(offset)) as P;
+    case 1:
+      return (reader.readDateTimeOrNull(offset)) as P;
+    case 2:
+      return (reader.readBool(offset)) as P;
+    case 3:
+      return (reader.readDateTimeOrNull(offset)) as P;
     case 4:
-      return (reader.readString(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 5:
       return (reader.readString(offset)) as P;
     case 6:
       return (reader.readString(offset)) as P;
     case 7:
-      return (reader.readLongOrNull(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 8:
+      return (reader.readLongOrNull(offset)) as P;
+    case 9:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -315,6 +330,160 @@ extension StableHordeTaskQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      errorMessageIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'errorMessage',
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      errorMessageIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'errorMessage',
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      errorMessageEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'errorMessage',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      errorMessageGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'errorMessage',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      errorMessageLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'errorMessage',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      errorMessageBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'errorMessage',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      errorMessageStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'errorMessage',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      errorMessageEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'errorMessage',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      errorMessageContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'errorMessage',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      errorMessageMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'errorMessage',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      errorMessageIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'errorMessage',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      errorMessageIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'errorMessage',
+        value: '',
       ));
     });
   }
@@ -1277,6 +1446,20 @@ extension StableHordeTaskQueryLinks
 extension StableHordeTaskQuerySortBy
     on QueryBuilder<StableHordeTask, StableHordeTask, QSortBy> {
   QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy>
+      sortByErrorMessage() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'errorMessage', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy>
+      sortByErrorMessageDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'errorMessage', Sort.desc);
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy>
       sortByEstimatedCompletionTime() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'estimatedCompletionTime', Sort.asc);
@@ -1415,6 +1598,20 @@ extension StableHordeTaskQuerySortThenBy
   }
 
   QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy>
+      thenByErrorMessage() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'errorMessage', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy>
+      thenByErrorMessageDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'errorMessage', Sort.desc);
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy>
       thenByEstimatedCompletionTime() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'estimatedCompletionTime', Sort.asc);
@@ -1540,6 +1737,13 @@ extension StableHordeTaskQuerySortThenBy
 extension StableHordeTaskQueryWhereDistinct
     on QueryBuilder<StableHordeTask, StableHordeTask, QDistinct> {
   QueryBuilder<StableHordeTask, StableHordeTask, QDistinct>
+      distinctByErrorMessage({bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'errorMessage', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QDistinct>
       distinctByEstimatedCompletionTime() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'estimatedCompletionTime');
@@ -1609,6 +1813,13 @@ extension StableHordeTaskQueryProperty
   QueryBuilder<StableHordeTask, int, QQueryOperations> dbIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'dbId');
+    });
+  }
+
+  QueryBuilder<StableHordeTask, String?, QQueryOperations>
+      errorMessageProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'errorMessage');
     });
   }
 
