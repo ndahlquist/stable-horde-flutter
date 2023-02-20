@@ -55,7 +55,7 @@ class _LoginDialogState extends State<LoginDialog> {
               ),
             ),
             onChanged: (value) async {
-              _apiKey = value;
+              _apiKey = value.trim().replaceAll("[^\\p{ASCII}]", "");
             },
           ),
         ],
