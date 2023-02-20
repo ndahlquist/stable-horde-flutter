@@ -18,6 +18,12 @@ class _LoginDialogState extends State<LoginDialog> {
   bool _validating = false;
 
   @override
+  void dispose() {
+    _apiKeyController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return AlertDialog(
       title: widget.title != null ? Text(widget.title ?? "Login") : null,
