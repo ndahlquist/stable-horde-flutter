@@ -14,8 +14,14 @@ class LoginDialog extends StatefulWidget {
 }
 
 class _LoginDialogState extends State<LoginDialog> {
+  final _apiKeyController = TextEditingController();
   bool _validating = false;
-  String _apiKey = "";
+
+  @override
+  void dispose() {
+    _apiKeyController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +51,7 @@ class _LoginDialogState extends State<LoginDialog> {
             ),
           ),
           TextField(
+            controller: _apiKeyController,
             decoration: const InputDecoration(
               labelText: 'API Key',
               enabledBorder: UnderlineInputBorder(
@@ -54,9 +61,6 @@ class _LoginDialogState extends State<LoginDialog> {
                 borderSide: BorderSide(color: Colors.white),
               ),
             ),
-            onChanged: (value) async {
-              _apiKey = value;
-            },
           ),
         ],
       ),
@@ -72,6 +76,11 @@ class _LoginDialogState extends State<LoginDialog> {
               setState(() {
                 _validating = true;
               });
+
+              final _apiKey = _apiKeyController.text.replaceAll(
+                RegExp(r"[^A-Za-z0-9]"),
+                "",
+              );
 
               try {
                 final user = await stableHordeUserBloc.lookupUser(_apiKey);
