@@ -101,6 +101,20 @@ class _TasksBloc {
       }
 
       final jsonResponse = jsonDecode(response.body);
+      final message = jsonResponse['message'];
+
+      if (response.statusCode == 401 &&
+          message.contains('No user matching sent API Key.')) {
+        // This can happen if an API key is rotated. Logout and try again.
+        if (apiKey == "0000000000") {
+          throw Exception("IllegalState. Api key: $apiKey");
+        }
+        sharedPrefsBloc.setApiKey(null);
+        await isar.writeTxn(() async {
+          isar.stableHordeTasks.delete(task.dbId);
+        });
+        requestDiffusion();
+      }
 
       if (response.statusCode != 202) {
         if (json.containsKey('source_image')) {
