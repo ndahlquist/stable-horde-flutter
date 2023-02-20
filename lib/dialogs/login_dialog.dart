@@ -71,8 +71,10 @@ class _LoginDialogState extends State<LoginDialog> {
                 _validating = true;
               });
 
-              final _apiKey = _apiKeyController.text.replaceAll(RegExp(r"[^A-Za-z0-9]"), "",);
-              print(_apiKey);
+              final _apiKey = _apiKeyController.text.replaceAll(
+                RegExp(r"[^A-Za-z0-9]"),
+                "",
+              );
 
               try {
                 final user = await stableHordeUserBloc.lookupUser(_apiKey);
