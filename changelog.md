@@ -1,3 +1,7 @@
+#1.1.0+21
+- Add control net options.
+- Bug fixes.
+
 #1.0.8+19, 1.0.9+20
 - Bug fixes.
 
