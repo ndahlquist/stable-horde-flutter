@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 
 class ControlTypeBox extends StatefulWidget {
   const ControlTypeBox({super.key});
@@ -20,7 +21,17 @@ class _ControlTypeBoxState extends State<ControlTypeBox> {
     "hough"
   ];
 
-  String _controlType = 'normal'; // TODO
+  String _controlType = 'normal';
+
+  @override
+  void initState() {
+    super.initState();
+    sharedPrefsBloc.getControlType().then((value) {
+      setState(() {
+        _controlType = value;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,18 +72,20 @@ class _ControlTypeBoxState extends State<ControlTypeBox> {
               value: _controlType,
               elevation: 16,
               onChanged: (String? value) {
-                // This is called when the user selects an item.
                 setState(() {
                   _controlType = value!;
                 });
+
+                sharedPrefsBloc.setControlType(_controlType);
               },
-              items:
-                  _controlTypes.map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
+              items: _controlTypes.map<DropdownMenuItem<String>>(
+                (value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                },
+              ).toList(),
             ),
           ),
         ],
