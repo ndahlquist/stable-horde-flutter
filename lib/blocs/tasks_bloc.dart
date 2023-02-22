@@ -19,6 +19,7 @@ class _TasksBloc {
     final modelName = await sharedPrefsBloc.getModel();
     final seed = await sharedPrefsBloc.getSeed();
     String? img2ImgInputEncodedString = await sharedPrefsBloc.getImg2ImgInput();
+    final controlType = await sharedPrefsBloc.getControlType();
 
     final List<String> postProcessors = [];
 
@@ -76,6 +77,7 @@ class _TasksBloc {
           'karras': true,
           if (img2ImgInputEncodedString != null)
             'denoising_strength': denoisingStrength,
+          if (img2ImgInputEncodedString != null) 'control_type': controlType,
           'post_processing': postProcessors,
         },
         'nsfw': true,

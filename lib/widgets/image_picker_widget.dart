@@ -10,6 +10,7 @@ import 'package:stable_horde_flutter/blocs/conversions_bloc.dart';
 import 'package:stable_horde_flutter/blocs/shared_prefs_bloc.dart';
 import 'package:stable_horde_flutter/dialogs/login_dialog.dart';
 import 'package:stable_horde_flutter/utils/image_picker_utils.dart';
+import 'package:stable_horde_flutter/widgets/control_type_box.dart';
 import 'package:stable_horde_flutter/widgets/denoising_strength_box.dart';
 import 'package:stable_horde_flutter/widgets/section_frame.dart';
 
@@ -174,6 +175,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
                     ],
                   ),
                 ),
+                const ControlTypeBox(),
                 const DenoisingStrengthBox(),
               ],
             ),
