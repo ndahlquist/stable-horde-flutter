@@ -114,6 +114,7 @@ class _TasksBloc {
           isar.stableHordeTasks.delete(task.dbId);
         });
         requestDiffusion();
+        return;
       }
 
       if (response.statusCode != 202) {
