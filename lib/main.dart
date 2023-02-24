@@ -77,17 +77,18 @@ FutureOr<SentryEvent?> _beforeSend(SentryEvent event, {dynamic hint}) async {
   if (throwable is StableHordeException) {
     var message = throwable.message;
 
-    // If the message contains "your IP address has been put into timeout for [number] more seconds.",
-    // redact the number so that it gets grouped with other issues of this type.
-    message = message.replaceAllMapped(
-      RegExp(
-        r"your IP address has been put into timeout for (\d+) more seconds.",
-      ),
-      (match) =>
-          "your IP address has been put into timeout for [number] more seconds.",
-    );
+    // For messages that contain dynamic numbers,
+    // return the original event so that it gets grouped normally.
+    if (message.contains("Due to heavy demand, for requests over")) {
+      return event;
+    }
 
-    // Manually set fingerprint to the error message, to group errors by message.
+    if (message.contains("your IP address has been put into timeout for")) {
+      return event;
+    }
+
+    // Otherwise, manually set fingerprint to the error message,
+    // to group errors by message.
     event = event.copyWith(fingerprint: [message]);
   }
   return event;
