@@ -10,6 +10,7 @@ class ControlTypeBox extends StatefulWidget {
 
 class _ControlTypeBoxState extends State<ControlTypeBox> {
   static const List<String> _controlTypes = <String>[
+    "none",
     "canny",
     "hed",
     "depth",
@@ -21,7 +22,7 @@ class _ControlTypeBoxState extends State<ControlTypeBox> {
     "hough"
   ];
 
-  String _controlType = 'normal';
+  String _controlType = 'none';
 
   @override
   void initState() {
