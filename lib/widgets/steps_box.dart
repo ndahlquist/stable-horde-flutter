@@ -39,7 +39,7 @@ class _StepsBoxState extends State<StepsBox> {
                 Text('Steps'),
                 SizedBox(height: 4),
                 Text(
-                  'Default value is 30, which is enough for a high-quality picture. Increasing step count increases detail and kudos cost.',
+                  'Higher step count means more detail, but kudos cost will increase too. Default value is 30.',
                   style: TextStyle(
                     fontSize: 10,
                     fontStyle: FontStyle.italic,

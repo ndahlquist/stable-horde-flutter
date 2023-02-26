@@ -65,10 +65,12 @@ class _TasksBloc {
       final shouldShare =
           isDonateImageEnabled && img2ImgInputEncodedString == null;
 
+      var stepCount = await sharedPrefsBloc.getSteps();
+
       final json = {
         'prompt': formattedPrompt,
         'params': {
-          'steps': 30,
+          'steps': stepCount,
           'n': 1,
           'sampler_name': 'k_euler',
           'width': 512,
