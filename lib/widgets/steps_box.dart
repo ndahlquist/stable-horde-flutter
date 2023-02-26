@@ -28,11 +28,7 @@ class _StepsBoxState extends State<StepsBox> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(
-        left: 4,
-        top: 16,
-        bottom: 4,
-      ),
+      padding: const EdgeInsets.only(),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -43,7 +39,7 @@ class _StepsBoxState extends State<StepsBox> {
                 Text('Steps'),
                 SizedBox(height: 4),
                 Text(
-                  'TODO WRITE DESCRIPTION.',
+                  'Default value is 30, which is enough for a high-quality picture. Increasing step count increases detail and kudos cost.',
                   style: TextStyle(
                     fontSize: 10,
                     fontStyle: FontStyle.italic,
