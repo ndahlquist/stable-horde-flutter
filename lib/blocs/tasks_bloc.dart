@@ -12,6 +12,8 @@ import 'package:stable_horde_flutter/model/stable_horde_exception.dart';
 import 'package:stable_horde_flutter/model/stable_horde_task.dart';
 import 'package:stable_horde_flutter/utils/http_wrapper.dart';
 
+import 'package:device_info/device_info.dart';
+
 class _TasksBloc {
   Future requestDiffusion() async {
     final prompt = await sharedPrefsBloc.getPrompt();
@@ -264,7 +266,16 @@ class _TasksBloc {
 
         final Directory externalDirectory;
         if (Platform.isAndroid) {
-          externalDirectory = Directory("/sdcard/Pictures/stable-diffusion");
+          final version = await DeviceInfoPlugin().androidInfo;
+          if (version.version.sdkInt == 29) {
+            // Android 10 has problems with file access.
+            // This allows us to at least save images somewhere accessible to end user
+            final Directory? extDir = await getExternalStorageDirectory();
+            externalDirectory = Directory("${extDir!.path}/stable-diffusion");
+          }
+          else{
+            externalDirectory = Directory("/sdcard/Pictures/stable-diffusion");
+          }
         } else {
           externalDirectory = await getApplicationDocumentsDirectory();
         }
