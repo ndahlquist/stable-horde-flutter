@@ -153,7 +153,7 @@ class _SharedPrefsBloc {
 
   Future<String> getControlType() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getString(_controlTypeKey) ?? 'normal';
+    return prefs.getString(_controlTypeKey) ?? 'none';
   }
 
   Future setControlType(String value) async {
