@@ -78,7 +78,7 @@ class _LoginDialogState extends State<LoginDialog> {
               });
 
               final _apiKey = _apiKeyController.text.replaceAll(
-                RegExp(r"[^A-Za-z0-9_]"),
+                RegExp(r"[^A-Za-z0-9_-]"),
                 "",
               );
 
