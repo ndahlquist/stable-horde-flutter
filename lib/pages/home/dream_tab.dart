@@ -197,8 +197,8 @@ class _DreamTabState extends State<DreamTab> {
     return const FractionallySizedBox(
         widthFactor: 1,
         child: SectionFrame(
-          child: StepsBox()
-        )
+          child: StepsBox(),
+        ),
     );
   }
 
