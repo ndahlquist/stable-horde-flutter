@@ -77,7 +77,8 @@ class _TasksBloc {
           'karras': true,
           if (img2ImgInputEncodedString != null)
             'denoising_strength': denoisingStrength,
-          if (img2ImgInputEncodedString != null && controlType!='none') 'control_type': controlType,
+          if (img2ImgInputEncodedString != null && controlType != 'none')
+            'control_type': controlType,
           'post_processing': postProcessors,
         },
         'nsfw': true,
