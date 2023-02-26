@@ -253,6 +253,13 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
               style: const TextStyle(fontSize: 12),
             ),
           ),
+        Padding(
+          padding: const EdgeInsets.only(top: 12),
+          child: SelectableText(
+            "Steps: ${task.steps ?? 30}",
+            style: const TextStyle(fontSize: 12),
+          ),
+        ),
       ],
     );
   }
