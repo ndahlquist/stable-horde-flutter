@@ -21,6 +21,7 @@ class _SharedPrefsBloc {
   static const _donateImageOptionKey = 'DONATE_IMAGE_OPTION_KEY';
   static const _saveImagesOptionKey = 'SAVE_IMAGES_OPTION_KEY';
   static const _controlTypeKey = 'CONTROL_TYPE_KEY';
+  static const _stepsKey = "STEPS_KEY";
 
   static const defaultPrompt =
       "Futuristic spaceship. Rainforest. A painting of a spaceship on a rainforest planet by Caravaggio. Trending on Artstation. chiaroscuro.";
@@ -192,6 +193,16 @@ class _SharedPrefsBloc {
   Future setSaveImageEnabled(bool value) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(_saveImagesOptionKey, value);
+  }
+
+  Future<int> getSteps() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getInt(_stepsKey) ?? 30;
+  }
+
+  Future setSteps(int value) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt(_stepsKey, value);
   }
 }
 
