@@ -167,6 +167,12 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
                         await sharedPrefsBloc
                             .setNegativePrompt(task.negativePrompt);
                         await sharedPrefsBloc.setSeed(task.seed);
+                        if (task.steps != null){
+                          await sharedPrefsBloc.setSteps(task.steps!);
+                        }
+                        else {
+                          await sharedPrefsBloc.setSteps(30);
+                        }
                         if (!mounted) return;
                         Navigator.of(context).pop();
                         homeController.animateToPage(0);
@@ -179,6 +185,12 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
                         await sharedPrefsBloc
                             .setNegativePrompt(task.negativePrompt);
                         await sharedPrefsBloc.setSeed(null);
+                        if (task.steps != null){
+                          await sharedPrefsBloc.setSteps(task.steps!);
+                        }
+                        else {
+                          await sharedPrefsBloc.setSteps(30);
+                        }
                         if (!mounted) return;
                         Navigator.of(context).pop();
                         homeController.animateToPage(0);

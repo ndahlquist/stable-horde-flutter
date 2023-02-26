@@ -14,6 +14,7 @@ class StableHordeTask {
   String? stableHordeId;
 
   int? seed;
+  int? steps;
 
   String? imageFilename;
 
@@ -23,7 +24,7 @@ class StableHordeTask {
   bool failed = false;
   String? errorMessage;
 
-  StableHordeTask(this.prompt, this.negativePrompt, this.model);
+  StableHordeTask(this.prompt, this.negativePrompt, this.model, this.steps);
 
   bool isComplete() {
     return imageFilename != null;
