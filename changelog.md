@@ -1,3 +1,8 @@
+#1.1.3+24
+- Add option to adjust number of steps.
+- Fix image saving on Android 10.
+- Change to new /models endpoint.
+
 #1.1.2+23
 - Bug fixes.
 
