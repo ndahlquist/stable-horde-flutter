@@ -193,12 +193,12 @@ class _DreamTabState extends State<DreamTab> {
     );
   }
 
-  Widget _stepsWidget(){
+  Widget _stepsWidget() {
     return const FractionallySizedBox(
-        widthFactor: 1,
-        child: SectionFrame(
-          child: StepsBox(),
-        ),
+      widthFactor: 1,
+      child: SectionFrame(
+        child: StepsBox(),
+      ),
     );
   }
 

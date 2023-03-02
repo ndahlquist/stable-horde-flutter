@@ -200,9 +200,13 @@ class _SharedPrefsBloc {
     return prefs.getInt(_stepsKey) ?? 30;
   }
 
-  Future setSteps(int value) async {
+  Future setSteps(int? value) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt(_stepsKey, value);
+    if (value == null) {
+      await prefs.remove(_stepsKey);
+    } else {
+      await prefs.setInt(_stepsKey, value);
+    }
   }
 }
 
