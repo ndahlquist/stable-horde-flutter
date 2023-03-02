@@ -66,6 +66,11 @@ const StableHordeTaskSchema = CollectionSchema(
       id: 9,
       name: r'stableHordeId',
       type: IsarType.string,
+    ),
+    r'steps': PropertySchema(
+      id: 10,
+      name: r'steps',
+      type: IsarType.long,
     )
   },
   estimateSize: _stableHordeTaskEstimateSize,
@@ -128,6 +133,7 @@ void _stableHordeTaskSerialize(
   writer.writeString(offsets[7], object.prompt);
   writer.writeLong(offsets[8], object.seed);
   writer.writeString(offsets[9], object.stableHordeId);
+  writer.writeLong(offsets[10], object.steps);
 }
 
 StableHordeTask _stableHordeTaskDeserialize(
@@ -140,6 +146,7 @@ StableHordeTask _stableHordeTaskDeserialize(
     reader.readString(offsets[7]),
     reader.readString(offsets[6]),
     reader.readString(offsets[5]),
+    reader.readLongOrNull(offsets[10]),
   );
   object.dbId = id;
   object.errorMessage = reader.readStringOrNull(offsets[0]);
@@ -179,6 +186,8 @@ P _stableHordeTaskDeserializeProp<P>(
       return (reader.readLongOrNull(offset)) as P;
     case 9:
       return (reader.readStringOrNull(offset)) as P;
+    case 10:
+      return (reader.readLongOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -1435,6 +1444,80 @@ extension StableHordeTaskQueryFilter
       ));
     });
   }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      stepsIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'steps',
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      stepsIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'steps',
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      stepsEqualTo(int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'steps',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      stepsGreaterThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'steps',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      stepsLessThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'steps',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterFilterCondition>
+      stepsBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'steps',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
 }
 
 extension StableHordeTaskQueryObject
@@ -1578,6 +1661,19 @@ extension StableHordeTaskQuerySortBy
       sortByStableHordeIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'stableHordeId', Sort.desc);
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy> sortBySteps() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'steps', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy>
+      sortByStepsDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'steps', Sort.desc);
     });
   }
 }
@@ -1732,6 +1828,19 @@ extension StableHordeTaskQuerySortThenBy
       return query.addSortBy(r'stableHordeId', Sort.desc);
     });
   }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy> thenBySteps() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'steps', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QAfterSortBy>
+      thenByStepsDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'steps', Sort.desc);
+    });
+  }
 }
 
 extension StableHordeTaskQueryWhereDistinct
@@ -1804,6 +1913,12 @@ extension StableHordeTaskQueryWhereDistinct
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'stableHordeId',
           caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<StableHordeTask, StableHordeTask, QDistinct> distinctBySteps() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'steps');
     });
   }
 }
@@ -1879,6 +1994,12 @@ extension StableHordeTaskQueryProperty
       stableHordeIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'stableHordeId');
+    });
+  }
+
+  QueryBuilder<StableHordeTask, int?, QQueryOperations> stepsProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'steps');
     });
   }
 }

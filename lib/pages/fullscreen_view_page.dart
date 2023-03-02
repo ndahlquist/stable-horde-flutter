@@ -167,6 +167,7 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
                         await sharedPrefsBloc
                             .setNegativePrompt(task.negativePrompt);
                         await sharedPrefsBloc.setSeed(task.seed);
+                        await sharedPrefsBloc.setSteps(task.steps);
                         if (!mounted) return;
                         Navigator.of(context).pop();
                         homeController.animateToPage(0);
@@ -179,6 +180,7 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
                         await sharedPrefsBloc
                             .setNegativePrompt(task.negativePrompt);
                         await sharedPrefsBloc.setSeed(null);
+                        await sharedPrefsBloc.setSteps(task.steps);
                         if (!mounted) return;
                         Navigator.of(context).pop();
                         homeController.animateToPage(0);
@@ -241,6 +243,13 @@ class _FullScreenViewPageState extends State<FullScreenViewPage> {
               style: const TextStyle(fontSize: 12),
             ),
           ),
+        Padding(
+          padding: const EdgeInsets.only(top: 12),
+          child: SelectableText(
+            "Steps: ${task.steps ?? 30}",
+            style: const TextStyle(fontSize: 12),
+          ),
+        ),
       ],
     );
   }

@@ -20,6 +20,7 @@ class _TasksBloc {
     final negativePrompt = await sharedPrefsBloc.getNegativePrompt();
     final modelName = await sharedPrefsBloc.getModel();
     final seed = await sharedPrefsBloc.getSeed();
+    final steps = await sharedPrefsBloc.getSteps();
     String? img2ImgInputEncodedString = await sharedPrefsBloc.getImg2ImgInput();
     final controlType = await sharedPrefsBloc.getControlType();
 
@@ -35,7 +36,7 @@ class _TasksBloc {
 
     // Add new task to db.
     final dbId = await isar.writeTxn(() async {
-      final task = StableHordeTask(prompt, negativePrompt, modelName);
+      final task = StableHordeTask(prompt, negativePrompt, modelName, steps);
       if (seed != null) {
         task.seed = seed;
       }
@@ -65,10 +66,12 @@ class _TasksBloc {
       final shouldShare =
           isDonateImageEnabled && img2ImgInputEncodedString == null;
 
+      var stepCount = await sharedPrefsBloc.getSteps();
+
       final json = {
         'prompt': formattedPrompt,
         'params': {
-          'steps': 30,
+          'steps': stepCount,
           'n': 1,
           'sampler_name': 'k_euler',
           'width': 512,

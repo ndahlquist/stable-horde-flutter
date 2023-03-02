@@ -10,6 +10,7 @@ import 'package:stable_horde_flutter/pages/seed_edit_page.dart';
 import 'package:stable_horde_flutter/widgets/image_picker_widget.dart';
 import 'package:stable_horde_flutter/widgets/model_button.dart';
 import 'package:stable_horde_flutter/widgets/section_frame.dart';
+import 'package:stable_horde_flutter/widgets/steps_box.dart';
 
 class DreamTab extends StatefulWidget {
   const DreamTab({super.key});
@@ -68,6 +69,8 @@ class _DreamTabState extends State<DreamTab> {
         const ModelButton(),
         const SizedBox(height: 8),
         _seedWidget(),
+        const SizedBox(height: 8),
+        _stepsWidget(),
         const SizedBox(height: 8),
         _upresWidget(),
         const SizedBox(height: 8),
@@ -187,6 +190,15 @@ class _DreamTabState extends State<DreamTab> {
           ),
         );
       },
+    );
+  }
+
+  Widget _stepsWidget() {
+    return const FractionallySizedBox(
+      widthFactor: 1,
+      child: SectionFrame(
+        child: StepsBox(),
+      ),
     );
   }
 
