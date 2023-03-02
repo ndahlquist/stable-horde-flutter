@@ -28,6 +28,7 @@ class _ControlTypeBoxState extends State<ControlTypeBox> {
   void initState() {
     super.initState();
     sharedPrefsBloc.getControlType().then((value) {
+      if (!mounted) return;
       setState(() {
         _controlType = value;
       });
