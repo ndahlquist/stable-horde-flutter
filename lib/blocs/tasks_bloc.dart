@@ -275,8 +275,7 @@ class _TasksBloc {
             // This allows us to at least save images somewhere accessible to end user
             final Directory? extDir = await getExternalStorageDirectory();
             externalDirectory = Directory("${extDir!.path}/stable-diffusion");
-          }
-          else{
+          } else {
             externalDirectory = Directory("/sdcard/Pictures/stable-diffusion");
           }
         } else {
